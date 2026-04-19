@@ -1,0 +1,179 @@
+// Component rendering script — inject into driver-comparison.html before </body>
+
+// ── COMPONENT STYLES ──
+const styleEl = document.createElement('style');
+styleEl.textContent = `
+.live-component { width:100%; border-radius:16px; border:1px solid rgba(255,255,255,0.06); box-shadow:0 20px 80px rgba(0,0,0,0.5),0 0 60px rgba(0,240,255,0.06); background:#0a0e1a; padding:20px 24px; overflow:hidden; transition:all 0.5s ease; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+.live-component:hover { box-shadow:0 30px 100px rgba(0,0,0,0.6),0 0 80px rgba(0,240,255,0.1); transform:translateY(-4px); }
+.lc-title { font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:8px; }
+.lc-header { display:flex; justify-content:center; align-items:center; gap:12px; margin-bottom:12px; }
+.lc-driver { font-size:22px; font-weight:800; }
+.lc-driver.a { color:#60a5fa; }
+.lc-driver.b { color:#f87171; }
+.lc-vs { font-size:11px; color:#475569; background:#1e293b; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-weight:600; }
+.lc-laps { font-size:10px; color:#64748b; text-align:center; }
+.lc-stats { display:flex; gap:8px; margin-bottom:12px; }
+.lc-stat-box { flex:1; background:#1e293b; border-radius:6px; padding:8px 10px; }
+.lc-stat-label { font-size:9px; color:#64748b; text-transform:uppercase; }
+.lc-stat-val { font-size:16px; font-weight:700; color:#e2e8f0; }
+.lc-legend { display:flex; gap:14px; margin-top:6px; font-size:9px; color:#475569; }
+.lc-ref { font-size:9px; color:#64748b; text-align:right; margin-bottom:4px; }
+.lc-table { width:100%; border-collapse:collapse; font-size:11px; }
+.lc-table th { text-align:left; padding:5px 8px; color:#64748b; font-size:9px; text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid #1e293b; font-weight:600; }
+.lc-table th.r { text-align:right; }
+.lc-table td { padding:5px 8px; color:#e2e8f0; border-bottom:1px solid #111827; }
+.lc-table td.r { text-align:right; }
+.lc-table td.mono { font-family:'Space Mono',monospace; font-size:10px; }
+.lc-bar-bg { background:#1e293b; border-radius:3px; height:12px; position:relative; overflow:hidden; display:flex; align-items:center; }
+.lc-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,#f59e0b,#ea580c); }
+.lc-bar-label { position:absolute; right:4px; font-size:8px; color:#fbbf24; font-weight:700; font-family:'Space Mono',monospace; }
+.lc-prose { border-left:3px solid #334155; padding:10px 14px; margin-bottom:14px; background:rgba(30,58,95,0.15); border-radius:0 6px 6px 0; }
+.lc-prose p { font-size:12px; color:#cbd5e1; line-height:1.5; margin-bottom:6px; }
+.lc-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.lc-spark-card { background:#111827; border-radius:8px; padding:10px 12px; border:1px solid #1e293b; }
+.lc-spark-title { font-size:11px; font-weight:700; color:#e2e8f0; margin-bottom:6px; }
+.lc-section-hdr { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; margin:12px 0 6px; padding:4px 8px; border-radius:4px; }
+.lc-coaching-box { border:1px solid rgba(52,211,153,0.3); background:rgba(52,211,153,0.06); border-radius:6px; padding:10px 14px; margin-top:8px; }
+.lc-coaching-box p { font-size:11px; color:#34d399; line-height:1.5; }
+.lc-badge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; }
+.lc-badge.major { background:rgba(239,68,68,0.15); color:#f87171; border:1px solid rgba(239,68,68,0.3); }
+.lc-badge.moderate { background:rgba(245,158,11,0.15); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
+.lc-badge.minor { background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); }
+.lc-coach-card { background:#111827; border-radius:8px; padding:12px 14px; border-left:3px solid #334155; margin-bottom:8px; }
+.lc-coach-card.major { border-left-color:#f87171; }
+.lc-coach-card.moderate { border-left-color:#f59e0b; }
+.lc-coach-card.minor { border-left-color:#60a5fa; }
+.lc-target-row { display:flex; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid #111827; }
+.lc-target-metric { flex:2; font-size:11px; font-weight:600; color:#e2e8f0; }
+.lc-target-zone { flex:1; font-size:10px; color:#94a3b8; }
+.lc-target-val { flex:1; font-size:11px; font-family:'Space Mono',monospace; text-align:right; }
+.lc-progress { flex:1.5; height:6px; background:#1e293b; border-radius:3px; overflow:hidden; }
+.lc-progress-fill { height:100%; border-radius:3px; }
+@media(max-width:768px){.lc-grid2{grid-template-columns:1fr;}}
+`;
+document.head.appendChild(styleEl);
+
+// ── 1. ACCUMULATED GAP ──
+(function(){
+const el=document.getElementById('imgAccGap');if(!el)return;
+const lt0=[32.167,30.543,30.518,31.728,31.589,31.717,31.598,31.591,31.732,30.965,30.130,30.058,30.132,30.210,30.315,30.363,30.399,30.521,30.621,30.645,30.721,30.810,30.850,30.920,31.015,31.102,31.185,31.275,31.350,31.410,31.485,31.525,31.610,31.685,31.755,31.810,31.890,31.945,32.010,32.085,32.145,32.215,32.280,32.345,32.415,32.485,32.540,32.610,32.685];
+const lt1=[36.796,29.897,29.748,29.823,29.938,30.004,30.059,30.067,30.130,30.180,30.175,30.200,30.250,30.215,30.285,30.310,30.360,30.395,30.450,30.500,30.520,30.565,30.605,30.640,30.685,30.720,30.755,30.790,30.825,30.860,30.890,30.920,30.955,30.985,31.015,31.045,31.075,31.100,31.130,31.155,31.180,31.205,31.230,31.255,31.280,31.300,31.320,31.340,31.360];
+const n=Math.min(lt0.length,lt1.length),dl=[],cu=[];let sm=0;
+for(let i=0;i<n;i++){const v=lt0[i]-lt1[i];dl.push(v);sm+=v;cu.push(sm);}
+const qs=Math.floor(n/4),qb=[0,qs,qs*2,qs*3,n],qc=['#60a5fa','#818cf8','#f59e0b','#f87171'];
+const W=660,H=200,PL=50,PR=16,PT=20,PB=32,cW=W-PL-PR,cH=H-PT-PB;
+const mC=Math.max(...cu.map(Math.abs),0.01),yMn=Math.min(0,...cu)-mC*0.12,yMx=Math.max(0,...cu)+mC*0.12,yR=yMx-yMn||1;
+const tx=i=>PL+(i/Math.max(1,n-1))*cW,ty=v=>PT+((yMx-v)/yR)*cH,zY=ty(0);
+const mD=Math.max(...dl.map(Math.abs),0.001),bW=Math.max(2,(cW/n)*0.55);
+let svg=`<svg width="100%" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"><rect x="0" y="0" width="${W}" height="${H}" fill="#0a0e1a" rx="6"/>`;
+for(let q=0;q<4;q++){const x0=tx(qb[q]),x1=tx(Math.min(qb[q+1],n-1));svg+=`<rect x="${x0}" y="${PT}" width="${x1-x0}" height="${cH}" fill="${qc[q]}" opacity="0.04"/><text x="${(x0+x1)/2}" y="${H-6}" fill="${qc[q]}" font-size="11" text-anchor="middle" font-weight="700" opacity="0.7" font-family="'Space Mono',monospace">Q${q+1}</text>`;}
+for(let i=0;i<=4;i++){const v=yMn+(yR*i)/4;svg+=`<line x1="${PL}" x2="${W-PR}" y1="${ty(v)}" y2="${ty(v)}" stroke="#1e293b" stroke-width="0.5"/><text x="${PL-6}" y="${ty(v)+3}" fill="#475569" font-size="9" text-anchor="end" font-family="'Space Mono',monospace">${v>=0?'+':''}${v.toFixed(1)}s</text>`;}
+svg+=`<line x1="${PL}" x2="${W-PR}" y1="${zY}" y2="${zY}" stroke="#334155" stroke-width="1"/>`;
+for(let i=0;i<n;i++){const v=dl[i],bH=Math.max(1.5,(Math.abs(v)/mD)*(cH*0.35)),bx=tx(i)-bW/2,by=v>=0?zY-bH:zY;svg+=`<rect x="${bx}" y="${by}" width="${bW}" height="${bH}" fill="${v>0?'#f87171':'#4ade80'}" opacity="0.6" rx="1"/>`;}
+const lp=cu.map((v,i)=>`${i===0?'M':'L'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ');
+svg+=`<path d="${lp} L${tx(n-1).toFixed(1)},${zY.toFixed(1)} L${tx(0).toFixed(1)},${zY.toFixed(1)} Z" fill="#fbbf24" opacity="0.08"/><path d="${lp}" fill="none" stroke="#fbbf24" stroke-width="2"/>`;
+[qb[1],qb[2],qb[3],n-1].forEach(idx=>{idx=Math.min(idx,n-1);const v=cu[idx],cx=tx(idx),cy=ty(v);svg+=`<circle cx="${cx}" cy="${cy}" r="4" fill="#fbbf24"/><text x="${cx}" y="${cy-8}" fill="#fbbf24" font-size="10" text-anchor="middle" font-weight="700" font-family="'Space Mono',monospace">+${v.toFixed(idx===n-1?2:1)}s</text>`;});
+svg+='</svg>';
+el.innerHTML=`<div class="lc-header"><div><div class="lc-driver a">POL</div><div class="lc-laps">49 laps</div></div><div class="lc-vs">VS</div><div><div class="lc-driver b">AL</div><div class="lc-laps">49 laps</div></div></div><div class="lc-stats"><div class="lc-stat-box"><div class="lc-driver a" style="font-size:11px;margin-bottom:2px">POL</div><div style="display:flex;gap:16px"><div><div class="lc-stat-label">Best</div><div class="lc-stat-val" style="font-size:14px">29.795s</div></div><div><div class="lc-stat-label">Average</div><div class="lc-stat-val" style="font-size:14px">31.128s</div></div><div><div class="lc-stat-label">Laps</div><div class="lc-stat-val" style="font-size:14px">49</div></div></div></div><div class="lc-stat-box"><div class="lc-driver b" style="font-size:11px;margin-bottom:2px">AL</div><div style="display:flex;gap:16px"><div><div class="lc-stat-label">Best</div><div class="lc-stat-val" style="font-size:14px">29.748s</div></div><div><div class="lc-stat-label">Average</div><div class="lc-stat-val" style="font-size:14px">30.956s</div></div><div><div class="lc-stat-label">Laps</div><div class="lc-stat-val" style="font-size:14px">49</div></div></div></div></div><div class="lc-title">ACCUMULATED GAP</div><div class="lc-ref"><span style="color:#4ade80;font-weight:700">AL</span> is the reference &middot; positive = <span style="color:#f87171;font-weight:700">POL</span> behind</div>${svg}<div class="lc-legend"><span>&mdash; <span style="color:#fbbf24">Cumulative gap</span></span><span>&#9632; <span style="color:#f87171">Per-lap loss</span></span><span>&#9632; <span style="color:#4ade80">Per-lap gain</span></span></div>`;
+})();
+
+// ── 2. KEY DIFFERENCES ──
+(function(){
+const el=document.getElementById('imgKeyDiff');if(!el)return;
+const rows=[{r:1,imp:100,name:'Brake Attack Speed',corner:'T3&T4',phase:'Entry',vA:'20.5%/s',vB:'10.1%/s',d:'10.4%/s'},{r:2,imp:84,name:'Steering',corner:'T3&T4',phase:'Entry',vA:'17.5\u00b0',vB:'16.2\u00b0',d:'1.3\u00b0'},{r:3,imp:74,name:'Throttle Rate',corner:'T1&T2',phase:'Centre',vA:'0.52%/s',vB:'-0.72%/s',d:'1.24%/s'},{r:4,imp:73,name:'Peak Steering',corner:'T1&T2',phase:'Entry',vA:'40.1\u00b0',vB:'44.4\u00b0',d:'4.3\u00b0'},{r:5,imp:73,name:'Throttle Lift Speed',corner:'T3&T4',phase:'Entry',vA:'-154.8%/s',vB:'-120.5%/s',d:'34.3%/s'}];
+let h=`<div class="lc-title">KEY DIFFERENCES</div><div class="lc-prose"><p>Analysis indicates driver signatures are distinct and the differences are consistent lap to lap.</p><p>The #1 distinguishing input is Brake Attack Speed at T3&amp;T4 (Entry): POL averages 20.5%/s vs 10.1%/s.</p><p>Multiple top differences cluster at T3&amp;T4 (3 of top 5), reinforcing it as the key zone where technique diverges most.</p></div><table class="lc-table"><thead><tr><th>#</th><th style="min-width:90px">Importance</th><th>Input</th><th>Corner</th><th class="r">Phase</th><th class="r" style="color:#60a5fa">POL</th><th class="r" style="color:#f87171">AL</th><th class="r">\u0394</th></tr></thead><tbody>`;
+rows.forEach(r=>{h+=`<tr><td style="text-align:center;font-weight:700;color:#64748b">${r.r}</td><td><div class="lc-bar-bg"><div class="lc-bar" style="width:${r.imp}%"></div><div class="lc-bar-label">${r.imp}%</div></div></td><td class="mono" style="font-weight:600">${r.name}</td><td style="color:#94a3b8">${r.corner}</td><td class="r" style="color:#94a3b8">${r.phase}</td><td class="r mono" style="color:#60a5fa">${r.vA}</td><td class="r mono" style="color:#f87171">${r.vB}</td><td class="r mono" style="color:#f97316;font-weight:600">${r.d}</td></tr>`;});
+h+='</tbody></table><div style="text-align:center;padding:8px;font-size:10px;color:#60a5fa;border:1px solid #1e293b;border-radius:0 0 4px 4px;cursor:pointer">\u25bc Show all 20 features</div>';
+el.innerHTML=h;
+})();
+
+// ── 3. RACING LINE ──
+(function(){
+const el=document.getElementById('imgRacingLine');if(!el)return;
+const W=600,H=360,cx=300,cy=180;
+const pts=(rx,ry,sk,n)=>{const p=[];for(let i=0;i<n;i++){const a=2*Math.PI*i/n,r=rx*(1+sk*Math.cos(a));p.push([cx+r*Math.cos(a),cy+ry*Math.sin(a)]);}return p;};
+const pD=p=>p.map((pt,i)=>`${i===0?'M':'L'}${pt[0].toFixed(1)},${pt[1].toFixed(1)}`).join(' ')+'Z';
+const dL=(rx,ry,sk,off,n)=>{const p=[];for(let i=0;i<n;i++){const a=2*Math.PI*i/n,r=(rx+off*Math.sin(2*a))*(1+sk*Math.cos(a));p.push([cx+r*Math.cos(a),cy+ry*Math.sin(a)]);}return p;};
+let svg=`<svg width="100%" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"><rect width="${W}" height="${H}" fill="#080b12" rx="8"/><path d="${pD(pts(240,130,0.12,80))}" fill="#1c2133"/><path d="${pD(pts(190,85,0.12,80))}" fill="#080b12"/><path d="${pD(pts(240,130,0.12,80))}" fill="none" stroke="#475569" stroke-width="1.5"/><path d="${pD(pts(190,85,0.12,80))}" fill="none" stroke="#94a3b8" stroke-width="1.5"/>`;
+for(let l=0;l<3;l++){svg+=`<path d="${pD(dL(215,108,0.12,3+l*1.5,80))}" fill="none" stroke="#60a5fa" stroke-width="1.2" opacity="${0.3+l*0.2}"/><path d="${pD(dL(215,108,0.12,-2-l*1.2,80))}" fill="none" stroke="#f87171" stroke-width="1.2" opacity="${0.3+l*0.2}"/>`;}
+svg+=`<text x="${cx+260}" y="${cy-10}" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="'Space Mono',monospace" font-weight="600">T1&amp;T2</text><text x="${cx-260}" y="${cy-10}" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="'Space Mono',monospace" font-weight="600">T3&amp;T4</text>`;
+svg+=`<line x1="${cx+215}" y1="${cy-20}" x2="${cx+215}" y2="${cy+20}" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,3"/><text x="${cx+215}" y="${cy-25}" fill="#fbbf24" font-size="8" text-anchor="middle" font-family="'Space Mono',monospace">S/F</text>`;
+svg+=`<rect x="20" y="${H-30}" width="8" height="3" fill="#60a5fa" rx="1"/><text x="32" y="${H-26}" fill="#60a5fa" font-size="9" font-family="'Space Mono',monospace">POL</text><rect x="80" y="${H-30}" width="8" height="3" fill="#f87171" rx="1"/><text x="92" y="${H-26}" fill="#f87171" font-size="9" font-family="'Space Mono',monospace">AL</text></svg>`;
+el.innerHTML=svg;
+})();
+
+// ── 4. TIRE HEAT SPARKLINES ──
+(function(){
+const el=document.getElementById('imgTireHeat');if(!el)return;
+const n=49;const gen=(b,r,ns)=>{const t=[];for(let i=0;i<n;i++)t.push(b+r*(i/n)+ns*(Math.sin(i*0.5)*0.5+Math.random()*0.5));return t;};
+const data=[{name:'Right Front',tA:gen(215,25,4),tB:gen(220,30,5)},{name:'Right Rear',tA:gen(210,20,3),tB:gen(212,22,4)},{name:'Left Front',tA:gen(200,15,3),tB:gen(202,18,3)},{name:'Left Rear',tA:gen(205,18,3),tB:gen(207,20,4)}];
+let h='<div class="lc-title">TIRE TEMPERATURES \u00b7 ALL 4 TIRES ACROSS THE RUN</div><div class="lc-legend" style="margin-bottom:8px"><span style="color:#60a5fa">\u2014 POL</span><span style="color:#f87171">\u2014 AL</span></div><div class="lc-grid2">';
+data.forEach(t=>{const all=[...t.tA,...t.tB],mn=Math.min(...all)-5,mx=Math.max(...all)+5,rng=mx-mn;const W=320,H=100,PL=30,PR=8,PT=8,PB=16,cW=W-PL-PR,cH=H-PT-PB;const tx=i=>PL+(i/(n-1))*cW,ty=v=>PT+((mx-v)/rng)*cH;const mk=(temps,cl)=>{let p=temps.map((v,i)=>`${i===0?'M':'L'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ');return`<path d="${p} L${tx(n-1).toFixed(1)},${ty(mn).toFixed(1)} L${tx(0).toFixed(1)},${ty(mn).toFixed(1)} Z" fill="${cl}" opacity="0.06"/><path d="${p}" fill="none" stroke="${cl}" stroke-width="1.5" opacity="0.9"/>`;};
+let svg=`<svg width="100%" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#0a0e1a" rx="4"/>`;
+for(let i=0;i<=3;i++){const v=mn+(rng*i)/3;svg+=`<line x1="${PL}" x2="${W-PR}" y1="${ty(v)}" y2="${ty(v)}" stroke="#1e293b" stroke-width="0.5"/><text x="${PL-4}" y="${ty(v)+3}" fill="#475569" font-size="7" text-anchor="end" font-family="'Space Mono',monospace">${v.toFixed(0)}\u00b0</text>`;}
+svg+=mk(t.tA,'#60a5fa')+mk(t.tB,'#f87171')+'</svg>';
+h+=`<div class="lc-spark-card"><div class="lc-spark-title">${t.name}</div>${svg}</div>`;});
+h+='</div>';el.innerHTML=h;
+})();
+
+// ── 5. TIRE HEAT ANALYSIS ──
+(function(){
+const el=document.getElementById('imgTireHeatAnalysis');if(!el)return;
+el.innerHTML=`<div class="lc-title" style="margin-bottom:12px">RIGHT FRONT \u00b7 T3&amp;T4 \u2014 CAUSAL ANALYSIS</div>
+<div class="lc-section-hdr" style="color:#f59e0b;background:rgba(245,158,11,0.08)">\ud83d\udcca Temperature Picture</div>
+<div style="display:flex;gap:16px;margin-bottom:12px"><div style="flex:1"><div style="font-size:10px;color:#64748b;margin-bottom:4px">RF Average</div><div style="display:flex;gap:12px"><div><span style="color:#60a5fa;font-family:'Space Mono',monospace;font-size:13px">228\u00b0F</span><span style="font-size:9px;color:#64748b"> POL</span></div><div><span style="color:#f87171;font-family:'Space Mono',monospace;font-size:13px">237\u00b0F</span><span style="font-size:9px;color:#64748b"> AL</span></div><div><span style="color:#f97316;font-family:'Space Mono',monospace;font-size:11px">\u0394 9\u00b0F</span></div></div><div style="display:flex;gap:8px;margin-top:6px;font-size:9px;font-family:'Space Mono',monospace">${['Q1','Q2','Q3','Q4'].map((q,i)=>`<div style="background:#1e293b;padding:3px 6px;border-radius:3px"><span style="color:#64748b">${q}</span> <span style="color:#60a5fa">${215+i*8}\u00b0</span> <span style="color:#f87171">${220+i*10}\u00b0</span></div>`).join('')}</div></div></div>
+<div class="lc-section-hdr" style="color:#60a5fa;background:rgba(96,165,250,0.08)">\ud83d\udd0d What's Causing It</div>
+<div style="margin-bottom:12px">${[{n:'Steering Angle',d:0.9,mA:'17.5\u00b0',mB:'16.2\u00b0'},{n:'Brake Attack Speed',d:0.7,mA:'20.5%/s',mB:'10.1%/s'},{n:'Throttle Rate',d:0.5,mA:'5.2%/s',mB:'0.4%/s'},{n:'Track Position',d:0.3,mA:'42%',mB:'45%'}].map(f=>`<div style="display:flex;align-items:center;gap:8px;margin:4px 0"><div style="width:120px;font-size:10px;color:#94a3b8">${f.n}</div><div style="flex:1"><div style="background:#1e293b;height:4px;border-radius:2px"><div style="width:${f.d*100}%;height:100%;border-radius:2px;background:${f.d>0.7?'#f87171':f.d>0.4?'#f59e0b':'#94a3b8'}"></div></div></div><div style="font-size:9px;font-family:'Space Mono',monospace;width:80px;text-align:right"><span style="color:#60a5fa">${f.mA}</span> <span style="color:#f87171">${f.mB}</span></div></div>`).join('')}</div>
+<div class="lc-section-hdr" style="color:#a78bfa;background:rgba(167,139,250,0.08)">\ud83d\udd25 When Does It Spike</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">${[8,15,22,31,38,44].map(l=>`<div style="padding:3px 8px;border-radius:4px;border:1px solid #f8717144;background:rgba(248,113,113,0.06);font-size:9px;font-family:'Space Mono',monospace"><span style="color:#f87171">L${l}</span> <span style="color:#f59e0b">+${(3+l%5*0.8).toFixed(1)}\u00b0F</span></div>`).join('')}</div>
+<div class="lc-section-hdr" style="color:#34d399;background:rgba(52,211,153,0.08)">\ud83d\udca1 What Should Change</div>
+<div class="lc-coaching-box"><p>Reduce front tire loading through T3&amp;T4 by unwinding the wheel earlier at exit. The RF runs 9\u00b0F hotter on average \u2014 primarily driven by steering angle differences at entry. Trail braking deeper would reduce the need for aggressive mid-corner steering corrections.</p></div>`;
+})();
+
+// ── 6. WHEELSPIN ──
+(function(){
+const el=document.getElementById('imgWheelspin');if(!el)return;
+const n=49,W=500,H=80,PL=40,PR=12,PT=10,PB=20,cW=W-PL-PR,cH=H-PT-PB;const tx=i=>PL+(i/(n-1))*cW;
+const evA=[0,0,0,0,1,0,0,0,2,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,2,0,0,1,0,0,3,0,0,1,0,0,2,0,1,0,0,1,0,0,2,0,1,0,3];
+const evB=[0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,0];
+const mkD=(ev,color,yO)=>{let s='';ev.forEach((v,i)=>{const x=tx(i),y=PT+cH/2+yO;if(v>0)s+=`<circle cx="${x}" cy="${y}" r="${2+v}" fill="#fb923c" opacity="0.8"/>`;else s+=`<circle cx="${x}" cy="${y}" r="1.5" fill="${color}" opacity="0.3"/>`;});return s;};
+let svg=`<svg width="100%" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#0a0e1a" rx="4"/><line x1="${PL}" x2="${W-PR}" y1="${PT+cH/2}" y2="${PT+cH/2}" stroke="#1e293b" stroke-width="0.5"/>${mkD(evA,'#60a5fa',-12)}${mkD(evB,'#f87171',12)}`;
+const pkA=evA.indexOf(3);svg+=`<circle cx="${tx(pkA)}" cy="${PT+cH/2-12}" r="6" fill="none" stroke="#fb923c" stroke-width="1.5"/><text x="${tx(pkA)}" y="${PT+cH/2-22}" fill="#fb923c" font-size="8" text-anchor="middle" font-family="'Space Mono',monospace" font-weight="700">L${pkA+1}</text>`;
+svg+=`<text x="${PL-4}" y="${PT+cH/2-10}" fill="#60a5fa" font-size="8" text-anchor="end" font-family="'Space Mono',monospace">POL</text><text x="${PL-4}" y="${PT+cH/2+14}" fill="#f87171" font-size="8" text-anchor="end" font-family="'Space Mono',monospace">AL</text></svg>`;
+const totA=evA.reduce((a,b)=>a+b,0),totB=evB.reduce((a,b)=>a+b,0);
+el.innerHTML=`<div class="lc-title">WHEELSPIN EVENTS \u00b7 T3&amp;T4 EXIT</div>${svg}<div style="display:flex;gap:8px;margin-top:8px">${['Q1','Q2','Q3','Q4'].map((q,i)=>{const s=Math.floor(n/4),qA=evA.slice(i*s,(i+1)*s).reduce((a,b)=>a+b,0),qB=evB.slice(i*s,(i+1)*s).reduce((a,b)=>a+b,0);return`<div style="flex:1;background:#111827;border-radius:4px;padding:6px 8px;text-align:center"><div style="font-size:9px;color:#64748b;margin-bottom:3px">${q}</div><div style="font-size:11px"><span style="color:#60a5fa;font-weight:700">${qA}</span><span style="color:#334155;margin:0 4px">|</span><span style="color:#f87171;font-weight:700">${qB}</span></div></div>`;}).join('')}</div><div style="margin-top:6px;font-size:10px;color:#94a3b8">Total events: <span style="color:#60a5fa;font-weight:600">${totA} POL</span> \u00b7 <span style="color:#f87171;font-weight:600">${totB} AL</span></div>`;
+})();
+
+// ── 7. GRIP & HEAT ──
+(function(){
+const el=document.getElementById('imgGripHeat');if(!el)return;
+const n=49,W=560,H=120,PL=40,PR=12,PT=12,PB=20,cW=W-PL-PR,cH=H-PT-PB;const tx=i=>PL+(i/(n-1))*cW;
+const gen=(bias,ns)=>{const v=[];for(let i=0;i<n;i++)v.push(bias+ns*(Math.sin(i*0.7)*0.6+Math.cos(i*0.3)*0.4));return v;};
+const bA=gen(0.15,0.25),bB=gen(-0.05,0.2);const mn=-0.8,mx=0.8,rng=mx-mn;
+const ty=v=>PT+((mx-v)/rng)*cH,zY=ty(0);
+const mkL=(vals,color)=>vals.map((v,i)=>`${i===0?'M':'L'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ');
+let svg=`<svg width="100%" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#0a0e1a" rx="4"/><rect x="${PL}" y="${PT}" width="${cW}" height="${cH/2}" fill="#fb923c" opacity="0.03"/><rect x="${PL}" y="${PT+cH/2}" width="${cW}" height="${cH/2}" fill="#22d3ee" opacity="0.03"/><line x1="${PL}" x2="${W-PR}" y1="${zY}" y2="${zY}" stroke="#475569" stroke-width="1"/>`;
+svg+=`<text x="${PL-4}" y="${PT+8}" fill="#fb923c" font-size="7" text-anchor="end" font-family="'Space Mono',monospace" opacity="0.5">TIGHT</text><text x="${PL-4}" y="${PT+cH-2}" fill="#22d3ee" font-size="7" text-anchor="end" font-family="'Space Mono',monospace" opacity="0.5">LOOSE</text>`;
+svg+=`<path d="${mkL(bA,'#60a5fa')}" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.8"/><path d="${mkL(bB,'#f87171')}" fill="none" stroke="#f87171" stroke-width="1.5" opacity="0.8"/>`;
+const avgA=bA.reduce((a,b)=>a+b,0)/n,avgB=bB.reduce((a,b)=>a+b,0)/n;
+svg+=`<line x1="${PL}" x2="${W-PR}" y1="${ty(avgA)}" y2="${ty(avgA)}" stroke="#60a5fa" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/><line x1="${PL}" x2="${W-PR}" y1="${ty(avgB)}" y2="${ty(avgB)}" stroke="#f87171" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>`;
+[8,22,31,44].forEach(l=>{svg+=`<circle cx="${tx(l)}" cy="${ty(bA[l])}" r="4" fill="none" stroke="#fb923c" stroke-width="1.5"/><circle cx="${tx(l)}" cy="${ty(bA[l])}" r="2" fill="#fb923c"/>`;});
+svg+=`<text x="${W-PR}" y="${H-4}" fill="#64748b" font-size="8" text-anchor="end" font-family="'Space Mono',monospace">\u25cf heat-confirmed events</text></svg>`;
+el.innerHTML=`<div class="lc-title">SLIP BALANCE \u00b7 T3&amp;T4</div><div style="margin-bottom:6px;font-size:10px;color:#94a3b8">POL trends <span style="color:#fb923c;font-weight:600">tight</span> (avg +${avgA.toFixed(2)}) \u00b7 AL runs <span style="color:#22d3ee;font-weight:600">neutral</span> (avg ${avgB.toFixed(2)})</div>${svg}<div class="lc-legend"><span style="color:#60a5fa">\u2014 POL</span><span style="color:#f87171">\u2014 AL</span><span style="color:#fb923c">\u25cf Heat-confirmed tight events</span></div>`;
+})();
+
+// ── 8. COACHING RECOMMENDATIONS ──
+(function(){
+const el=document.getElementById('imgCoachingRec');if(!el)return;
+const cards=[{sev:'major',m:'Brake Attack Speed',z:'T3&T4 Entry',c:'20.5%/s',t:'14.0%/s',d:'Reduce initial brake application speed \u2014 trail brake more progressively to carry rotation through the corner.'},{sev:'major',m:'Steering Angle',z:'T3&T4 Entry',c:'17.5\u00b0',t:'15.0\u00b0',d:'Less aggressive initial turn-in. The car will rotate more naturally with a deeper trail brake, requiring less steering input.'},{sev:'moderate',m:'Throttle Rate',z:'T1&T2 Centre',c:'0.52%/s',t:'2.0%/s',d:'Commit to throttle earlier through the centre. The current gradual application leaves exit speed on the table.'},{sev:'moderate',m:'Throttle Lift Speed',z:'T3&T4 Entry',c:'-154.8%/s',t:'-130%/s',d:'Smoother throttle lift on entry \u2014 the abrupt snap-off unsettles the car and contributes to higher front tire loading.'},{sev:'minor',m:'Track Position',z:'T3&T4 Entry',c:'42%',t:'40%',d:'Run slightly tighter on entry to set up a better exit line. Small change with compounding benefits over a long run.'}];
+el.innerHTML=`<div class="lc-title">COACHING RECOMMENDATIONS \u2014 WHAT TO CHANGE</div><div style="font-size:10px;color:#94a3b8;margin-bottom:12px">Specific input targets for <span style="color:#60a5fa;font-weight:600">POL</span> to close the gap to <span style="color:#f87171;font-weight:600">AL</span></div>${cards.map(c=>`<div class="lc-coach-card ${c.sev}"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="font-size:13px;font-weight:700;color:#e2e8f0">${c.m}</div><div class="lc-badge ${c.sev}">${c.sev}</div></div><div style="font-size:10px;color:#94a3b8;margin-bottom:6px">${c.z}</div><div style="display:flex;gap:16px;margin-bottom:8px;font-family:'Space Mono',monospace;font-size:11px"><div><span style="color:#64748b">Current: </span><span style="color:#f87171">${c.c}</span></div><div><span style="color:#64748b">Target: </span><span style="color:#4ade80">${c.t}</span></div></div><div style="font-size:11px;color:#cbd5e1;line-height:1.5">${c.d}</div></div>`).join('')}`;
+})();
+
+// ── 9. MEASUREMENT TARGETS ──
+(function(){
+const el=document.getElementById('imgTargets');if(!el)return;
+const tgts=[{m:'Brake Attack Speed',z:'T3&T4 Entry',c:20.5,t:14.0,u:'%/s'},{m:'Steering Angle',z:'T3&T4 Entry',c:17.5,t:15.0,u:'\u00b0'},{m:'Throttle Rate',z:'T1&T2 Centre',c:0.52,t:2.0,u:'%/s'},{m:'RF Temperature',z:'T3&T4',c:237,t:228,u:'\u00b0F'},{m:'Understeer Events',z:'T3&T4',c:12,t:6,u:'/run'},{m:'Avg Lap Time',z:'Overall',c:31.128,t:30.956,u:'s'}];
+let h=`<div class="lc-title">MEASUREMENT TARGETS \u2014 TRACK YOUR PROGRESS</div><div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #1e293b;font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:0.05em"><div style="flex:2">Metric</div><div style="flex:1">Zone</div><div style="flex:1;text-align:right">Current</div><div style="flex:1;text-align:right">Target</div><div style="flex:0.7;text-align:right">Gap</div><div style="flex:1.5">Progress</div></div>`;
+tgts.forEach(t=>{const gap=Math.abs(t.c-t.t),pct=Math.max(0,Math.min(100,100-gap/Math.max(t.c,t.t)*100)),color=pct>=80?'#4ade80':pct>=50?'#f59e0b':'#f87171';h+=`<div class="lc-target-row"><div class="lc-target-metric">${t.m}</div><div class="lc-target-zone">${t.z}</div><div class="lc-target-val" style="color:#f87171">${t.c}${t.u}</div><div class="lc-target-val" style="color:#4ade80">${t.t}${t.u}</div><div class="lc-target-val" style="color:#f59e0b">${gap.toFixed(1)}${t.u}</div><div class="lc-progress"><div class="lc-progress-fill" style="width:${pct}%;background:${color}"></div></div></div>`;});
+el.innerHTML=h;
+})();
