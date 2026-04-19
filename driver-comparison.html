@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driver Comparison — GripIQ</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  /* App-matching palette: dark-theme.css + colors.ts */
+  --bg-deep: #0a1628;
+  --bg-card: #0f172a;
+  --bg-card-hover: #13213b;
+  --bg-surface: #0a0e1a;
+  --border-subtle: #1e293b;
+  --border-accent: #2c5f8a;
+  --cyan: #00d4ff;
+  --cyan-glow: rgba(0,212,255,0.4);
+  --green: #4ade80;
+  --red: #f87171;
+  --orange: #f59e0b;
+  --purple: #a78bfa;
+  --yellow: #fbbf24;
+  --blue: #60a5fa;
+  --text-primary: #e2e8f0;   /* REPORT_TEXT_HEADING */
+  --text-body: #cbd5e1;       /* REPORT_TEXT_BODY    */
+  --text-secondary: #94a3b8;  /* REPORT_TEXT_MUTED   */
+  --text-dim: #64748b;        /* REPORT_TEXT_DIM     */
+  --chart-grid: #1e293b;
+  --chart-axis: #475569;
+  --font-display: 'Orbitron', sans-serif;  /* hero title only */
+  --font-body: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --driver-a: #60a5fa;  /* canonical COLOR_A */
+  --driver-b: #f87171;  /* canonical COLOR_B */
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--font-body); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+/* HERO */
+.hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; overflow: hidden; }
+.hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 50% 40% at 25% 50%, rgba(68,136,255,0.1), transparent 60%), radial-gradient(ellipse 50% 40% at 75% 50%, rgba(255,68,102,0.1), transparent 60%), radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,240,255,0.06), transparent 60%); pointer-events:none; }
+.hero-grid { position:absolute; inset:0; background-image: linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px); background-size: 60px 60px; animation: gridPulse 8s ease-in-out infinite; mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent); }
+@keyframes gridPulse { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
+.streak-container { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.streak { position:absolute; height:2px; opacity:0; animation: streak 3s ease-in-out infinite; }
+.streak:nth-child(1) { top:20%; width:50%; left:-50%; animation-delay:0s; background: linear-gradient(90deg, transparent, var(--driver-a), transparent); }
+.streak:nth-child(2) { top:40%; width:60%; right:-60%; left:auto; animation-delay:0.6s; background: linear-gradient(90deg, transparent, var(--driver-b), transparent); animation-name: streakRight; }
+.streak:nth-child(3) { top:60%; width:45%; left:-45%; animation-delay:1.2s; background: linear-gradient(90deg, transparent, var(--driver-a), transparent); }
+.streak:nth-child(4) { top:80%; width:55%; right:-55%; left:auto; animation-delay:1.8s; background: linear-gradient(90deg, transparent, var(--driver-b), transparent); animation-name: streakRight; }
+.streak:nth-child(5) { top:50%; width:70%; left:-70%; animation-delay:2.5s; background: linear-gradient(90deg, transparent, var(--cyan), transparent); }
+@keyframes streak { 0% { transform:translateX(0); opacity:0; } 5% { opacity:0.7; } 95% { opacity:0.7; } 100% { transform:translateX(calc(100vw + 100%)); opacity:0; } }
+@keyframes streakRight { 0% { transform:translateX(0); opacity:0; } 5% { opacity:0.7; } 95% { opacity:0.7; } 100% { transform:translateX(calc(-100vw - 100%)); opacity:0; } }
+.hero-logo-text { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight:900; letter-spacing:0.02em; margin-bottom:1rem; filter: drop-shadow(0 0 40px rgba(0,240,255,0.2)); animation: heroLogo 1s ease-out 0.1s both; background: linear-gradient(135deg, var(--cyan), #00c8ff 60%, var(--driver-a)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+@keyframes heroLogo { from { opacity:0; transform:scale(0.85) translateY(20px); filter: blur(8px); } to { opacity:1; transform:scale(1) translateY(0); filter: blur(0px); } }
+.hero-badge { display:inline-flex; align-items:center; gap:0.5rem; padding:0.4rem 1.2rem; border:1px solid var(--border-accent); border-radius:100px; font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color: var(--cyan); background: rgba(0,240,255,0.05); margin-bottom:2.5rem; animation: fadeInUp 0.8s ease-out 0.3s both; }
+.hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(0.8); } }
+.hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 8vw, 7rem); font-weight:900; line-height:0.95; letter-spacing:-0.02em; margin-bottom:2rem; animation: heroTitle 1s ease-out 0.5s both; }
+@keyframes heroTitle { from { opacity:0; transform:translateY(40px); letter-spacing:0.1em; } to { opacity:1; transform:translateY(0); letter-spacing:-0.02em; } }
+.hero h1 .line1 { display:block; color: var(--text-primary); }
+.hero h1 .line2 { display:block; background: linear-gradient(135deg, var(--driver-a), var(--cyan), var(--driver-b)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.hero-tagline { font-size: clamp(1.2rem, 2.8vw, 1.8rem); font-weight:300; color: var(--text-secondary); max-width:750px; line-height:1.5; margin-bottom:2.5rem; animation: fadeInUp 0.8s ease-out 0.8s both; }
+.hero-tagline strong { color: var(--text-primary); font-weight:600; }
+.hero-tagline em { color: var(--cyan); font-style:normal; font-weight:600; }
+.vs-badge { display:flex; align-items:center; gap:1.5rem; animation: fadeInUp 0.8s ease-out 1s both; margin-bottom:2rem; }
+.vs-driver { font-family: var(--font-display); font-size:1.1rem; font-weight:700; letter-spacing:0.05em; padding:0.5rem 1.5rem; border-radius:8px; }
+.vs-driver.a { background: rgba(68,136,255,0.15); border:1px solid rgba(68,136,255,0.3); color: var(--driver-a); }
+.vs-driver.b { background: rgba(255,68,102,0.15); border:1px solid rgba(255,68,102,0.3); color: var(--driver-b); }
+.vs-divider { font-family: var(--font-display); font-size:1.5rem; font-weight:900; color: var(--text-dim); }
+.scroll-cue { position:absolute; bottom:2.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem; animation: fadeInUp 0.8s ease-out 1.2s both; }
+.scroll-cue span { font-family: var(--font-mono); font-size:0.6rem; text-transform:uppercase; letter-spacing:0.25em; color: var(--text-dim); }
+.scroll-cue-arrow { width:18px; height:18px; border-right:2px solid var(--cyan); border-bottom:2px solid var(--cyan); transform:rotate(45deg); animation: scrollBounce 2s ease-in-out infinite; }
+@keyframes scrollBounce { 0%,100% { transform:rotate(45deg) translateY(0); opacity:1; } 50% { transform:rotate(45deg) translateY(8px); opacity:0.3; } }
+@keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+
+/* SPLASH + SECTION */
+.splash { position:relative; padding:0 2rem; margin-bottom:6rem; }
+.splash-inner { max-width:1200px; margin:0 auto; }
+.splash-text { text-align:center; margin-bottom:3rem; }
+.splash-label { font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color: var(--cyan); margin-bottom:1rem; display:flex; align-items:center; justify-content:center; gap:0.75rem; }
+.splash-label::before, .splash-label::after { content:''; width:24px; height:1px; background: var(--cyan); }
+.splash h2 { font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight:800; line-height:1.1; margin-bottom:1rem; }
+.splash-desc { font-size:1.2rem; color: var(--text-secondary); max-width:650px; margin:0 auto; line-height:1.7; }
+.section { padding:6rem 2rem; max-width:1200px; margin:0 auto; position:relative; }
+.section-label { font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color: var(--cyan); margin-bottom:1rem; display:flex; align-items:center; gap:0.75rem; }
+.section-label::before { content:''; width:24px; height:1px; background: var(--cyan); }
+.section h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem); font-weight:800; line-height:1.15; margin-bottom:1.2rem; }
+.section-desc { font-size:1.15rem; color: var(--text-secondary); max-width:650px; line-height:1.7; margin-bottom:3rem; }
+
+/* FEATURE CARDS — app-accurate, sit flush alongside interactive panels */
+.feature-showcase { display:grid; gap:10px; }
+.feature-card { background: var(--bg-card); border:1px solid var(--border-subtle); border-radius:6px; padding:14px 16px; position:relative; transition: border-color 0.15s, background 0.15s; }
+.feature-card:hover { border-color: #475569; background: var(--bg-card-hover); }
+.card-icon { width:28px; height:28px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:14px; margin-bottom:8px; }
+.card-icon.cyan { background: rgba(0,212,255,0.1); color: var(--cyan); }
+.card-icon.green { background: rgba(74,222,128,0.1); color: var(--green); }
+.card-icon.orange { background: rgba(245,158,11,0.1); color: var(--orange); }
+.card-icon.red { background: rgba(248,113,113,0.1); color: var(--red); }
+.card-icon.purple { background: rgba(167,139,250,0.1); color: var(--purple); }
+.card-icon.blue { background: rgba(96,165,250,0.1); color: var(--blue); }
+.feature-card h3 { font-family: var(--font-mono); font-size:12px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:6px; color: var(--text-primary); }
+.feature-card p { font-family: var(--font-mono); color: var(--text-body); font-size:11px; line-height:1.6; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+/* DIVIDER */
+.section-divider { max-width:1200px; margin:0 auto; padding:0 2rem; }
+.section-divider hr { border:none; height:1px; background: linear-gradient(90deg, transparent, var(--border-accent), transparent); }
+
+/* TABS — matches DriverComparisonView.tsx tab bar */
+.tabs-preview { display:flex; gap:0; margin-bottom:2rem; overflow-x:auto; overflow-y:hidden; scrollbar-width: none; -ms-overflow-style: none; border-bottom:1px solid var(--border-subtle); background: var(--bg-card); border-radius:6px 6px 0 0; }
+.tabs-preview::-webkit-scrollbar { display: none; }
+.tab-item { padding:8px 14px; font-family: var(--font-mono); font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color: var(--text-dim); white-space:nowrap; position:relative; cursor:default; transition: color 0.15s; border-right:1px solid var(--border-subtle); }
+.tab-item:last-child { border-right:none; }
+.tab-item:hover { color: var(--text-secondary); }
+.tab-item.active { color: var(--driver-a); background: rgba(96,165,250,0.06); }
+.tab-item.active::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:2px; background: var(--driver-a); }
+
+/* CTA */
+.cta-section { text-align:center; padding:8rem 2rem; position:relative; overflow:hidden; }
+.cta-section::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,240,255,0.06), transparent); pointer-events:none; }
+.cta-section h2 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight:900; margin-bottom:1.2rem; }
+.cta-section p { font-size:1.2rem; color: var(--text-secondary); max-width:550px; margin:0 auto 2.5rem; line-height:1.7; }
+.cta-button { display:inline-flex; align-items:center; gap:0.75rem; padding:1rem 2.5rem; background: linear-gradient(135deg, var(--cyan), #00c8ff); color: var(--bg-deep); font-family: var(--font-display); font-size:0.9rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; border:none; border-radius:8px; cursor:pointer; text-decoration:none; transition: all 0.3s ease; box-shadow: 0 0 30px rgba(0,240,255,0.25); }
+.cta-button:hover { transform:translateY(-2px); box-shadow: 0 0 50px rgba(0,240,255,0.4); }
+.cta-button svg { width:18px; height:18px; transition: transform 0.3s ease; }
+.cta-button:hover svg { transform:translateX(4px); }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ===== INTERACTIVE PANELS — app-accurate ===== */
+.panel { background: var(--bg-card); border:1px solid var(--border-subtle); border-radius:6px; padding:10px 14px; overflow:hidden; }
+.panel-header { display:flex; justify-content:space-between; align-items:baseline; padding-bottom:6px; margin-bottom:8px; border-bottom:1px solid var(--border-subtle); flex-wrap:wrap; gap:8px; }
+.panel-title { font-family: var(--font-mono); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color: var(--text-primary); }
+.panel-sub { font-family: var(--font-mono); font-size:10px; color: var(--text-dim); margin-top:2px; }
+.panel-legend { display:flex; gap:12px; font-family: var(--font-mono); font-size:10px; }
+.legend-dot { display:inline-flex; align-items:center; gap:6px; color: var(--text-secondary); }
+.legend-dot::before { content:''; width:10px; height:2px; }
+.legend-dot.a::before { background: var(--driver-a); }
+.legend-dot.b::before { background: var(--driver-b); }
+
+/* SVG chart — matches real app (TireHeatDescriptiveTab.tsx, LapTimeAnalysisTab.tsx) */
+svg.chart { display:block; width:100%; height:auto; overflow:visible; cursor: crosshair; background: var(--bg-surface); }
+svg.chart .axis-text { font-family: var(--font-mono); font-size:9px; fill: var(--chart-axis); }
+svg.chart .grid-line { stroke: var(--chart-grid); stroke-width:0.5; }
+svg.chart .axis-line { stroke: var(--border-subtle); stroke-width:1; }
+svg.chart .line-a { stroke: var(--driver-a); stroke-width:2; fill:none; stroke-linejoin:round; opacity:0.9; }
+svg.chart .line-b { stroke: var(--driver-b); stroke-width:2; fill:none; stroke-linejoin:round; opacity:0.9; }
+svg.chart .avg-a { stroke: var(--driver-a); stroke-width:1; stroke-dasharray: 4 3; opacity:0.4; }
+svg.chart .avg-b { stroke: var(--driver-b); stroke-width:1; stroke-dasharray: 4 3; opacity:0.4; }
+svg.chart .area-a { fill: var(--driver-a); opacity:0.06; }
+svg.chart .area-b { fill: var(--driver-b); opacity:0.06; }
+svg.chart .zero-line { stroke: #475569; stroke-dasharray: 4 4; stroke-width:1; opacity:0.5; }
+svg.chart .hover-line { stroke: #94a3b8; stroke-width:1; opacity:0; pointer-events:none; }
+svg.chart .hover-dot { fill: #e2e8f0; stroke: var(--bg-deep); stroke-width:2; opacity:0; pointer-events:none; }
+svg.chart .lap-hit { fill: transparent; cursor:pointer; }
+
+.chart-tooltip { position:fixed; background: #0a1628; border:1px solid var(--border-subtle); border-radius:4px; padding:6px 10px; font-family: var(--font-mono); font-size:10px; pointer-events:none; opacity:0; transition: opacity 0.12s; z-index:1000; white-space:nowrap; box-shadow: 0 4px 16px rgba(0,0,0,0.7); }
+.chart-tooltip .tt-title { color: var(--text-dim); font-size:9px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px; font-weight:700; }
+.chart-tooltip .tt-row { display:flex; justify-content:space-between; gap:14px; line-height:1.6; }
+.chart-tooltip .tt-row .tt-label { color: var(--text-secondary); }
+.chart-tooltip .tt-row.a .tt-val { color: var(--driver-a); font-weight:700; }
+.chart-tooltip .tt-row.b .tt-val { color: var(--driver-b); font-weight:700; }
+.chart-tooltip .tt-row.delta .tt-val { color: var(--text-body); }
+
+/* TIRE GRID — matches TireHeatDescriptiveTab.tsx */
+.tire-grid { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px; }
+.tire-panel { background: #0f172a; border-radius:6px; padding:10px 12px; }
+.tire-panel-title { font-family: var(--font-mono); font-size:12px; font-weight:700; color: var(--text-primary); margin-bottom:4px; display:flex; justify-content:space-between; align-items:baseline; }
+.tire-panel-title .hot-flag { font-family: var(--font-mono); font-size:10px; font-weight:400; }
+.tire-panel-title .hot-flag.warm { color: var(--orange); }
+.tire-panel-title .hot-flag.hot { color: var(--red); }
+.tire-panel-title .hot-flag.neutral { color: var(--text-secondary); }
+
+/* DATA TABLE — matches ComparisonReportTab.tsx / DriverComparisonView.tsx */
+.data-table { width:100%; border-collapse: collapse; font-family: var(--font-mono); font-size:11px; }
+.data-table thead th { font-size:9px; letter-spacing:0.06em; text-transform:uppercase; color: var(--text-dim); text-align:left; padding:6px 10px; border-bottom:1px solid var(--border-subtle); font-weight:600; background: rgba(30,41,59,0.2); }
+.data-table thead th.num, .data-table td.num { text-align:right; }
+.data-table tbody td { padding:5px 10px; border-bottom:1px solid var(--border-subtle); color: var(--text-primary); }
+.data-table tbody tr:hover td { background: rgba(30,41,59,0.35); }
+.data-table .val-a { color: var(--driver-a); font-weight:600; }
+.data-table .val-b { color: var(--driver-b); font-weight:600; }
+.data-table .val-delta { color: var(--text-body); font-weight:600; }
+.data-table .rank-cell { color: var(--text-tertiary); font-weight:600; text-align:left; }
+.data-table .keydiff-title { color: var(--text-primary); font-weight:500; }
+.importance-bar { display:inline-block; height:6px; border-radius:2px; background: #2C5F8A; vertical-align:middle; min-width:2px; }
+.importance-bar.hot { background: #f97316; }
+.importance-wrap { display:flex; align-items:center; gap:6px; }
+.importance-wrap .pct { font-size:9px; color: var(--text-dim); min-width:28px; text-align:right; }
+
+/* EXPANDABLE SECTION — matches report "Show all N features" button */
+.expand-toggle { width:100%; padding:6px 10px; margin-top:10px; background: transparent; border:1px solid var(--border-subtle); border-radius:4px; color: var(--driver-a); font-family: var(--font-mono); font-size:10px; cursor:pointer; transition: all 0.15s; display:flex; justify-content:center; align-items:center; gap:8px; }
+.expand-toggle:hover { border-color: #475569; color: #7bb3fc; }
+.expand-toggle .caret { transition: transform 0.3s; font-size:9px; }
+.expand-toggle.open .caret { transform:rotate(180deg); }
+.expand-panel { max-height:0; overflow:hidden; transition: max-height 0.4s ease; }
+.expand-panel.open { max-height:2000px; }
+.expand-inner { padding-top:14px; }
+
+/* KEY DIFFS */
+.keydiff-title { color: var(--text-primary); }
+.keydiff-meta { font-family: var(--font-mono); font-size:10px; color: var(--text-secondary); }
+
+/* COACHING — matches ComparisonReportTab.tsx section cards */
+.coaching-block { background: #0a1628; border:1px solid var(--border-subtle); border-left: 3px solid var(--green); border-radius:6px; padding:12px 16px; margin-bottom:10px; }
+.coaching-block h4 { font-family: var(--font-mono); font-size:12px; font-weight:700; color: var(--green); margin-bottom:10px; letter-spacing:0.03em; }
+.coaching-block p { font-family: var(--font-mono); font-size:12px; line-height:1.7; color: var(--text-body); margin-bottom:8px; }
+.coaching-block p:last-child { margin-bottom:0; }
+.coaching-block strong { color: var(--text-primary); font-weight:600; }
+.coaching-block .hi-a { color: var(--driver-a); font-weight:600; }
+.coaching-block .hi-b { color: var(--driver-b); font-weight:600; }
+.coaching-block .hi-c { color: var(--orange); font-weight:600; }
+.coaching-summary { background: rgba(74,222,128,0.05); border:1px solid rgba(74,222,128,0.2); border-radius:6px; padding:12px 16px; margin-top:12px; }
+.coaching-summary p { font-family: var(--font-mono); font-size:12px; line-height:1.7; color: var(--text-body); }
+
+/* TARGETS — matches the report measurement-target rows */
+.target-row { display:grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap:14px; padding:8px 0; border-bottom:1px solid var(--border-subtle); align-items:center; font-family: var(--font-mono); font-size:11px; }
+.target-row:last-child { border-bottom:none; }
+.target-label { color: var(--text-primary); font-weight:500; }
+.target-label .target-sub { display:block; font-size:9px; color: var(--text-dim); letter-spacing:0.04em; text-transform:uppercase; margin-top:2px; font-weight:400; }
+.target-now { color: var(--driver-a); font-weight:700; }
+.target-goal { color: var(--green); font-weight:700; }
+.progress-track { width:100%; height:5px; background: var(--border-subtle); border-radius:2px; overflow:hidden; position:relative; }
+.progress-fill { height:100%; background: #2C5F8A; border-radius:2px; transition: width 1s ease; }
+
+/* MODAL */
+.modal-overlay { position:fixed; inset:0; background: rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:100; padding:16px; }
+.modal-overlay.open { display:flex; }
+.modal { background: var(--bg-card); border:1px solid var(--border-subtle); border-radius:6px; max-width:1100px; width:100%; max-height:90vh; overflow-y:auto; padding:14px 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.7); }
+.modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border-subtle); }
+.modal-title { font-family: var(--font-mono); font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color: var(--text-primary); }
+.modal-close { background: transparent; border: none; color: var(--text-dim); width:28px; height:28px; cursor:pointer; font-size:16px; line-height:1; transition: color 0.15s; padding:0; }
+.modal-close:hover { color: var(--red); }
+.modal-chart-row { display:grid; grid-template-columns: 1fr; gap:8px; }
+.modal-chart-row .panel { padding:8px 12px; }
+
+/* WHEELSPIN EVENTS — matches event-list pattern in the app */
+.event-list { display:flex; flex-direction:column; gap:4px; margin-top:10px; }
+.event-row { display:grid; grid-template-columns: 52px auto 1fr auto auto auto; gap:12px; padding:6px 10px; background: rgba(15,23,42,0.5); border:1px solid var(--border-subtle); border-radius:4px; align-items:center; cursor:pointer; transition: background 0.15s, border-color 0.15s; font-family: var(--font-mono); font-size:11px; }
+.event-row:hover { border-color: #475569; background: rgba(15,23,42,0.9); }
+.event-row .event-lap { font-weight:700; color: var(--text-primary); }
+.event-row .event-who { font-weight:700; }
+.event-row .event-who.a { color: var(--driver-a); }
+.event-row .event-who.b { color: var(--driver-b); }
+.event-row .event-desc { color: var(--text-body); font-weight:400; }
+.event-row .event-stat { color: var(--text-dim); font-size:10px; }
+.event-row .event-severity { padding:1px 6px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; }
+.event-severity.high { background: rgba(248,113,113,0.15); color: var(--red); border:1px solid rgba(248,113,113,0.3); }
+.event-severity.med { background: rgba(251,191,36,0.12); color: var(--yellow); border:1px solid rgba(251,191,36,0.3); }
+.event-severity.low { background: rgba(148,163,184,0.12); color: var(--text-secondary); border:1px solid rgba(148,163,184,0.25); }
+
+/* STAT CARDS — matches the summary metric tiles */
+.stat-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:8px; margin-top:10px; }
+.stat-box { background: #0a1628; border:1px solid var(--border-subtle); border-radius:4px; padding:10px 12px; text-align:left; font-family: var(--font-mono); }
+.stat-box .val { font-size:18px; font-weight:700; letter-spacing:-0.01em; display:block; margin-bottom:2px; line-height:1.1; }
+.stat-box .val.a { color: var(--driver-a); }
+.stat-box .val.b { color: var(--driver-b); }
+.stat-box .val.c { color: var(--text-primary); }
+.stat-box .lbl { font-size:9px; letter-spacing:0.05em; text-transform:uppercase; color: var(--text-dim); font-weight:500; }
+
+/* CAUSAL GRID */
+.causal-grid { display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top:10px; }
+.causal-col h4 { font-family: var(--font-mono); font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color: var(--text-primary); margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid var(--border-subtle); }
+.causal-row { display:grid; grid-template-columns: 1fr auto auto; gap:10px; padding:5px 0; border-bottom:1px solid var(--border-subtle); font-family: var(--font-mono); font-size:11px; align-items:baseline; }
+.causal-row:last-child { border-bottom:none; }
+.causal-row .cr-label { color: var(--text-primary); }
+.causal-row .cr-label .cr-zone { font-size:9px; color: var(--text-dim); letter-spacing:0.05em; text-transform:uppercase; margin-left:6px; }
+.causal-row .cr-vals { font-size:10px; color: var(--text-secondary); }
+.causal-row .cr-delta { font-size:11px; font-weight:700; }
+.causal-row .cr-delta.worse { color: var(--red); }
+.causal-row .cr-delta.better { color: var(--green); }
+
+/* TRACK MAP */
+.track-map-wrap { position:relative; padding:8px 0; background: #080b12; border-radius:4px; }
+svg.track-map { width:100%; height:auto; }
+svg.track-map .track-line-a { stroke: var(--driver-a); stroke-width:2; fill:none; opacity:0.9; }
+svg.track-map .track-line-b { stroke: var(--driver-b); stroke-width:2; fill:none; opacity:0.9; }
+svg.track-map .track-bg { stroke: #1e293b; stroke-width:14; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+svg.track-map .corner-label { font-family: var(--font-mono); font-size:10px; fill: var(--text-secondary); font-weight:700; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .vs-badge { flex-direction:column; gap:0.75rem; }
+  .tab-item { padding:0.6rem 0.7rem; font-size:0.55rem; }
+  .tire-grid { grid-template-columns: 1fr; }
+  .causal-grid { grid-template-columns: 1fr; }
+  .target-row { grid-template-columns: 1fr; gap:0.5rem; padding:1rem 0; }
+  .modal { padding:1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="streak-container">
+    <div class="streak"></div><div class="streak"></div><div class="streak"></div><div class="streak"></div><div class="streak"></div>
+  </div>
+
+  <div class="hero-logo-text">GripIQ</div>
+
+  <div class="hero-badge"><span>Feature Spotlight</span></div>
+
+  <h1>
+    <span class="line1">DRIVER</span>
+    <span class="line2">COMPARISON</span>
+  </h1>
+
+  <p class="hero-tagline">
+    See <em>every</em> difference. Know exactly what to change.<br>
+    <strong>Compare yourself to a teammate or a benchmark-selected driver with long-run speed.</strong>
+  </p>
+
+  <div class="vs-badge">
+    <div class="vs-driver a">DRIVER A</div>
+    <div class="vs-divider">VS</div>
+    <div class="vs-driver b">DRIVER B</div>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Explore</span>
+    <div class="scroll-cue-arrow"></div>
+  </div>
+</section>
+
+<!-- ===================== SPLASH 1: ACCUMULATED GAP ===================== -->
+<div class="splash reveal">
+  <div class="splash-inner">
+    <div class="splash-text">
+      <div class="splash-label">Accumulated Gap Analysis</div>
+      <h2>Great drivers are more than<br><span style="color: var(--red);">hot-lap heroes.</span></h2>
+      <p class="splash-desc">They build gaps over the long run. See exactly when and where the gap grows — and how it widens as the run progresses. <strong style="color: var(--cyan);">Click any lap</strong> to compare both drivers' telemetry side-by-side.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Accumulated Lap-Time Gap</div>
+          <div class="panel-sub">Laps 2–50 · Race · positive = Driver A behind</div>
+        </div>
+        <div class="panel-legend">
+          <span class="legend-dot a">Driver A (loses)</span>
+          <span class="legend-dot b">Driver B (faster)</span>
+        </div>
+      </div>
+      <svg id="chartGap" class="chart" viewBox="0 0 900 340" preserveAspectRatio="none"></svg>
+      <div style="display:flex; justify-content:space-between; margin-top:0.5rem; font-family: var(--font-mono); font-size:0.7rem; color: var(--text-dim);">
+        <span>Driver A fade: <span id="fadeA" style="color: var(--driver-a); font-weight:700;">—</span></span>
+        <span>Driver B fade: <span id="fadeB" style="color: var(--driver-b); font-weight:700;">—</span></span>
+        <span>Total gap @ lap 50: <span id="totalGap" style="color: var(--cyan); font-weight:700;">—</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SPLASH 2: KEY DIFFERENCES ===================== -->
+<div class="splash reveal">
+  <div class="splash-inner">
+    <div class="splash-text">
+      <div class="splash-label">ML-Powered Analysis</div>
+      <h2>Go beyond two-dimensional telemetry.<br><span style="color: var(--cyan);">Focus on verified driver differences.</span></h2>
+      <p class="splash-desc">Machine learning finds the inputs that distinguish the two drivers — consistent, measurable, actionable. No guesswork — just the top 5 differences ranked by importance.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Key Differences</div>
+          <div class="panel-sub">Analysis indicates drivers are very distinct · consistent lap to lap</div>
+        </div>
+      </div>
+
+      <p style="font-family: var(--font-mono); color: var(--text-body); font-size:12px; line-height:1.7; margin:4px 0 10px;">
+        The <strong style="color: var(--text-primary);">#1 distinguishing input</strong> is <span class="hi-c" style="color: var(--cyan); font-family: var(--font-mono); font-weight:700;">Throttle Rate at T3&amp;T4 (Centre)</span>: Driver A averages <strong style="color: var(--driver-a);">5.2%/s</strong> vs <strong style="color: var(--driver-b);">1.1%/s</strong>. Multiple top differences cluster at <strong>T3&amp;T4 (4 of top 5)</strong>, reinforcing it as the key zone where technique diverges most.
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:36px;">#</th>
+            <th style="width:150px;">Importance</th>
+            <th>Input</th>
+            <th>Corner</th>
+            <th>Phase</th>
+            <th class="num">A</th>
+            <th class="num">B</th>
+            <th class="num">Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rank-cell">1</td>
+            <td><div class="importance-wrap"><div class="importance-bar" style="width:120px;"></div><span class="pct">100%</span></div></td>
+            <td class="keydiff-title">Throttle Rate</td>
+            <td>T3&amp;T4</td>
+            <td>Centre</td>
+            <td class="num val-a">5.2%/s</td>
+            <td class="num val-b">1.1%/s</td>
+            <td class="num val-delta">+4.1%/s</td>
+          </tr>
+          <tr>
+            <td class="rank-cell">2</td>
+            <td><div class="importance-wrap"><div class="importance-bar" style="width:100px;"></div><span class="pct">84%</span></div></td>
+            <td class="keydiff-title">Throttle Rate</td>
+            <td>T1&amp;T2</td>
+            <td>Exit</td>
+            <td class="num val-a">4.6%/s</td>
+            <td class="num val-b">1.2%/s</td>
+            <td class="num val-delta">+3.4%/s</td>
+          </tr>
+          <tr>
+            <td class="rank-cell">3</td>
+            <td><div class="importance-wrap"><div class="importance-bar" style="width:90px;"></div><span class="pct">75%</span></div></td>
+            <td class="keydiff-title">Throttle Rate</td>
+            <td>T3&amp;T4</td>
+            <td>Exit</td>
+            <td class="num val-a">3.7%/s</td>
+            <td class="num val-b">1.3%/s</td>
+            <td class="num val-delta">+2.4%/s</td>
+          </tr>
+          <tr>
+            <td class="rank-cell">4</td>
+            <td><div class="importance-wrap"><div class="importance-bar" style="width:70px;"></div><span class="pct">58%</span></div></td>
+            <td class="keydiff-title">Brake Attack Speed</td>
+            <td>T3&amp;T4</td>
+            <td>Entry</td>
+            <td class="num val-a">28.5%/s</td>
+            <td class="num val-b">10.1%/s</td>
+            <td class="num val-delta">18.4%/s</td>
+          </tr>
+          <tr>
+            <td class="rank-cell">5</td>
+            <td><div class="importance-wrap"><div class="importance-bar" style="width:50px;"></div><span class="pct">42%</span></div></td>
+            <td class="keydiff-title">Steering</td>
+            <td>T3&amp;T4</td>
+            <td>Entry</td>
+            <td class="num val-a">17.5°</td>
+            <td class="num val-b">16.2°</td>
+            <td class="num val-delta">1.3°</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="expand-toggle" data-expand="cornerBreakdown">
+        <span>Show corner-by-corner breakdown</span>
+        <span class="caret">▼</span>
+      </button>
+      <div class="expand-panel" id="cornerBreakdown">
+        <div class="expand-inner">
+          <p style="font-family: var(--font-mono); color: var(--text-body); font-size:12px; line-height:1.7; margin-bottom:10px;">Driver A's throttle is <strong>pulse-like</strong> — rapid-rate jabs at the pedal instead of smooth, progressive application. Driver B rolls onto throttle at a low, steady rate that preserves rear-tire traction. This single difference dominates 3 of the top 5 findings.</p>
+          <div class="stat-grid">
+            <div class="stat-box"><span class="val a">4.5×</span><span class="lbl">Avg throttle-rate ratio</span></div>
+            <div class="stat-box"><span class="val b">3 of 5</span><span class="lbl">Top diffs at T3&amp;T4</span></div>
+            <div class="stat-box"><span class="val c">Exit phase</span><span class="lbl">Highest leverage zone</span></div>
+            <div class="stat-box"><span class="val c">Smoothness</span><span class="lbl">Primary coaching target</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TABS OVERVIEW ===================== -->
+<section class="section reveal">
+  <div class="section-label">Deep Analysis Tabs</div>
+  <h2>Nine dedicated views.<br><span style="color: var(--cyan);">Total clarity.</span></h2>
+  <p class="section-desc">Every dimension of the comparison — from lap times to tire heat to grip events — broken out into dedicated analysis views with detailed coaching.</p>
+
+  <div class="tabs-preview">
+    <div class="tab-item active">Summary</div>
+    <div class="tab-item">Detailed Report</div>
+    <div class="tab-item">Lap Time Analysis</div>
+    <div class="tab-item">Racing Line</div>
+    <div class="tab-item">Tire Heat</div>
+    <div class="tab-item">Tire Heat Analysis</div>
+    <div class="tab-item">Speed Predictors</div>
+    <div class="tab-item">Grip Limit</div>
+    <div class="tab-item">Wheel Spin</div>
+  </div>
+
+  <div class="feature-showcase grid-3">
+    <div class="feature-card"><div class="card-icon cyan">📋</div><h3>Summary</h3><p>The complete overview — who was faster, biggest driving differences, handling comparison, outlier laps, and coaching recommendations.</p></div>
+    <div class="feature-card"><div class="card-icon purple">📄</div><h3>Detailed Report</h3><p>A full AI-generated comparison report with executive summary, coaching targets, and measurement benchmarks. Copy or save as PDF.</p></div>
+    <div class="feature-card"><div class="card-icon blue">📊</div><h3>Lap Time Analysis</h3><p>Quartered gap progression, zone-by-zone time loss, per-lap charts by sector — with multi-tab coaching analysis.</p></div>
+    <div class="feature-card"><div class="card-icon green">🛣️</div><h3>Racing Line</h3><p>GPS-based line comparison with overhead view, spaghetti plots, V-angles, and track position percentages at every phase.</p></div>
+    <div class="feature-card"><div class="card-icon orange">🌡️</div><h3>Tire Heat</h3><p>All four tire temperatures across the full run — see who runs hotter, where the heat builds, and how it correlates to pace.</p></div>
+    <div class="feature-card"><div class="card-icon red">🔥</div><h3>Tire Heat Analysis</h3><p>Heat spike detection, causal analysis linking driver inputs to thermal load, and specific recommendations to reduce tire abuse.</p></div>
+    <div class="feature-card"><div class="card-icon cyan">⚡</div><h3>Speed Predictors</h3><p>What inputs predict faster laps for each driver — with sustainability checks and side-by-side "What Should Change."</p></div>
+    <div class="feature-card"><div class="card-icon red">🎯</div><h3>Grip Limit</h3><p>ML-verified understeer and oversteer events with severity, worst laps, causal chains, and telemetry comparison links.</p></div>
+    <div class="feature-card"><div class="card-icon purple">🔄</div><h3>Wheel Spin</h3><p>Event-by-event wheelspin analysis with phases, tire temps, throttle data, and track position for every occurrence.</p></div>
+  </div>
+</section>
+
+<!-- ===================== SPLASH 3: RACING LINE ===================== -->
+<div class="splash reveal">
+  <div class="splash-inner">
+    <div class="splash-text">
+      <div class="splash-label">GPS Racing Line Comparison</div>
+      <h2>See the line.<br><span style="color: var(--driver-a);">Every</span> <span style="color: var(--driver-b);">lap.</span></h2>
+      <p class="splash-desc">Every lap overlaid for both drivers at every corner. See who's consistent, who wanders, and exactly where the lines diverge — entry, apex, and exit.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Overhead Racing Line</div>
+          <div class="panel-sub">Sample mid-run lap · GPS-trace · color-coded by driver</div>
+        </div>
+        <div class="panel-legend">
+          <span class="legend-dot a">Driver A line</span>
+          <span class="legend-dot b">Driver B line</span>
+        </div>
+      </div>
+      <div class="track-map-wrap">
+        <svg id="trackMap" class="track-map" viewBox="0 0 900 400" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+      <div class="stat-grid" style="margin-top:1.5rem;">
+        <div class="stat-box"><span class="val c">Entry</span><span class="lbl">Line separation biggest at turn entry</span></div>
+        <div class="stat-box"><span class="val a">Wider</span><span class="lbl">Driver A apex line</span></div>
+        <div class="stat-box"><span class="val b">Tighter</span><span class="lbl">Driver B apex line</span></div>
+        <div class="stat-box"><span class="val c">Exit</span><span class="lbl">Tracks out earlier</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"><hr></div>
+
+<!-- ===================== TIRE HEAT ===================== -->
+<section class="section reveal">
+  <div class="section-label">Thermal Intelligence</div>
+  <h2>The tire story.<br><span style="color: var(--orange);">Written in heat.</span></h2>
+  <p class="section-desc">All four tires compared across the full run. See who runs hotter, where the heat spikes, what inputs cause them — and how it all connects to grip and pace.</p>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Tire Temperatures — All Four Corners</div>
+        <div class="panel-sub">Lap-avg surface temps · °F · Laps 2–50</div>
+      </div>
+      <div class="panel-legend">
+        <span class="legend-dot a">Driver A</span>
+        <span class="legend-dot b">Driver B</span>
+      </div>
+    </div>
+    <p style="font-family: var(--font-mono); color: var(--text-body); font-size:12px; margin:4px 0 8px; line-height:1.7;">
+      <strong style="color: var(--text-primary);">The Rear Overview:</strong> Driver A's right rear runs <strong style="color: var(--red);">~11°F hotter</strong> than Driver B's on average. Driver A's right front temps rise <strong>~32°F</strong> from Q1 to the end, Driver B's right front temps rise <strong>~28°F</strong> from Q1 to Q4.
+    </p>
+    <div class="tire-grid" id="tireGrid">
+      <div class="tire-panel">
+        <div class="tire-panel-title"><span>Left Front (LF)</span><span id="lfDelta" class="hot-flag"></span></div>
+        <svg class="chart tire-chart" data-tire="lf" viewBox="0 0 500 180" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="tire-panel">
+        <div class="tire-panel-title"><span>Right Front (RF)</span><span id="rfDelta" class="hot-flag"></span></div>
+        <svg class="chart tire-chart" data-tire="rf" viewBox="0 0 500 180" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="tire-panel">
+        <div class="tire-panel-title"><span>Left Rear (LR)</span><span id="lrDelta" class="hot-flag"></span></div>
+        <svg class="chart tire-chart" data-tire="lr" viewBox="0 0 500 180" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="tire-panel">
+        <div class="tire-panel-title"><span>Right Rear (RR)</span><span id="rrDelta" class="hot-flag"></span></div>
+        <svg class="chart tire-chart" data-tire="rr" viewBox="0 0 500 180" preserveAspectRatio="none"></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-showcase grid-2" style="margin-top:2rem;">
+    <div class="feature-card"><div class="card-icon orange">📈</div><h3>Heat Spike Detection</h3><p>Identifies laps where tire temps spike above trend — with driver input comparison on hot vs cool laps and "What Should Change" recommendations.</p></div>
+    <div class="feature-card"><div class="card-icon red">🔗</div><h3>Causal Chain</h3><p>Links driver inputs (steering, throttle, braking) to tire temperatures to grip events to lap time. The full cause-and-effect story.</p></div>
+  </div>
+
+  <div class="panel" style="margin-top:2rem;">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">What's Causing the RR Heat Difference</div>
+        <div class="panel-sub">Driver inputs vs car handling response · T1&amp;T2</div>
+      </div>
+    </div>
+    <div class="causal-grid">
+      <div class="causal-col">
+        <h4>Driver Inputs <span style="font-weight:400; color: var(--text-dim); text-transform:none; letter-spacing:0;">things the driver directly controls</span></h4>
+        <div class="causal-row"><span class="cr-label">steering at entry<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 24.7° vs B 23.6°</span><span class="cr-delta worse">Δ +1.1°</span></div>
+        <div class="causal-row"><span class="cr-label">steering at exit<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 28.5° vs B 21.7°</span><span class="cr-delta worse">Δ +6.8°</span></div>
+        <div class="causal-row"><span class="cr-label">line at centre<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 76% vs B 81%</span><span class="cr-delta worse">Δ –5%</span></div>
+        <div class="causal-row"><span class="cr-label">line at exit<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 40% vs B 67%</span><span class="cr-delta worse">Δ –27%</span></div>
+        <div class="causal-row"><span class="cr-label">brake point at entry<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 12.2% vs B 9.6%</span><span class="cr-delta worse">Δ +2.6%</span></div>
+      </div>
+      <div class="causal-col">
+        <h4>Car Handling <span style="font-weight:400; color: var(--text-dim); text-transform:none; letter-spacing:0;">how the car responds</span></h4>
+        <div class="causal-row"><span class="cr-label">loose on exit<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 6.5% vs B 3.0%</span><span class="cr-delta worse">Δ +3.5%</span></div>
+        <div class="causal-row"><span class="cr-label">wheelspin at exit<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 6.12 vs B 0.12</span><span class="cr-delta worse">Δ +6.00</span></div>
+        <div class="causal-row"><span class="cr-label">rear sliding at exit<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 0.13 vs B 0.00</span><span class="cr-delta worse">Δ +0.13</span></div>
+        <div class="causal-row"><span class="cr-label">rear weight transfer<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 0.22 vs B 0.00</span><span class="cr-delta worse">Δ +0.22</span></div>
+        <div class="causal-row"><span class="cr-label">stability at exit<span class="cr-zone">T1&amp;T2</span></span><span class="cr-vals">A 0.85 vs B 0.93</span><span class="cr-delta worse">Δ –0.08</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px; padding:8px 12px; background: rgba(15,23,42,0.6); border:1px solid var(--border-subtle); border-radius:4px; font-family: var(--font-mono); font-size:11px; color: var(--text-secondary); display:flex; flex-wrap:wrap; gap:16px;">
+      <span>Wheelspin events: <strong style="color: var(--driver-a);">A 5</strong> · <strong style="color: var(--driver-b);">B 1</strong></span>
+      <span>Confirmed tight events: <strong style="color: var(--driver-a);">A 26</strong> · <strong style="color: var(--driver-b);">B 17</strong></span>
+      <span>Confirmed loose events: <strong style="color: var(--driver-a);">A 3</strong> · <strong style="color: var(--driver-b);">B 1</strong></span>
+    </div>
+
+    <button class="expand-toggle" data-expand="causalExpand">
+      <span>Show full causal chain: inputs → heat → grip → lap time</span>
+      <span class="caret">▼</span>
+    </button>
+    <div class="expand-panel" id="causalExpand">
+      <div class="expand-inner">
+        <div class="stat-grid">
+          <div class="stat-box"><span class="val a">+8°F</span><span class="lbl">RF T3&amp;T4 heat gap</span></div>
+          <div class="stat-box"><span class="val a">+5°F</span><span class="lbl">RR T3&amp;T4 heat gap</span></div>
+          <div class="stat-box"><span class="val c">2 confirmed</span><span class="lbl">Tight events (tire-verified)</span></div>
+          <div class="stat-box"><span class="val c">Pulse throttle</span><span class="lbl">Root cause</span></div>
+        </div>
+        <p style="font-family: var(--font-mono); color: var(--text-body); font-size:12px; line-height:1.7; margin-top:12px;">
+          The chain is unambiguous: Driver A's <strong style="color: var(--red);">pulse-throttle application at exit</strong> spins the rear tire against the track surface, heating the RR by +5°F vs Driver B. That added heat reduces RR grip, which shows up as <strong>loose-on-exit events</strong> (6.5% vs 3.0%), which in turn forces <strong>more steering correction</strong> (28.5° vs 21.7°), which heats the <strong>RF</strong>. The whole cycle compounds across a run — which is why Driver A <span style="color: var(--red); font-weight:700;">fades +1.85s</span> while Driver B only fades <span style="color: var(--green); font-weight:700;">+1.59s</span>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ===================== GRIP & WHEELSPIN ===================== -->
+<section class="section reveal">
+  <div class="section-label">Grip Intelligence</div>
+  <h2>ML-verified<br><span style="color: var(--red);">grip events.</span></h2>
+  <p class="section-desc">Every understeer, oversteer, and wheelspin event — detected by machine learning, verified against tire data, with causal analysis showing exactly what the driver did to trigger it.</p>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Grip Event Summary</div>
+        <div class="panel-sub">Laps 2–50 · tire-confirmed · severity-ranked</div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><span class="val a">5</span><span class="lbl">Driver A Wheelspin</span></div>
+      <div class="stat-box"><span class="val b">1</span><span class="lbl">Driver B Wheelspin</span></div>
+      <div class="stat-box"><span class="val a">26</span><span class="lbl">Driver A Push (tight)</span></div>
+      <div class="stat-box"><span class="val b">17</span><span class="lbl">Driver B Push (tight)</span></div>
+      <div class="stat-box"><span class="val a">3</span><span class="lbl">Driver A Loose</span></div>
+      <div class="stat-box"><span class="val b">1</span><span class="lbl">Driver B Loose</span></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:2rem;">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Wheelspin Events — Worst 5</div>
+        <div class="panel-sub">Click event to see throttle + tire temp trace</div>
+      </div>
+    </div>
+    <div class="event-list">
+      <div class="event-row" data-event="w1">
+        <div class="event-lap">L 18</div>
+        <div><span class="event-who a">Driver A</span> <span class="event-desc">· Pulse-throttle at T2 exit · RR spins 12% over road speed</span></div>
+        <div class="event-stat">RR +11°F</div>
+        <div class="event-stat">0.42s lost</div>
+        <div class="event-severity high">HIGH</div>
+      </div>
+      <div class="event-row" data-event="w2">
+        <div class="event-lap">L 26</div>
+        <div><span class="event-who a">Driver A</span> <span class="event-desc">· Aggressive throttle rollout T4 · stability drops to 0.79</span></div>
+        <div class="event-stat">RR +9°F</div>
+        <div class="event-stat">0.36s lost</div>
+        <div class="event-severity high">HIGH</div>
+      </div>
+      <div class="event-row" data-event="w3">
+        <div class="event-lap">L 31</div>
+        <div><span class="event-who a">Driver A</span> <span class="event-desc">· Mid-corner throttle stab T2 · slip angle &gt;6°</span></div>
+        <div class="event-stat">RR +7°F</div>
+        <div class="event-stat">0.28s lost</div>
+        <div class="event-severity med">MED</div>
+      </div>
+      <div class="event-row" data-event="w4">
+        <div class="event-lap">L 41</div>
+        <div><span class="event-who a">Driver A</span> <span class="event-desc">· T4 exit overcommit · rear walks to apex +3ft</span></div>
+        <div class="event-stat">RR +6°F</div>
+        <div class="event-stat">0.22s lost</div>
+        <div class="event-severity med">MED</div>
+      </div>
+      <div class="event-row" data-event="w5">
+        <div class="event-lap">L 33</div>
+        <div><span class="event-who b">Driver B</span> <span class="event-desc">· Single throttle stab T1 · minor slip</span></div>
+        <div class="event-stat">RR +3°F</div>
+        <div class="event-stat">0.08s lost</div>
+        <div class="event-severity low">LOW</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ===================== COACHING ===================== -->
+<div class="splash reveal" style="margin-bottom: 2rem;">
+  <div class="splash-inner">
+    <div class="splash-text">
+      <div class="splash-label">Actionable Intelligence</div>
+      <h2>How to close<br><span style="color: var(--green);">the gap.</span></h2>
+      <p class="splash-desc">Zone-by-zone coaching with specific input targets. Not "try harder" — exact numbers comparing what each driver does at every corner phase, with severity ratings and measurement targets.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Recommendations for Driver A</div>
+          <div class="panel-sub">Closing a ~0.26s total gap to B over 49 laps · ~5ms/lap</div>
+        </div>
+      </div>
+
+      <div class="coaching-block">
+        <h4>1. T1&amp;T2 — where most of the time is lost to the faster run</h4>
+        <p>On <strong>entry</strong>, try ease onto the brake more gradually (<span class="hi-a">7.2%/s</span> vs <span class="hi-b">16.1%/s</span>), brake a bit sooner (<span class="hi-a">9.6%</span> vs <span class="hi-b">12.2%</span> of corner), use less brake (<span class="hi-a">0.7%</span> vs <span class="hi-b">3.0%</span>), carry more speed (<span class="hi-a">152.5</span> vs <span class="hi-b">151.0 MPH</span>).</p>
+        <p>On <strong>centre</strong>, try carry more speed (<span class="hi-a">150.9</span> vs <span class="hi-b">149.3 MPH</span>).</p>
+        <p>On <strong>exit</strong>, try apply throttle more smoothly, commit to full throttle a bit later, carry less speed (<span class="hi-a">151.0</span> vs <span class="hi-b">151.5 MPH</span>).</p>
+        <p>These inputs are contributing to higher <strong>front tire temps at T1&amp;T2</strong> (<span class="hi-a">201°F</span> vs <span class="hi-b">199°F</span>) and higher <strong>rear tire temps at T1&amp;T2</strong> (<span class="hi-a">211°F</span> vs <span class="hi-b">204°F</span>). Front temps rise <span class="hi-c">44°F</span> from Q1 to Q4 — reducing the aggressive inputs will help preserve tires.</p>
+      </div>
+
+      <div class="coaching-block">
+        <h4>2. T3&amp;T4 — less time was lost here, but the biggest driving-style differences were identified</h4>
+        <p>On <strong>entry</strong>, try ease onto the brake more gradually (<span class="hi-a">10.1%/s</span> vs <span class="hi-b">20.5%/s</span>), use less brake (<span class="hi-a">28.6%</span> vs <span class="hi-b">31.4%</span>), carry less speed (<span class="hi-a">139.6</span> vs <span class="hi-b">141.6 MPH</span>).</p>
+        <p>On <strong>centre</strong>, try carry a bit more throttle (<span class="hi-a">48%</span> vs <span class="hi-b">42%</span>), carry less speed (<span class="hi-a">130.7</span> vs <span class="hi-b">131.1 MPH</span>), use less wheel (<span class="hi-a">39.0°</span> vs <span class="hi-b">41.9°</span>).</p>
+        <p>On <strong>exit</strong>, try carry a bit more throttle (<span class="hi-a">86%</span> vs <span class="hi-b">81%</span>), apply throttle more smoothly, commit to full throttle a bit later, carry more speed (<span class="hi-a">133.3</span> vs <span class="hi-b">132.0 MPH</span>).</p>
+        <p>These inputs are contributing to higher <strong>front tire temps at T3&amp;T4</strong> (<span class="hi-a">209°F</span> vs <span class="hi-b">201°F</span>) and higher <strong>rear tire temps at T3&amp;T4</strong> (<span class="hi-a">212°F</span> vs <span class="hi-b">207°F</span>). Front temps rise <span class="hi-c">28°F</span> from Q1 to Q4 — reducing the aggressive inputs will help preserve tires.</p>
+      </div>
+
+      <div class="coaching-summary">
+        <p style="font-size:1rem; line-height:1.7; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Bottom line:</strong> Driver A fades <span class="hi-a">+1.85s</span> vs Driver B's <span class="hi-b">+1.59s</span>. The tire findings above (front heat — front tires are sliding and scrubbing more · rear heat — the rear tire is spinning faster than the car is moving) explain why — <strong style="color: var(--green);">fixing the inputs will fix the fade.</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MEASUREMENT TARGETS ===================== -->
+<section class="section reveal">
+  <div class="section-label">Track Your Progress</div>
+  <h2>Measurement targets.<br><span style="color: var(--cyan);">Session over session.</span></h2>
+  <p class="section-desc">Concrete benchmarks pulled directly from the coaching analysis. Your current values, the target to hit, and the gap — track improvement across sessions.</p>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Measurement Targets — Driver A</div>
+        <div class="panel-sub">Pulled from coaching analysis · prioritized by time-gain</div>
+      </div>
+    </div>
+    <div style="margin-top:0.5rem;">
+      <div class="target-row">
+        <div class="target-label">Throttle Rate — T3&amp;T4 Centre<span class="target-sub">Smoother pedal application</span></div>
+        <div class="target-now">5.2%/s</div>
+        <div class="target-goal">≤ 2.0%/s</div>
+        <div class="progress-track"><div class="progress-fill" style="width:12%"></div></div>
+      </div>
+      <div class="target-row">
+        <div class="target-label">Throttle Rate — T1&amp;T2 Exit<span class="target-sub">Roll on, don't jab</span></div>
+        <div class="target-now">4.6%/s</div>
+        <div class="target-goal">≤ 2.0%/s</div>
+        <div class="progress-track"><div class="progress-fill" style="width:18%"></div></div>
+      </div>
+      <div class="target-row">
+        <div class="target-label">Brake Attack — T3&amp;T4 Entry<span class="target-sub">Ease into brake pressure</span></div>
+        <div class="target-now">28.5%/s</div>
+        <div class="target-goal">≤ 12.0%/s</div>
+        <div class="progress-track"><div class="progress-fill" style="width:22%"></div></div>
+      </div>
+      <div class="target-row">
+        <div class="target-label">RR Peak Temp<span class="target-sub">Race-long tire preservation</span></div>
+        <div class="target-now">232°F</div>
+        <div class="target-goal">≤ 218°F</div>
+        <div class="progress-track"><div class="progress-fill" style="width:45%"></div></div>
+      </div>
+      <div class="target-row">
+        <div class="target-label">Wheelspin Events / run<span class="target-sub">Smooth exits = kept time</span></div>
+        <div class="target-now">5</div>
+        <div class="target-goal">≤ 1</div>
+        <div class="progress-track"><div class="progress-fill" style="width:20%"></div></div>
+      </div>
+      <div class="target-row">
+        <div class="target-label">Lap-Time Fade Q1→Q4<span class="target-sub">End-of-run pace</span></div>
+        <div class="target-now">+1.85s</div>
+        <div class="target-goal">≤ +1.60s</div>
+        <div class="progress-track"><div class="progress-fill" style="width:58%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ===================== CTA ===================== -->
+<section class="cta-section reveal">
+  <h2 style="font-family: var(--font-display);">Stop wondering.<br><span style="color: var(--cyan);">Start comparing.</span></h2>
+  <p>Driver Comparison turns "they're faster than me" into a step-by-step plan to close the gap. Every input. Every corner. Every answer.</p>
+  <a href="#" class="cta-button">
+    Try GripIQ
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+  </a>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer style="text-align:center; padding:3rem 2rem; border-top:1px solid var(--border-subtle);">
+  <div style="font-family: var(--font-display); font-size:1.5rem; font-weight:900; background: linear-gradient(135deg, var(--cyan), #00c8ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:0.5rem;">GripIQ</div>
+  <div style="font-size: 0.8rem; color: var(--text-dim);">Racing intelligence, quantified.</div>
+</footer>
+
+<!-- ===================== LAP MODAL (hidden by default) ===================== -->
+<div class="modal-overlay" id="lapModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modalTitle">Lap Telemetry — Lap 18</div>
+        <div class="panel-sub" id="modalSub">Both drivers overlaid · click-through from Accumulated Gap</div>
+      </div>
+      <button class="modal-close" onclick="closeLapModal()">×</button>
+    </div>
+    <div class="modal-chart-row">
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Speed (MPH)</div><div class="panel-legend"><span class="legend-dot a">Driver A</span><span class="legend-dot b">Driver B</span></div></div>
+        <svg id="modalSpeed" class="chart" viewBox="0 0 900 180" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Throttle / Brake (%)</div></div>
+        <svg id="modalThr" class="chart" viewBox="0 0 900 180" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Steering Angle (deg)</div></div>
+        <svg id="modalSteer" class="chart" viewBox="0 0 900 180" preserveAspectRatio="none"></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart hover tooltip (single floating element) -->
+<div class="chart-tooltip" id="chartTooltip"></div>
+
+<script>
+// ============================================================================
+// DRIVER COMPARISON — baked-in demo data + interactive rendering
+// ============================================================================
+const DEMO = {"meta":{"drivers":{"A":{"label":"Driver A","color":"#60a5fa"},"B":{"label":"Driver B","color":"#f87171"}},"track":"Darlington Raceway","lap_range":[2,50],"sample_lap":15},"laps_A":[{"lap":2,"t":36.848,"rf":129.0,"lf":126.7,"rr":133.2,"lr":122.9},{"lap":3,"t":30.311,"rf":144.1,"lf":140.0,"rr":149.5,"lr":135.8},{"lap":4,"t":29.816,"rf":150.7,"lf":143.3,"rr":164.1,"lr":147.5},{"lap":5,"t":29.795,"rf":159.5,"lf":148.7,"rr":171.9,"lr":153.9},{"lap":6,"t":29.881,"rf":171.1,"lf":153.7,"rr":179.7,"lr":160.4},{"lap":7,"t":30.041,"rf":177.0,"lf":158.5,"rr":185.7,"lr":165.4},{"lap":8,"t":29.898,"rf":183.2,"lf":161.7,"rr":192.8,"lr":171.1},{"lap":9,"t":30.048,"rf":185.1,"lf":163.9,"rr":199.5,"lr":175.8},{"lap":10,"t":30.041,"rf":185.5,"lf":164.1,"rr":197.3,"lr":175.3},{"lap":11,"t":30.333,"rf":193.5,"lf":169.5,"rr":205.5,"lr":180.6},{"lap":12,"t":30.333,"rf":196.4,"lf":171.8,"rr":213.0,"lr":186.0},{"lap":13,"t":30.227,"rf":197.8,"lf":170.9,"rr":214.1,"lr":187.8},{"lap":14,"t":30.421,"rf":194.1,"lf":170.5,"rr":208.7,"lr":184.6},{"lap":15,"t":30.421,"rf":197.6,"lf":173.4,"rr":210.0,"lr":186.1},{"lap":16,"t":30.674,"rf":194.8,"lf":171.3,"rr":200.5,"lr":180.0},{"lap":17,"t":30.674,"rf":203.5,"lf":176.4,"rr":213.3,"lr":188.2},{"lap":18,"t":31.188,"rf":197.6,"lf":172.2,"rr":210.9,"lr":186.8},{"lap":19,"t":31.103,"rf":211.3,"lf":180.5,"rr":223.5,"lr":195.9},{"lap":20,"t":31.103,"rf":209.9,"lf":177.4,"rr":214.6,"lr":189.7},{"lap":21,"t":30.612,"rf":205.9,"lf":177.1,"rr":213.5,"lr":188.3},{"lap":22,"t":31.106,"rf":206.8,"lf":177.2,"rr":212.5,"lr":188.1},{"lap":23,"t":31.106,"rf":209.7,"lf":178.9,"rr":218.6,"lr":192.5},{"lap":24,"t":31.146,"rf":212.8,"lf":180.0,"rr":219.1,"lr":192.4},{"lap":25,"t":31.143,"rf":213.6,"lf":180.3,"rr":222.2,"lr":195.6},{"lap":26,"t":31.192,"rf":219.0,"lf":183.4,"rr":232.2,"lr":201.6},{"lap":27,"t":31.192,"rf":212.0,"lf":180.9,"rr":220.1,"lr":194.6},{"lap":28,"t":31.338,"rf":212.4,"lf":178.8,"rr":226.7,"lr":197.5},{"lap":29,"t":31.307,"rf":216.7,"lf":183.4,"rr":224.2,"lr":196.4},{"lap":30,"t":31.622,"rf":216.1,"lf":181.4,"rr":228.4,"lr":199.3},{"lap":31,"t":31.488,"rf":213.0,"lf":181.0,"rr":221.0,"lr":194.9},{"lap":32,"t":31.488,"rf":209.5,"lf":178.6,"rr":214.3,"lr":189.0},{"lap":33,"t":31.53,"rf":208.0,"lf":178.2,"rr":212.0,"lr":187.7},{"lap":34,"t":31.594,"rf":212.3,"lf":180.5,"rr":217.8,"lr":192.2},{"lap":35,"t":31.635,"rf":212.6,"lf":180.8,"rr":218.1,"lr":193.1},{"lap":36,"t":31.566,"rf":214.2,"lf":181.7,"rr":216.5,"lr":192.1},{"lap":37,"t":31.566,"rf":214.4,"lf":181.4,"rr":219.2,"lr":193.1},{"lap":38,"t":31.566,"rf":214.4,"lf":180.3,"rr":230.3,"lr":199.3},{"lap":39,"t":31.567,"rf":207.8,"lf":175.9,"rr":217.5,"lr":190.1},{"lap":40,"t":32.021,"rf":209.4,"lf":178.7,"rr":217.2,"lr":190.9},{"lap":41,"t":32.021,"rf":208.1,"lf":178.9,"rr":214.8,"lr":190.1},{"lap":42,"t":31.681,"rf":210.3,"lf":179.6,"rr":218.9,"lr":192.6},{"lap":43,"t":31.72,"rf":211.6,"lf":179.4,"rr":215.4,"lr":189.5},{"lap":44,"t":31.72,"rf":207.8,"lf":175.8,"rr":210.7,"lr":186.2},{"lap":45,"t":31.717,"rf":205.8,"lf":174.7,"rr":211.7,"lr":186.9},{"lap":46,"t":32.022,"rf":207.2,"lf":174.6,"rr":205.5,"lr":183.4},{"lap":47,"t":32.167,"rf":208.8,"lf":177.9,"rr":211.1,"lr":187.9},{"lap":48,"t":31.71,"rf":210.2,"lf":178.8,"rr":211.8,"lr":187.8},{"lap":49,"t":31.71,"rf":208.3,"lf":176.8,"rr":209.9,"lr":186.0},{"lap":50,"t":31.589,"rf":213.3,"lf":181.5,"rr":213.7,"lr":189.2}],"laps_B":[{"lap":2,"t":36.796,"rf":122.3,"lf":127.2,"rr":134.4,"lr":123.8},{"lap":3,"t":29.897,"rf":137.8,"lf":137.6,"rr":152.0,"lr":137.8},{"lap":4,"t":29.897,"rf":146.6,"lf":142.4,"rr":158.8,"lr":144.0},{"lap":5,"t":29.748,"rf":150.5,"lf":145.1,"rr":163.7,"lr":148.6},{"lap":6,"t":29.823,"rf":156.7,"lf":149.4,"rr":169.5,"lr":153.7},{"lap":7,"t":29.93,"rf":163.6,"lf":153.5,"rr":175.6,"lr":158.5},{"lap":8,"t":30.084,"rf":168.8,"lf":156.9,"rr":181.8,"lr":163.1},{"lap":9,"t":30.059,"rf":171.1,"lf":157.3,"rr":180.8,"lr":163.6},{"lap":10,"t":30.484,"rf":184.8,"lf":164.3,"rr":197.0,"lr":175.1},{"lap":11,"t":30.054,"rf":181.5,"lf":163.1,"rr":193.2,"lr":172.6},{"lap":12,"t":30.194,"rf":186.1,"lf":166.0,"rr":198.8,"lr":176.9},{"lap":13,"t":30.19,"rf":187.5,"lf":166.5,"rr":199.5,"lr":178.0},{"lap":14,"t":30.19,"rf":192.5,"lf":170.0,"rr":198.9,"lr":177.7},{"lap":15,"t":30.374,"rf":194.4,"lf":170.7,"rr":203.8,"lr":181.1},{"lap":16,"t":30.404,"rf":195.9,"lf":171.3,"rr":203.0,"lr":180.7},{"lap":17,"t":30.586,"rf":206.4,"lf":176.3,"rr":210.0,"lr":185.9},{"lap":18,"t":30.708,"rf":193.3,"lf":168.5,"rr":201.8,"lr":180.5},{"lap":19,"t":30.708,"rf":200.2,"lf":172.6,"rr":202.1,"lr":181.8},{"lap":20,"t":30.94,"rf":197.9,"lf":172.0,"rr":203.8,"lr":181.9},{"lap":21,"t":30.867,"rf":195.0,"lf":170.2,"rr":201.4,"lr":180.5},{"lap":22,"t":30.867,"rf":199.2,"lf":173.3,"rr":205.3,"lr":184.4},{"lap":23,"t":30.968,"rf":205.4,"lf":177.3,"rr":212.4,"lr":189.4},{"lap":24,"t":30.968,"rf":209.0,"lf":179.3,"rr":215.0,"lr":191.8},{"lap":25,"t":30.951,"rf":208.5,"lf":178.2,"rr":218.5,"lr":194.4},{"lap":26,"t":30.951,"rf":208.6,"lf":178.5,"rr":216.5,"lr":193.2},{"lap":27,"t":31.036,"rf":205.4,"lf":176.4,"rr":213.0,"lr":190.0},{"lap":28,"t":31.177,"rf":207.1,"lf":177.1,"rr":216.1,"lr":192.1},{"lap":29,"t":31.177,"rf":210.2,"lf":179.4,"rr":215.0,"lr":192.1},{"lap":30,"t":31.195,"rf":210.1,"lf":178.9,"rr":217.1,"lr":193.9},{"lap":31,"t":31.27,"rf":210.7,"lf":179.7,"rr":215.7,"lr":192.8},{"lap":32,"t":31.274,"rf":214.0,"lf":181.5,"rr":219.5,"lr":195.8},{"lap":33,"t":31.274,"rf":212.8,"lf":180.8,"rr":218.3,"lr":194.4},{"lap":34,"t":31.255,"rf":210.5,"lf":179.6,"rr":218.0,"lr":193.5},{"lap":35,"t":31.347,"rf":210.0,"lf":178.3,"rr":215.3,"lr":191.8},{"lap":36,"t":31.319,"rf":210.8,"lf":179.3,"rr":216.3,"lr":192.6},{"lap":37,"t":31.37,"rf":213.5,"lf":180.7,"rr":219.8,"lr":195.6},{"lap":38,"t":31.37,"rf":214.9,"lf":181.8,"rr":220.7,"lr":196.9},{"lap":39,"t":31.371,"rf":214.6,"lf":182.4,"rr":219.4,"lr":196.2},{"lap":40,"t":31.371,"rf":211.1,"lf":180.0,"rr":212.4,"lr":190.4},{"lap":41,"t":31.445,"rf":210.4,"lf":180.2,"rr":213.5,"lr":192.1},{"lap":42,"t":31.523,"rf":211.8,"lf":180.3,"rr":214.4,"lr":192.2},{"lap":43,"t":31.523,"rf":209.4,"lf":179.0,"rr":208.4,"lr":187.2},{"lap":44,"t":31.584,"rf":210.2,"lf":179.4,"rr":214.4,"lr":191.8},{"lap":45,"t":31.584,"rf":204.8,"lf":175.8,"rr":206.8,"lr":186.6},{"lap":46,"t":31.508,"rf":204.7,"lf":175.8,"rr":206.2,"lr":186.0},{"lap":47,"t":31.763,"rf":208.2,"lf":178.2,"rr":208.7,"lr":187.8},{"lap":48,"t":31.682,"rf":204.4,"lf":176.1,"rr":202.6,"lr":183.7},{"lap":49,"t":31.544,"rf":205.3,"lf":176.2,"rr":207.7,"lr":186.8},{"lap":50,"t":31.589,"rf":208.9,"lf":178.2,"rr":210.6,"lr":188.7}],"telemetry_A":[{"d":0.0,"speed":159.4,"throttle":100.0,"brake":0.0,"steer":4.1,"gear":4,"rpm":6744.0},{"d":0.5025,"speed":160.0,"throttle":100.0,"brake":0.0,"steer":3.8,"gear":4,"rpm":6780.0},{"d":1.005,"speed":160.6,"throttle":100.0,"brake":0.0,"steer":4.3,"gear":4,"rpm":6808.0},{"d":1.5075,"speed":161.2,"throttle":100.0,"brake":0.0,"steer":4.6,"gear":4,"rpm":6817.0},{"d":2.0101,"speed":161.8,"throttle":100.0,"brake":0.0,"steer":4.6,"gear":4,"rpm":6847.0},{"d":2.5126,"speed":162.4,"throttle":100.0,"brake":0.0,"steer":4.6,"gear":4,"rpm":6877.0},{"d":3.0151,"speed":163.0,"throttle":100.0,"brake":0.0,"steer":3.4,"gear":4,"rpm":6898.0},{"d":3.5176,"speed":163.6,"throttle":100.0,"brake":0.0,"steer":2.6,"gear":4,"rpm":6879.0},{"d":4.0201,"speed":164.1,"throttle":100.0,"brake":0.0,"steer":3.2,"gear":4,"rpm":6950.0},{"d":4.5226,"speed":164.7,"throttle":100.0,"brake":0.0,"steer":3.6,"gear":4,"rpm":6945.0},{"d":5.0251,"speed":165.0,"throttle":100.0,"brake":0.0,"steer":3.2,"gear":4,"rpm":6974.0},{"d":5.5276,"speed":165.6,"throttle":100.0,"brake":0.0,"steer":2.8,"gear":4,"rpm":6979.0},{"d":6.0302,"speed":166.1,"throttle":100.0,"brake":0.0,"steer":1.6,"gear":4,"rpm":7012.0},{"d":6.5327,"speed":166.6,"throttle":100.0,"brake":0.0,"steer":1.8,"gear":4,"rpm":7020.0},{"d":7.0352,"speed":167.1,"throttle":100.0,"brake":0.0,"steer":2.1,"gear":4,"rpm":7054.0},{"d":7.5377,"speed":167.5,"throttle":100.0,"brake":0.0,"steer":3.4,"gear":4,"rpm":7068.0},{"d":8.0402,"speed":168.0,"throttle":100.0,"brake":0.0,"steer":5.6,"gear":4,"rpm":7087.0},{"d":8.5427,"speed":168.3,"throttle":100.0,"brake":0.0,"steer":8.2,"gear":4,"rpm":7119.0},{"d":9.0452,"speed":168.8,"throttle":100.0,"brake":0.0,"steer":12.6,"gear":4,"rpm":7133.0},{"d":9.5477,"speed":169.2,"throttle":80.2,"brake":0.0,"steer":18.9,"gear":4,"rpm":7125.0},{"d":10.0503,"speed":169.2,"throttle":36.0,"brake":0.0,"steer":23.1,"gear":4,"rpm":7017.0},{"d":10.5528,"speed":168.5,"throttle":15.4,"brake":0.0,"steer":26.8,"gear":4,"rpm":6787.0},{"d":11.0553,"speed":167.8,"throttle":13.0,"brake":0.0,"steer":28.5,"gear":4,"rpm":6781.0},{"d":11.5578,"speed":166.5,"throttle":11.5,"brake":0.0,"steer":31.7,"gear":4,"rpm":6798.0},{"d":12.0603,"speed":165.2,"throttle":11.9,"brake":0.0,"steer":34.5,"gear":4,"rpm":6730.0},{"d":12.5628,"speed":163.9,"throttle":11.9,"brake":0.0,"steer":36.7,"gear":4,"rpm":6673.0},{"d":13.0653,"speed":162.6,"throttle":15.4,"brake":0.0,"steer":37.9,"gear":4,"rpm":6633.0},{"d":13.5678,"speed":161.3,"throttle":26.5,"brake":0.0,"steer":38.9,"gear":4,"rpm":6656.0},{"d":14.0704,"speed":160.3,"throttle":45.9,"brake":0.0,"steer":39.9,"gear":4,"rpm":6610.0},{"d":14.5729,"speed":159.6,"throttle":45.9,"brake":0.0,"steer":40.6,"gear":4,"rpm":6629.0},{"d":15.0754,"speed":158.9,"throttle":49.0,"brake":0.0,"steer":41.2,"gear":4,"rpm":6600.0},{"d":15.5779,"speed":158.3,"throttle":53.0,"brake":0.9,"steer":40.5,"gear":4,"rpm":6595.0},{"d":16.0804,"speed":157.9,"throttle":60.5,"brake":0.9,"steer":37.4,"gear":4,"rpm":6616.0},{"d":16.5829,"speed":157.5,"throttle":65.6,"brake":0.0,"steer":33.2,"gear":4,"rpm":6601.0},{"d":17.0854,"speed":157.3,"throttle":67.6,"brake":0.0,"steer":29.3,"gear":4,"rpm":6618.0},{"d":17.5879,"speed":157.2,"throttle":74.3,"brake":0.0,"steer":27.7,"gear":4,"rpm":6619.0},{"d":18.0905,"speed":157.2,"throttle":75.5,"brake":0.0,"steer":31.3,"gear":4,"rpm":6606.0},{"d":18.593,"speed":157.2,"throttle":74.7,"brake":0.0,"steer":35.0,"gear":4,"rpm":6604.0},{"d":19.0955,"speed":157.2,"throttle":69.2,"brake":1.5,"steer":36.6,"gear":4,"rpm":6585.0},{"d":19.598,"speed":157.0,"throttle":68.4,"brake":2.1,"steer":34.2,"gear":4,"rpm":6572.0},{"d":20.1005,"speed":156.9,"throttle":70.0,"brake":0.0,"steer":31.9,"gear":4,"rpm":6572.0},{"d":20.603,"speed":156.8,"throttle":72.7,"brake":1.0,"steer":30.4,"gear":4,"rpm":6576.0},{"d":21.1055,"speed":156.7,"throttle":72.7,"brake":3.4,"steer":30.4,"gear":4,"rpm":6577.0},{"d":21.608,"speed":156.6,"throttle":73.1,"brake":3.7,"steer":28.1,"gear":4,"rpm":6553.0},{"d":22.1106,"speed":156.4,"throttle":76.3,"brake":2.7,"steer":22.7,"gear":4,"rpm":6596.0},{"d":22.6131,"speed":156.4,"throttle":79.8,"brake":2.1,"steer":18.3,"gear":4,"rpm":6586.0},{"d":23.1156,"speed":156.4,"throttle":79.8,"brake":1.3,"steer":14.8,"gear":4,"rpm":6605.0},{"d":23.6181,"speed":156.4,"throttle":80.2,"brake":1.6,"steer":14.7,"gear":4,"rpm":6637.0},{"d":24.1206,"speed":156.4,"throttle":80.2,"brake":3.2,"steer":18.2,"gear":4,"rpm":6580.0},{"d":24.6231,"speed":156.4,"throttle":80.6,"brake":3.4,"steer":18.6,"gear":4,"rpm":6598.0},{"d":25.1256,"speed":156.4,"throttle":79.8,"brake":3.7,"steer":15.0,"gear":4,"rpm":6606.0},{"d":25.6281,"speed":156.4,"throttle":66.4,"brake":3.4,"steer":8.8,"gear":4,"rpm":6543.0},{"d":26.1307,"speed":156.2,"throttle":62.8,"brake":2.9,"steer":9.9,"gear":4,"rpm":6510.0},{"d":26.6332,"speed":156.2,"throttle":67.6,"brake":2.9,"steer":20.5,"gear":4,"rpm":6504.0},{"d":27.1357,"speed":156.2,"throttle":68.0,"brake":4.0,"steer":27.1,"gear":4,"rpm":6490.0},{"d":27.6382,"speed":156.3,"throttle":64.4,"brake":3.5,"steer":29.4,"gear":4,"rpm":6493.0},{"d":28.1407,"speed":156.2,"throttle":56.5,"brake":2.2,"steer":30.9,"gear":4,"rpm":6481.0},{"d":28.6432,"speed":156.0,"throttle":52.2,"brake":3.2,"steer":31.5,"gear":4,"rpm":6471.0},{"d":29.1457,"speed":155.5,"throttle":45.9,"brake":3.2,"steer":31.8,"gear":4,"rpm":6440.0},{"d":29.6482,"speed":155.0,"throttle":46.2,"brake":3.5,"steer":31.3,"gear":4,"rpm":6417.0},{"d":30.1508,"speed":154.5,"throttle":46.2,"brake":3.4,"steer":32.7,"gear":4,"rpm":6402.0},{"d":30.6533,"speed":153.9,"throttle":46.2,"brake":2.1,"steer":33.5,"gear":4,"rpm":6374.0},{"d":31.1558,"speed":153.4,"throttle":47.8,"brake":1.5,"steer":34.9,"gear":4,"rpm":6366.0},{"d":31.6583,"speed":153.0,"throttle":50.2,"brake":2.7,"steer":34.3,"gear":4,"rpm":6355.0},{"d":32.1608,"speed":152.6,"throttle":51.4,"brake":2.7,"steer":34.3,"gear":4,"rpm":6333.0},{"d":32.6633,"speed":152.2,"throttle":51.4,"brake":2.9,"steer":35.3,"gear":4,"rpm":6324.0},{"d":33.1658,"speed":151.8,"throttle":50.2,"brake":2.2,"steer":35.7,"gear":4,"rpm":6299.0},{"d":33.6683,"speed":151.4,"throttle":51.8,"brake":2.7,"steer":33.5,"gear":4,"rpm":6296.0},{"d":34.1709,"speed":150.9,"throttle":53.0,"brake":2.2,"steer":30.1,"gear":4,"rpm":6282.0},{"d":34.6734,"speed":150.6,"throttle":60.9,"brake":1.9,"steer":27.8,"gear":4,"rpm":6296.0},{"d":35.1759,"speed":150.5,"throttle":63.6,"brake":1.0,"steer":25.3,"gear":4,"rpm":6289.0},{"d":35.6784,"speed":150.5,"throttle":66.4,"brake":0.9,"steer":23.7,"gear":4,"rpm":6321.0},{"d":36.1809,"speed":150.7,"throttle":79.8,"brake":1.0,"steer":26.2,"gear":4,"rpm":6327.0},{"d":36.6834,"speed":150.9,"throttle":85.4,"brake":0.0,"steer":26.7,"gear":4,"rpm":6355.0},{"d":37.1859,"speed":151.3,"throttle":87.7,"brake":0.0,"steer":24.6,"gear":4,"rpm":6368.0},{"d":37.6884,"speed":151.7,"throttle":90.5,"brake":0.0,"steer":24.2,"gear":4,"rpm":6386.0},{"d":38.191,"speed":152.1,"throttle":91.3,"brake":0.0,"steer":21.7,"gear":4,"rpm":6415.0},{"d":38.6935,"speed":152.5,"throttle":87.0,"brake":0.0,"steer":19.6,"gear":4,"rpm":6412.0},{"d":39.196,"speed":153.0,"throttle":87.7,"brake":0.0,"steer":19.4,"gear":4,"rpm":6448.0},{"d":39.6985,"speed":153.4,"throttle":94.1,"brake":0.0,"steer":19.4,"gear":4,"rpm":6465.0},{"d":40.201,"speed":153.8,"throttle":100.0,"brake":0.0,"steer":17.0,"gear":4,"rpm":6476.0},{"d":40.7035,"speed":154.3,"throttle":100.0,"brake":0.0,"steer":9.9,"gear":4,"rpm":6542.0},{"d":41.206,"speed":154.7,"throttle":100.0,"brake":1.6,"steer":9.1,"gear":4,"rpm":6606.0},{"d":41.7085,"speed":155.1,"throttle":100.0,"brake":0.0,"steer":8.1,"gear":4,"rpm":6684.0},{"d":42.2111,"speed":155.7,"throttle":100.0,"brake":2.9,"steer":7.3,"gear":4,"rpm":6634.0},{"d":42.7136,"speed":156.3,"throttle":100.0,"brake":0.9,"steer":7.6,"gear":4,"rpm":6628.0},{"d":43.2161,"speed":156.8,"throttle":100.0,"brake":1.5,"steer":7.0,"gear":4,"rpm":6642.0},{"d":43.7186,"speed":157.5,"throttle":100.0,"brake":0.9,"steer":4.4,"gear":4,"rpm":6674.0},{"d":44.2211,"speed":158.1,"throttle":100.0,"brake":1.5,"steer":5.3,"gear":4,"rpm":6702.0},{"d":44.7236,"speed":158.7,"throttle":100.0,"brake":2.5,"steer":6.8,"gear":4,"rpm":6682.0},{"d":45.2261,"speed":159.3,"throttle":100.0,"brake":1.6,"steer":3.6,"gear":4,"rpm":6743.0},{"d":45.7286,"speed":159.8,"throttle":100.0,"brake":0.9,"steer":2.0,"gear":4,"rpm":6763.0},{"d":46.2312,"speed":160.4,"throttle":100.0,"brake":1.5,"steer":2.2,"gear":4,"rpm":6755.0},{"d":46.7337,"speed":161.0,"throttle":100.0,"brake":1.5,"steer":2.3,"gear":4,"rpm":6808.0},{"d":47.2362,"speed":161.5,"throttle":100.0,"brake":1.6,"steer":4.1,"gear":4,"rpm":6825.0},{"d":47.7387,"speed":162.1,"throttle":100.0,"brake":1.6,"steer":2.4,"gear":4,"rpm":6839.0},{"d":48.2412,"speed":162.6,"throttle":100.0,"brake":1.6,"steer":3.4,"gear":4,"rpm":6896.0},{"d":48.7437,"speed":163.1,"throttle":100.0,"brake":1.6,"steer":4.3,"gear":4,"rpm":6882.0},{"d":49.2462,"speed":163.4,"throttle":100.0,"brake":1.9,"steer":2.8,"gear":4,"rpm":6923.0},{"d":49.7487,"speed":163.9,"throttle":100.0,"brake":1.5,"steer":2.8,"gear":4,"rpm":6945.0},{"d":50.2513,"speed":164.4,"throttle":100.0,"brake":1.6,"steer":2.3,"gear":4,"rpm":6929.0},{"d":50.7538,"speed":164.8,"throttle":100.0,"brake":1.3,"steer":2.3,"gear":4,"rpm":6970.0},{"d":51.2563,"speed":165.3,"throttle":100.0,"brake":1.5,"steer":4.2,"gear":4,"rpm":6999.0},{"d":51.7588,"speed":165.7,"throttle":100.0,"brake":1.3,"steer":3.8,"gear":4,"rpm":6994.0},{"d":52.2613,"speed":166.2,"throttle":100.0,"brake":1.5,"steer":3.5,"gear":4,"rpm":7013.0},{"d":52.7638,"speed":166.6,"throttle":100.0,"brake":1.3,"steer":3.8,"gear":4,"rpm":7046.0},{"d":53.2663,"speed":166.9,"throttle":100.0,"brake":1.3,"steer":4.6,"gear":4,"rpm":7052.0},{"d":53.7688,"speed":167.3,"throttle":100.0,"brake":1.9,"steer":4.8,"gear":4,"rpm":7058.0},{"d":54.2714,"speed":167.7,"throttle":100.0,"brake":1.5,"steer":4.5,"gear":4,"rpm":7090.0},{"d":54.7739,"speed":168.2,"throttle":100.0,"brake":1.6,"steer":3.8,"gear":4,"rpm":7093.0},{"d":55.2764,"speed":168.6,"throttle":100.0,"brake":1.6,"steer":2.5,"gear":4,"rpm":7116.0},{"d":55.7789,"speed":169.0,"throttle":100.0,"brake":1.6,"steer":3.8,"gear":4,"rpm":7134.0},{"d":56.2814,"speed":169.3,"throttle":100.0,"brake":1.6,"steer":3.9,"gear":4,"rpm":7147.0},{"d":56.7839,"speed":169.7,"throttle":100.0,"brake":1.5,"steer":3.2,"gear":4,"rpm":7173.0},{"d":57.2864,"speed":170.1,"throttle":100.0,"brake":1.6,"steer":2.6,"gear":4,"rpm":7176.0},{"d":57.7889,"speed":170.4,"throttle":100.0,"brake":1.3,"steer":2.8,"gear":4,"rpm":7202.0},{"d":58.2915,"speed":170.7,"throttle":100.0,"brake":1.3,"steer":2.6,"gear":4,"rpm":7225.0},{"d":58.794,"speed":171.1,"throttle":100.0,"brake":1.5,"steer":2.6,"gear":4,"rpm":7229.0},{"d":59.2965,"speed":171.5,"throttle":98.0,"brake":1.3,"steer":3.5,"gear":4,"rpm":7216.0},{"d":59.799,"speed":171.9,"throttle":93.3,"brake":1.5,"steer":3.2,"gear":4,"rpm":7224.0},{"d":60.3015,"speed":172.2,"throttle":80.2,"brake":1.6,"steer":2.2,"gear":4,"rpm":7208.0},{"d":60.804,"speed":172.3,"throttle":51.0,"brake":1.0,"steer":3.8,"gear":4,"rpm":7149.0},{"d":61.3065,"speed":171.1,"throttle":0.0,"brake":28.0,"steer":3.5,"gear":4,"rpm":6967.0},{"d":61.809,"speed":168.3,"throttle":0.0,"brake":41.1,"steer":7.4,"gear":4,"rpm":6752.0},{"d":62.3116,"speed":165.3,"throttle":0.0,"brake":47.0,"steer":11.7,"gear":4,"rpm":6625.0},{"d":62.8141,"speed":163.0,"throttle":0.0,"brake":51.0,"steer":13.5,"gear":4,"rpm":6488.0},{"d":63.3166,"speed":159.5,"throttle":0.0,"brake":52.0,"steer":16.1,"gear":4,"rpm":6345.0},{"d":63.8191,"speed":156.1,"throttle":0.0,"brake":52.0,"steer":18.7,"gear":4,"rpm":6212.0},{"d":64.3216,"speed":151.7,"throttle":0.0,"brake":33.4,"steer":23.1,"gear":4,"rpm":6036.0},{"d":64.8241,"speed":149.3,"throttle":0.0,"brake":11.4,"steer":25.9,"gear":4,"rpm":6010.0},{"d":65.3266,"speed":147.5,"throttle":0.0,"brake":10.5,"steer":28.5,"gear":4,"rpm":5943.0},{"d":65.8291,"speed":145.8,"throttle":0.0,"brake":6.5,"steer":30.3,"gear":4,"rpm":5880.0},{"d":66.3317,"speed":144.2,"throttle":0.0,"brake":0.0,"steer":31.5,"gear":4,"rpm":5856.0},{"d":66.8342,"speed":142.4,"throttle":11.5,"brake":0.0,"steer":32.1,"gear":4,"rpm":5816.0},{"d":67.3367,"speed":141.4,"throttle":19.0,"brake":0.0,"steer":33.1,"gear":4,"rpm":5878.0},{"d":67.8392,"speed":140.5,"throttle":35.6,"brake":0.0,"steer":33.2,"gear":4,"rpm":5781.0},{"d":68.3417,"speed":140.1,"throttle":37.5,"brake":0.0,"steer":33.2,"gear":4,"rpm":5792.0},{"d":68.8442,"speed":139.8,"throttle":39.1,"brake":0.0,"steer":33.3,"gear":4,"rpm":5778.0},{"d":69.3467,"speed":139.4,"throttle":40.3,"brake":0.0,"steer":33.3,"gear":4,"rpm":5766.0},{"d":69.8492,"speed":139.1,"throttle":46.2,"brake":0.0,"steer":33.3,"gear":4,"rpm":5771.0},{"d":70.3518,"speed":139.0,"throttle":51.0,"brake":0.0,"steer":34.8,"gear":4,"rpm":5782.0},{"d":70.8543,"speed":138.9,"throttle":51.4,"brake":0.0,"steer":36.8,"gear":4,"rpm":5772.0},{"d":71.3568,"speed":138.7,"throttle":45.5,"brake":0.0,"steer":38.4,"gear":4,"rpm":5754.0},{"d":71.8593,"speed":138.4,"throttle":42.3,"brake":0.0,"steer":39.9,"gear":4,"rpm":5738.0},{"d":72.3618,"speed":137.9,"throttle":43.1,"brake":0.0,"steer":41.5,"gear":4,"rpm":5726.0},{"d":72.8643,"speed":137.6,"throttle":53.0,"brake":0.0,"steer":37.5,"gear":4,"rpm":5746.0},{"d":73.3668,"speed":137.5,"throttle":58.5,"brake":0.0,"steer":36.0,"gear":4,"rpm":5757.0},{"d":73.8693,"speed":137.5,"throttle":58.1,"brake":0.0,"steer":36.9,"gear":4,"rpm":5750.0},{"d":74.3719,"speed":137.4,"throttle":58.1,"brake":0.0,"steer":37.4,"gear":4,"rpm":5744.0},{"d":74.8744,"speed":137.3,"throttle":58.1,"brake":0.0,"steer":35.5,"gear":4,"rpm":5740.0},{"d":75.3769,"speed":137.3,"throttle":60.5,"brake":0.0,"steer":35.7,"gear":4,"rpm":5750.0},{"d":75.8794,"speed":137.3,"throttle":64.0,"brake":0.0,"steer":36.3,"gear":4,"rpm":5757.0},{"d":76.3819,"speed":137.3,"throttle":63.6,"brake":0.0,"steer":34.2,"gear":4,"rpm":5752.0},{"d":76.8844,"speed":137.4,"throttle":64.4,"brake":0.0,"steer":31.9,"gear":4,"rpm":5761.0},{"d":77.3869,"speed":137.4,"throttle":64.4,"brake":0.0,"steer":32.4,"gear":4,"rpm":5765.0},{"d":77.8894,"speed":137.5,"throttle":64.0,"brake":0.0,"steer":33.6,"gear":4,"rpm":5774.0},{"d":78.392,"speed":137.5,"throttle":66.0,"brake":0.0,"steer":32.4,"gear":4,"rpm":5775.0},{"d":78.8945,"speed":137.6,"throttle":66.4,"brake":0.0,"steer":30.9,"gear":4,"rpm":5783.0},{"d":79.397,"speed":137.7,"throttle":67.2,"brake":0.0,"steer":30.9,"gear":4,"rpm":5796.0},{"d":79.8995,"speed":137.8,"throttle":67.2,"brake":0.0,"steer":30.1,"gear":4,"rpm":5793.0},{"d":80.402,"speed":137.9,"throttle":67.6,"brake":0.0,"steer":28.9,"gear":4,"rpm":5785.0},{"d":80.9045,"speed":138.1,"throttle":70.0,"brake":0.0,"steer":29.3,"gear":4,"rpm":5800.0},{"d":81.407,"speed":138.3,"throttle":69.6,"brake":0.0,"steer":31.1,"gear":4,"rpm":5808.0},{"d":81.9095,"speed":138.5,"throttle":73.1,"brake":0.0,"steer":32.2,"gear":4,"rpm":5815.0},{"d":82.4121,"speed":138.8,"throttle":72.7,"brake":0.0,"steer":32.5,"gear":4,"rpm":5825.0},{"d":82.9146,"speed":139.1,"throttle":73.1,"brake":0.0,"steer":31.8,"gear":4,"rpm":5840.0},{"d":83.4171,"speed":139.4,"throttle":73.1,"brake":0.0,"steer":31.5,"gear":4,"rpm":5862.0},{"d":83.9196,"speed":139.7,"throttle":73.1,"brake":0.0,"steer":31.5,"gear":4,"rpm":5872.0},{"d":84.4221,"speed":139.9,"throttle":73.1,"brake":0.0,"steer":31.5,"gear":4,"rpm":5889.0},{"d":84.9246,"speed":140.1,"throttle":73.1,"brake":0.0,"steer":28.2,"gear":4,"rpm":5895.0},{"d":85.4271,"speed":140.5,"throttle":73.5,"brake":0.0,"steer":22.5,"gear":4,"rpm":5922.0},{"d":85.9296,"speed":140.7,"throttle":73.5,"brake":0.0,"steer":21.7,"gear":4,"rpm":5928.0},{"d":86.4322,"speed":141.1,"throttle":79.1,"brake":0.0,"steer":21.3,"gear":4,"rpm":5961.0},{"d":86.9347,"speed":141.5,"throttle":79.8,"brake":0.0,"steer":17.1,"gear":4,"rpm":5978.0},{"d":87.4372,"speed":141.9,"throttle":83.8,"brake":0.0,"steer":12.1,"gear":4,"rpm":6050.0},{"d":87.9397,"speed":142.7,"throttle":84.6,"brake":0.0,"steer":4.3,"gear":4,"rpm":6078.0},{"d":88.4422,"speed":143.4,"throttle":93.3,"brake":0.0,"steer":1.5,"gear":4,"rpm":6120.0},{"d":88.9447,"speed":144.2,"throttle":100.0,"brake":0.0,"steer":2.8,"gear":4,"rpm":6112.0},{"d":89.4472,"speed":145.2,"throttle":100.0,"brake":0.0,"steer":11.3,"gear":4,"rpm":6143.0},{"d":89.9497,"speed":146.0,"throttle":100.0,"brake":0.0,"steer":11.0,"gear":4,"rpm":6184.0},{"d":90.4523,"speed":146.8,"throttle":100.0,"brake":0.0,"steer":11.9,"gear":4,"rpm":6212.0},{"d":90.9548,"speed":147.5,"throttle":100.0,"brake":0.0,"steer":6.2,"gear":4,"rpm":6251.0},{"d":91.4573,"speed":148.4,"throttle":100.0,"brake":0.0,"steer":5.4,"gear":4,"rpm":6245.0},{"d":91.9598,"speed":149.0,"throttle":100.0,"brake":0.0,"steer":2.4,"gear":4,"rpm":6293.0},{"d":92.4623,"speed":149.8,"throttle":100.0,"brake":0.0,"steer":3.3,"gear":4,"rpm":6323.0},{"d":92.9648,"speed":150.4,"throttle":100.0,"brake":0.0,"steer":0.3,"gear":4,"rpm":6364.0},{"d":93.4673,"speed":151.1,"throttle":100.0,"brake":0.0,"steer":0.3,"gear":4,"rpm":6404.0},{"d":93.9698,"speed":151.8,"throttle":100.0,"brake":0.0,"steer":5.2,"gear":4,"rpm":6430.0},{"d":94.4724,"speed":152.5,"throttle":100.0,"brake":0.0,"steer":4.4,"gear":4,"rpm":6468.0},{"d":94.9749,"speed":153.4,"throttle":100.0,"brake":0.0,"steer":3.5,"gear":4,"rpm":6500.0},{"d":95.4774,"speed":154.0,"throttle":100.0,"brake":0.0,"steer":4.0,"gear":4,"rpm":6525.0},{"d":95.9799,"speed":154.7,"throttle":100.0,"brake":0.0,"steer":4.3,"gear":4,"rpm":6544.0},{"d":96.4824,"speed":155.3,"throttle":100.0,"brake":0.0,"steer":6.2,"gear":4,"rpm":6598.0},{"d":96.9849,"speed":155.9,"throttle":100.0,"brake":0.0,"steer":5.4,"gear":4,"rpm":6614.0},{"d":97.4874,"speed":156.6,"throttle":100.0,"brake":0.0,"steer":4.8,"gear":4,"rpm":6612.0},{"d":97.9899,"speed":157.2,"throttle":100.0,"brake":0.0,"steer":4.5,"gear":4,"rpm":6654.0},{"d":98.4925,"speed":157.8,"throttle":100.0,"brake":0.0,"steer":5.6,"gear":4,"rpm":6680.0},{"d":98.995,"speed":158.4,"throttle":100.0,"brake":0.0,"steer":5.8,"gear":4,"rpm":6703.0},{"d":99.4975,"speed":159.0,"throttle":100.0,"brake":0.0,"steer":5.4,"gear":4,"rpm":6728.0},{"d":100.0,"speed":159.4,"throttle":100.0,"brake":0.0,"steer":5.4,"gear":4,"rpm":6741.0}],"telemetry_B":[{"d":0.0,"speed":158.7,"throttle":100.0,"brake":0.0,"steer":5.4,"gear":4,"rpm":6714.0},{"d":0.5025,"speed":159.3,"throttle":100.0,"brake":0.0,"steer":6.1,"gear":4,"rpm":6742.0},{"d":1.005,"speed":159.9,"throttle":100.0,"brake":0.0,"steer":4.6,"gear":4,"rpm":6779.0},{"d":1.5075,"speed":160.5,"throttle":100.0,"brake":0.0,"steer":2.7,"gear":4,"rpm":6796.0},{"d":2.0101,"speed":161.1,"throttle":100.0,"brake":0.0,"steer":4.7,"gear":4,"rpm":6824.0},{"d":2.5126,"speed":161.7,"throttle":100.0,"brake":0.0,"steer":4.4,"gear":4,"rpm":6855.0},{"d":3.0151,"speed":162.3,"throttle":100.0,"brake":0.0,"steer":4.5,"gear":4,"rpm":6877.0},{"d":3.5176,"speed":162.9,"throttle":100.0,"brake":0.0,"steer":4.4,"gear":4,"rpm":6874.0},{"d":4.0201,"speed":163.5,"throttle":100.0,"brake":0.0,"steer":3.5,"gear":4,"rpm":6920.0},{"d":4.5226,"speed":163.9,"throttle":100.0,"brake":0.0,"steer":4.0,"gear":4,"rpm":6912.0},{"d":5.0251,"speed":164.4,"throttle":100.0,"brake":0.0,"steer":2.1,"gear":4,"rpm":6946.0},{"d":5.5276,"speed":165.0,"throttle":100.0,"brake":0.0,"steer":3.6,"gear":4,"rpm":6959.0},{"d":6.0302,"speed":165.5,"throttle":100.0,"brake":0.0,"steer":2.9,"gear":4,"rpm":6986.0},{"d":6.5327,"speed":166.0,"throttle":100.0,"brake":0.0,"steer":1.7,"gear":4,"rpm":7003.0},{"d":7.0352,"speed":166.5,"throttle":100.0,"brake":0.0,"steer":2.1,"gear":4,"rpm":7036.0},{"d":7.5377,"speed":167.0,"throttle":100.0,"brake":0.0,"steer":2.7,"gear":4,"rpm":7050.0},{"d":8.0402,"speed":167.3,"throttle":100.0,"brake":0.0,"steer":3.9,"gear":4,"rpm":7058.0},{"d":8.5427,"speed":167.8,"throttle":100.0,"brake":0.0,"steer":10.4,"gear":4,"rpm":7099.0},{"d":9.0452,"speed":168.3,"throttle":90.2,"brake":0.0,"steer":16.0,"gear":4,"rpm":7109.0},{"d":9.5477,"speed":168.6,"throttle":73.1,"brake":0.0,"steer":21.2,"gear":4,"rpm":7086.0},{"d":10.0503,"speed":168.7,"throttle":63.3,"brake":0.0,"steer":19.9,"gear":4,"rpm":7087.0},{"d":10.5528,"speed":168.7,"throttle":56.4,"brake":0.0,"steer":21.6,"gear":4,"rpm":7053.0},{"d":11.0553,"speed":168.4,"throttle":42.3,"brake":0.0,"steer":22.6,"gear":4,"rpm":6974.0},{"d":11.5578,"speed":167.7,"throttle":31.0,"brake":0.0,"steer":27.4,"gear":4,"rpm":6905.0},{"d":12.0603,"speed":166.8,"throttle":21.9,"brake":0.0,"steer":31.1,"gear":4,"rpm":6838.0},{"d":12.5628,"speed":165.8,"throttle":10.1,"brake":0.0,"steer":40.0,"gear":4,"rpm":6847.0},{"d":13.0653,"speed":164.4,"throttle":3.8,"brake":0.0,"steer":42.9,"gear":4,"rpm":6676.0},{"d":13.5678,"speed":162.8,"throttle":4.5,"brake":0.0,"steer":42.3,"gear":4,"rpm":6622.0},{"d":14.0704,"speed":161.1,"throttle":5.2,"brake":0.0,"steer":42.1,"gear":4,"rpm":6559.0},{"d":14.5729,"speed":160.1,"throttle":13.0,"brake":0.0,"steer":41.0,"gear":4,"rpm":6533.0},{"d":15.0754,"speed":158.6,"throttle":24.6,"brake":0.0,"steer":37.8,"gear":4,"rpm":6639.0},{"d":15.5779,"speed":157.2,"throttle":42.6,"brake":0.0,"steer":35.4,"gear":4,"rpm":6543.0},{"d":16.0804,"speed":156.6,"throttle":47.9,"brake":0.0,"steer":36.7,"gear":4,"rpm":6505.0},{"d":16.5829,"speed":156.1,"throttle":43.7,"brake":0.0,"steer":40.4,"gear":4,"rpm":6471.0},{"d":17.0854,"speed":155.5,"throttle":46.6,"brake":0.0,"steer":41.5,"gear":4,"rpm":6457.0},{"d":17.5879,"speed":155.1,"throttle":54.1,"brake":0.0,"steer":40.8,"gear":4,"rpm":6454.0},{"d":18.0905,"speed":154.8,"throttle":51.1,"brake":0.0,"steer":43.9,"gear":4,"rpm":6433.0},{"d":18.593,"speed":154.4,"throttle":48.1,"brake":0.0,"steer":48.1,"gear":4,"rpm":6412.0},{"d":19.0955,"speed":154.1,"throttle":62.0,"brake":0.0,"steer":38.9,"gear":4,"rpm":6439.0},{"d":19.598,"speed":154.0,"throttle":72.8,"brake":0.0,"steer":28.2,"gear":4,"rpm":6467.0},{"d":20.1005,"speed":154.1,"throttle":80.5,"brake":0.0,"steer":28.2,"gear":4,"rpm":6486.0},{"d":20.603,"speed":154.2,"throttle":87.1,"brake":0.0,"steer":23.5,"gear":4,"rpm":6508.0},{"d":21.1055,"speed":154.5,"throttle":81.9,"brake":0.0,"steer":24.5,"gear":4,"rpm":6494.0},{"d":21.608,"speed":154.7,"throttle":77.9,"brake":0.0,"steer":22.3,"gear":4,"rpm":6491.0},{"d":22.1106,"speed":154.9,"throttle":74.9,"brake":0.0,"steer":24.9,"gear":4,"rpm":6477.0},{"d":22.6131,"speed":155.1,"throttle":72.9,"brake":0.0,"steer":29.5,"gear":4,"rpm":6489.0},{"d":23.1156,"speed":155.3,"throttle":72.1,"brake":0.0,"steer":24.9,"gear":4,"rpm":6474.0},{"d":23.6181,"speed":155.5,"throttle":71.7,"brake":0.0,"steer":27.8,"gear":4,"rpm":6479.0},{"d":24.1206,"speed":155.6,"throttle":68.7,"brake":0.0,"steer":30.9,"gear":4,"rpm":6490.0},{"d":24.6231,"speed":155.7,"throttle":63.9,"brake":0.0,"steer":32.0,"gear":4,"rpm":6489.0},{"d":25.1256,"speed":155.8,"throttle":63.4,"brake":0.0,"steer":29.4,"gear":4,"rpm":6513.0},{"d":25.6281,"speed":155.7,"throttle":58.0,"brake":0.0,"steer":36.9,"gear":4,"rpm":6482.0},{"d":26.1307,"speed":155.6,"throttle":54.5,"brake":0.0,"steer":36.2,"gear":4,"rpm":6453.0},{"d":26.6332,"speed":155.3,"throttle":53.9,"brake":0.0,"steer":32.7,"gear":4,"rpm":6451.0},{"d":27.1357,"speed":155.1,"throttle":54.5,"brake":0.0,"steer":30.8,"gear":4,"rpm":6451.0},{"d":27.6382,"speed":154.9,"throttle":54.3,"brake":0.0,"steer":35.5,"gear":4,"rpm":6435.0},{"d":28.1407,"speed":154.7,"throttle":55.2,"brake":0.0,"steer":31.5,"gear":4,"rpm":6431.0},{"d":28.6432,"speed":154.5,"throttle":56.8,"brake":0.0,"steer":28.4,"gear":4,"rpm":6426.0},{"d":29.1457,"speed":154.3,"throttle":56.2,"brake":0.0,"steer":32.3,"gear":4,"rpm":6405.0},{"d":29.6482,"speed":154.2,"throttle":54.8,"brake":0.0,"steer":36.4,"gear":4,"rpm":6408.0},{"d":30.1508,"speed":154.0,"throttle":48.8,"brake":0.0,"steer":36.3,"gear":4,"rpm":6389.0},{"d":30.6533,"speed":153.8,"throttle":53.2,"brake":0.0,"steer":33.6,"gear":4,"rpm":6393.0},{"d":31.1558,"speed":153.6,"throttle":65.2,"brake":0.0,"steer":31.6,"gear":4,"rpm":6426.0},{"d":31.6583,"speed":153.6,"throttle":66.8,"brake":0.0,"steer":28.6,"gear":4,"rpm":6422.0},{"d":32.1608,"speed":153.6,"throttle":66.4,"brake":0.0,"steer":28.1,"gear":4,"rpm":6418.0},{"d":32.6633,"speed":153.7,"throttle":75.1,"brake":0.0,"steer":28.4,"gear":4,"rpm":6438.0},{"d":33.1658,"speed":153.9,"throttle":71.9,"brake":0.0,"steer":32.8,"gear":4,"rpm":6433.0},{"d":33.6683,"speed":154.2,"throttle":73.8,"brake":0.0,"steer":30.9,"gear":4,"rpm":6447.0},{"d":34.1709,"speed":154.4,"throttle":74.5,"brake":0.0,"steer":33.7,"gear":4,"rpm":6458.0},{"d":34.6734,"speed":154.5,"throttle":70.7,"brake":0.0,"steer":31.7,"gear":4,"rpm":6477.0},{"d":35.1759,"speed":154.6,"throttle":68.8,"brake":0.0,"steer":25.7,"gear":4,"rpm":6467.0},{"d":35.6784,"speed":154.7,"throttle":70.7,"brake":0.0,"steer":27.4,"gear":4,"rpm":6489.0},{"d":36.1809,"speed":154.8,"throttle":78.1,"brake":0.0,"steer":26.5,"gear":4,"rpm":6503.0},{"d":36.6834,"speed":155.0,"throttle":79.5,"brake":0.0,"steer":28.8,"gear":4,"rpm":6507.0},{"d":37.1859,"speed":155.2,"throttle":87.6,"brake":0.0,"steer":28.3,"gear":4,"rpm":6519.0},{"d":37.6884,"speed":155.5,"throttle":100.0,"brake":0.0,"steer":27.7,"gear":4,"rpm":6544.0},{"d":38.191,"speed":155.9,"throttle":100.0,"brake":0.0,"steer":23.4,"gear":4,"rpm":6577.0},{"d":38.6935,"speed":156.3,"throttle":100.0,"brake":0.0,"steer":23.9,"gear":4,"rpm":6580.0},{"d":39.196,"speed":156.7,"throttle":100.0,"brake":0.0,"steer":21.8,"gear":4,"rpm":6587.0},{"d":39.6985,"speed":157.0,"throttle":100.0,"brake":0.0,"steer":19.4,"gear":4,"rpm":6609.0},{"d":40.201,"speed":157.5,"throttle":100.0,"brake":0.0,"steer":16.4,"gear":4,"rpm":6612.0},{"d":40.7035,"speed":157.9,"throttle":100.0,"brake":0.0,"steer":13.6,"gear":4,"rpm":6656.0},{"d":41.206,"speed":158.3,"throttle":100.0,"brake":0.0,"steer":11.3,"gear":4,"rpm":6735.0},{"d":41.7085,"speed":158.8,"throttle":100.0,"brake":0.0,"steer":13.8,"gear":4,"rpm":6817.0},{"d":42.2111,"speed":159.4,"throttle":100.0,"brake":0.0,"steer":10.8,"gear":4,"rpm":6793.0},{"d":42.7136,"speed":159.9,"throttle":100.0,"brake":0.0,"steer":9.9,"gear":4,"rpm":6783.0},{"d":43.2161,"speed":160.5,"throttle":100.0,"brake":0.0,"steer":9.7,"gear":4,"rpm":6816.0},{"d":43.7186,"speed":161.1,"throttle":100.0,"brake":0.0,"steer":5.9,"gear":4,"rpm":6823.0},{"d":44.2211,"speed":161.7,"throttle":100.0,"brake":0.0,"steer":-1.8,"gear":4,"rpm":6864.0},{"d":44.7236,"speed":162.4,"throttle":100.0,"brake":0.0,"steer":5.5,"gear":4,"rpm":6833.0},{"d":45.2261,"speed":162.9,"throttle":100.0,"brake":0.0,"steer":3.8,"gear":4,"rpm":6903.0},{"d":45.7286,"speed":163.5,"throttle":100.0,"brake":0.0,"steer":1.1,"gear":4,"rpm":6902.0},{"d":46.2312,"speed":164.1,"throttle":100.0,"brake":0.0,"steer":2.7,"gear":4,"rpm":6897.0},{"d":46.7337,"speed":164.6,"throttle":100.0,"brake":0.0,"steer":2.3,"gear":4,"rpm":6949.0},{"d":47.2362,"speed":165.0,"throttle":100.0,"brake":0.0,"steer":1.7,"gear":4,"rpm":6947.0},{"d":47.7387,"speed":165.5,"throttle":100.0,"brake":0.0,"steer":1.1,"gear":4,"rpm":6981.0},{"d":48.2412,"speed":166.0,"throttle":100.0,"brake":0.0,"steer":2.3,"gear":4,"rpm":7005.0},{"d":48.7437,"speed":166.5,"throttle":100.0,"brake":0.0,"steer":4.6,"gear":4,"rpm":7019.0},{"d":49.2462,"speed":167.0,"throttle":100.0,"brake":0.0,"steer":4.4,"gear":4,"rpm":7060.0},{"d":49.7487,"speed":167.5,"throttle":100.0,"brake":0.0,"steer":2.9,"gear":4,"rpm":7065.0},{"d":50.2513,"speed":167.9,"throttle":100.0,"brake":0.0,"steer":3.5,"gear":4,"rpm":7093.0},{"d":50.7538,"speed":168.3,"throttle":100.0,"brake":0.0,"steer":3.5,"gear":4,"rpm":7098.0},{"d":51.2563,"speed":168.7,"throttle":100.0,"brake":0.0,"steer":3.9,"gear":4,"rpm":7136.0},{"d":51.7588,"speed":169.2,"throttle":100.0,"brake":0.0,"steer":3.8,"gear":4,"rpm":7138.0},{"d":52.2613,"speed":169.7,"throttle":100.0,"brake":0.0,"steer":3.8,"gear":4,"rpm":7163.0},{"d":52.7638,"speed":170.1,"throttle":100.0,"brake":0.0,"steer":3.8,"gear":4,"rpm":7192.0},{"d":53.2663,"speed":170.4,"throttle":100.0,"brake":0.0,"steer":3.5,"gear":4,"rpm":7197.0},{"d":53.7688,"speed":170.9,"throttle":100.0,"brake":0.0,"steer":3.6,"gear":4,"rpm":7202.0},{"d":54.2714,"speed":171.3,"throttle":100.0,"brake":0.0,"steer":1.7,"gear":4,"rpm":7242.0},{"d":54.7739,"speed":171.8,"throttle":100.0,"brake":0.0,"steer":1.9,"gear":4,"rpm":7248.0},{"d":55.2764,"speed":172.1,"throttle":100.0,"brake":0.0,"steer":2.0,"gear":4,"rpm":7250.0},{"d":55.7789,"speed":172.5,"throttle":100.0,"brake":0.0,"steer":1.4,"gear":4,"rpm":7305.0},{"d":56.2814,"speed":172.9,"throttle":100.0,"brake":0.0,"steer":1.7,"gear":4,"rpm":7300.0},{"d":56.7839,"speed":173.3,"throttle":100.0,"brake":0.0,"steer":1.3,"gear":4,"rpm":7344.0},{"d":57.2864,"speed":173.6,"throttle":100.0,"brake":0.0,"steer":3.2,"gear":4,"rpm":7339.0},{"d":57.7889,"speed":174.1,"throttle":100.0,"brake":0.0,"steer":6.0,"gear":4,"rpm":7361.0},{"d":58.2915,"speed":174.5,"throttle":100.0,"brake":0.0,"steer":5.2,"gear":4,"rpm":7382.0},{"d":58.794,"speed":174.9,"throttle":100.0,"brake":0.0,"steer":6.3,"gear":4,"rpm":7393.0},{"d":59.2965,"speed":175.2,"throttle":100.0,"brake":0.0,"steer":6.2,"gear":4,"rpm":7380.0},{"d":59.799,"speed":175.5,"throttle":50.1,"brake":6.4,"steer":6.5,"gear":4,"rpm":7281.0},{"d":60.3015,"speed":173.8,"throttle":0.0,"brake":18.7,"steer":0.8,"gear":4,"rpm":7252.0},{"d":60.804,"speed":172.4,"throttle":0.0,"brake":24.4,"steer":13.3,"gear":4,"rpm":6948.0},{"d":61.3065,"speed":170.2,"throttle":0.0,"brake":25.6,"steer":13.5,"gear":4,"rpm":6884.0},{"d":61.809,"speed":167.8,"throttle":0.0,"brake":27.7,"steer":9.9,"gear":4,"rpm":6762.0},{"d":62.3116,"speed":165.4,"throttle":0.0,"brake":24.0,"steer":10.9,"gear":4,"rpm":6652.0},{"d":62.8141,"speed":163.2,"throttle":0.0,"brake":21.3,"steer":12.7,"gear":4,"rpm":6575.0},{"d":63.3166,"speed":161.7,"throttle":0.0,"brake":18.2,"steer":14.5,"gear":4,"rpm":6511.0},{"d":63.8191,"speed":159.7,"throttle":0.0,"brake":16.9,"steer":15.8,"gear":4,"rpm":6443.0},{"d":64.3216,"speed":157.8,"throttle":0.0,"brake":14.0,"steer":18.0,"gear":4,"rpm":6372.0},{"d":64.8241,"speed":156.0,"throttle":0.0,"brake":12.1,"steer":20.1,"gear":4,"rpm":6310.0},{"d":65.3266,"speed":154.3,"throttle":0.0,"brake":11.2,"steer":22.3,"gear":4,"rpm":6239.0},{"d":65.8291,"speed":152.1,"throttle":0.0,"brake":10.2,"steer":24.9,"gear":4,"rpm":6156.0},{"d":66.3317,"speed":150.3,"throttle":0.0,"brake":11.3,"steer":24.8,"gear":4,"rpm":6100.0},{"d":66.8342,"speed":148.5,"throttle":0.0,"brake":12.3,"steer":32.9,"gear":4,"rpm":6017.0},{"d":67.3367,"speed":146.7,"throttle":0.0,"brake":12.7,"steer":31.5,"gear":4,"rpm":5950.0},{"d":67.8392,"speed":144.9,"throttle":0.0,"brake":13.0,"steer":33.2,"gear":4,"rpm":5872.0},{"d":68.3417,"speed":142.4,"throttle":0.0,"brake":13.4,"steer":35.7,"gear":4,"rpm":5766.0},{"d":68.8442,"speed":140.6,"throttle":0.0,"brake":0.0,"steer":34.7,"gear":4,"rpm":5702.0},{"d":69.3467,"speed":139.2,"throttle":0.4,"brake":0.0,"steer":37.1,"gear":4,"rpm":5659.0},{"d":69.8492,"speed":137.5,"throttle":7.4,"brake":0.0,"steer":39.5,"gear":4,"rpm":5608.0},{"d":70.3518,"speed":136.4,"throttle":13.0,"brake":0.0,"steer":40.9,"gear":4,"rpm":5579.0},{"d":70.8543,"speed":135.2,"throttle":25.3,"brake":0.0,"steer":39.5,"gear":4,"rpm":5626.0},{"d":71.3568,"speed":134.4,"throttle":30.4,"brake":0.0,"steer":41.7,"gear":4,"rpm":5531.0},{"d":71.8593,"speed":133.7,"throttle":38.3,"brake":0.0,"steer":40.7,"gear":4,"rpm":5538.0},{"d":72.3618,"speed":133.4,"throttle":39.0,"brake":0.0,"steer":42.9,"gear":4,"rpm":5524.0},{"d":72.8643,"speed":132.8,"throttle":36.9,"brake":0.0,"steer":43.4,"gear":4,"rpm":5498.0},{"d":73.3668,"speed":132.4,"throttle":37.5,"brake":0.0,"steer":44.4,"gear":4,"rpm":5489.0},{"d":73.8693,"speed":132.2,"throttle":58.9,"brake":0.0,"steer":38.2,"gear":4,"rpm":5534.0},{"d":74.3719,"speed":132.3,"throttle":69.1,"brake":0.0,"steer":35.0,"gear":4,"rpm":5556.0},{"d":74.8744,"speed":132.6,"throttle":73.7,"brake":0.0,"steer":32.9,"gear":4,"rpm":5574.0},{"d":75.3769,"speed":132.9,"throttle":79.6,"brake":0.0,"steer":28.9,"gear":4,"rpm":5608.0},{"d":75.8794,"speed":133.5,"throttle":82.4,"brake":0.0,"steer":37.2,"gear":4,"rpm":5624.0},{"d":76.3819,"speed":133.9,"throttle":81.7,"brake":0.0,"steer":39.7,"gear":4,"rpm":5641.0},{"d":76.8844,"speed":134.4,"throttle":83.9,"brake":0.0,"steer":33.9,"gear":4,"rpm":5659.0},{"d":77.3869,"speed":134.8,"throttle":83.7,"brake":0.0,"steer":34.0,"gear":4,"rpm":5674.0},{"d":77.8894,"speed":135.2,"throttle":84.8,"brake":0.0,"steer":35.9,"gear":4,"rpm":5713.0},{"d":78.392,"speed":135.7,"throttle":84.9,"brake":0.0,"steer":35.8,"gear":4,"rpm":5724.0},{"d":78.8945,"speed":136.0,"throttle":84.2,"brake":0.0,"steer":34.1,"gear":4,"rpm":5744.0},{"d":79.397,"speed":136.4,"throttle":85.6,"brake":0.0,"steer":34.4,"gear":4,"rpm":5772.0},{"d":79.8995,"speed":136.8,"throttle":84.8,"brake":0.0,"steer":37.0,"gear":4,"rpm":5761.0},{"d":80.402,"speed":137.0,"throttle":85.2,"brake":0.0,"steer":36.0,"gear":4,"rpm":5808.0},{"d":80.9045,"speed":137.4,"throttle":82.7,"brake":0.0,"steer":35.2,"gear":4,"rpm":5810.0},{"d":81.407,"speed":137.6,"throttle":83.2,"brake":0.0,"steer":35.4,"gear":4,"rpm":5822.0},{"d":81.9095,"speed":138.0,"throttle":82.3,"brake":0.0,"steer":34.9,"gear":4,"rpm":5834.0},{"d":82.4121,"speed":138.1,"throttle":76.9,"brake":0.0,"steer":33.2,"gear":4,"rpm":5832.0},{"d":82.9146,"speed":138.2,"throttle":69.2,"brake":0.0,"steer":29.9,"gear":4,"rpm":5821.0},{"d":83.4171,"speed":138.4,"throttle":79.6,"brake":0.0,"steer":30.8,"gear":4,"rpm":5852.0},{"d":83.9196,"speed":138.6,"throttle":86.6,"brake":0.0,"steer":26.3,"gear":4,"rpm":5881.0},{"d":84.4221,"speed":139.0,"throttle":90.9,"brake":0.0,"steer":25.0,"gear":4,"rpm":5892.0},{"d":84.9246,"speed":139.5,"throttle":100.0,"brake":0.0,"steer":25.8,"gear":4,"rpm":5915.0},{"d":85.4271,"speed":139.9,"throttle":100.0,"brake":0.0,"steer":18.4,"gear":4,"rpm":5933.0},{"d":85.9296,"speed":140.3,"throttle":100.0,"brake":0.0,"steer":18.2,"gear":4,"rpm":5948.0},{"d":86.4322,"speed":141.0,"throttle":100.0,"brake":0.0,"steer":14.8,"gear":4,"rpm":5975.0},{"d":86.9347,"speed":141.5,"throttle":100.0,"brake":0.0,"steer":16.2,"gear":4,"rpm":5970.0},{"d":87.4372,"speed":142.3,"throttle":100.0,"brake":0.0,"steer":17.7,"gear":4,"rpm":6075.0},{"d":87.9397,"speed":142.9,"throttle":100.0,"brake":0.0,"steer":14.8,"gear":4,"rpm":6113.0},{"d":88.4422,"speed":143.6,"throttle":100.0,"brake":0.0,"steer":14.8,"gear":4,"rpm":6164.0},{"d":88.9447,"speed":144.2,"throttle":100.0,"brake":0.0,"steer":10.3,"gear":4,"rpm":6183.0},{"d":89.4472,"speed":145.1,"throttle":100.0,"brake":0.0,"steer":3.5,"gear":4,"rpm":6216.0},{"d":89.9497,"speed":145.8,"throttle":100.0,"brake":0.0,"steer":3.6,"gear":4,"rpm":6223.0},{"d":90.4523,"speed":146.6,"throttle":100.0,"brake":0.0,"steer":2.0,"gear":4,"rpm":6241.0},{"d":90.9548,"speed":147.3,"throttle":100.0,"brake":0.0,"steer":0.1,"gear":4,"rpm":6233.0},{"d":91.4573,"speed":148.4,"throttle":100.0,"brake":0.0,"steer":1.9,"gear":4,"rpm":6246.0},{"d":91.9598,"speed":149.1,"throttle":100.0,"brake":0.0,"steer":0.9,"gear":4,"rpm":6303.0},{"d":92.4623,"speed":149.8,"throttle":100.0,"brake":0.0,"steer":-0.5,"gear":4,"rpm":6328.0},{"d":92.9648,"speed":150.5,"throttle":100.0,"brake":0.0,"steer":-0.3,"gear":4,"rpm":6381.0},{"d":93.4673,"speed":151.1,"throttle":100.0,"brake":0.0,"steer":2.3,"gear":4,"rpm":6415.0},{"d":93.9698,"speed":151.8,"throttle":100.0,"brake":0.0,"steer":4.9,"gear":4,"rpm":6430.0},{"d":94.4724,"speed":152.7,"throttle":100.0,"brake":0.0,"steer":4.7,"gear":4,"rpm":6469.0},{"d":94.9749,"speed":153.4,"throttle":100.0,"brake":0.0,"steer":3.9,"gear":4,"rpm":6507.0},{"d":95.4774,"speed":154.0,"throttle":100.0,"brake":0.0,"steer":7.7,"gear":4,"rpm":6526.0},{"d":95.9799,"speed":154.7,"throttle":100.0,"brake":0.0,"steer":5.6,"gear":4,"rpm":6541.0},{"d":96.4824,"speed":155.4,"throttle":100.0,"brake":0.0,"steer":7.0,"gear":4,"rpm":6611.0},{"d":96.9849,"speed":156.0,"throttle":100.0,"brake":0.0,"steer":5.8,"gear":4,"rpm":6617.0},{"d":97.4874,"speed":156.7,"throttle":100.0,"brake":0.0,"steer":6.0,"gear":4,"rpm":6630.0},{"d":97.9899,"speed":157.3,"throttle":100.0,"brake":0.0,"steer":6.6,"gear":4,"rpm":6662.0},{"d":98.4925,"speed":157.9,"throttle":100.0,"brake":0.0,"steer":3.8,"gear":4,"rpm":6687.0},{"d":98.995,"speed":158.6,"throttle":100.0,"brake":0.0,"steer":4.7,"gear":4,"rpm":6717.0},{"d":99.4975,"speed":159.2,"throttle":100.0,"brake":0.0,"steer":5.8,"gear":4,"rpm":6739.0},{"d":100.0,"speed":159.6,"throttle":100.0,"brake":0.0,"steer":6.5,"gear":4,"rpm":6757.0}],"gps_A":[[34.293619,-79.906073],[34.293604,-79.905998],[34.293589,-79.905922],[34.293573,-79.905847],[34.293558,-79.905771],[34.293542,-79.905695],[34.293527,-79.905618],[34.293511,-79.905542],[34.293496,-79.905465],[34.29348,-79.905389],[34.293464,-79.905312],[34.293448,-79.905234],[34.293432,-79.905157],[34.293416,-79.90508],[34.2934,-79.905002],[34.293392,-79.904963],[34.293376,-79.904885],[34.29336,-79.904807],[34.293344,-79.904729],[34.293327,-79.904651],[34.293311,-79.904572],[34.293295,-79.904494],[34.293279,-79.904415],[34.293262,-79.904336],[34.293254,-79.904296],[34.293238,-79.904217],[34.293222,-79.904138],[34.293206,-79.904058],[34.29319,-79.903978],[34.293175,-79.903898],[34.29316,-79.903818],[34.293147,-79.903738],[34.29314,-79.903697],[34.293129,-79.903617],[34.293119,-79.903537],[34.29311,-79.903457],[34.293104,-79.903377],[34.2931,-79.903297],[34.293097,-79.903217],[34.293096,-79.903138],[34.293098,-79.90306],[34.293101,-79.902982],[34.293108,-79.902904],[34.293117,-79.902827],[34.293128,-79.902751],[34.293142,-79.902676],[34.293158,-79.902601],[34.293176,-79.902527],[34.293197,-79.902455],[34.293219,-79.902383],[34.293244,-79.902313],[34.29327,-79.902243],[34.293299,-79.902175],[34.293329,-79.902108],[34.293361,-79.902042],[34.293396,-79.901978],[34.293432,-79.901916],[34.29347,-79.901855],[34.29351,-79.901795],[34.293551,-79.901738],[34.293595,-79.901683],[34.29364,-79.901629],[34.293686,-79.901577],[34.293734,-79.901528],[34.293784,-79.901481],[34.293834,-79.901436],[34.293887,-79.901393],[34.29394,-79.901352],[34.293994,-79.901314],[34.29405,-79.901279],[34.294107,-79.901246],[34.294165,-79.901215],[34.294223,-79.901187],[34.294283,-79.901162],[34.294343,-79.901139],[34.294403,-79.901119],[34.294465,-79.901101],[34.294527,-79.901087],[34.294589,-79.901074],[34.294651,-79.901065],[34.294714,-79.901058],[34.294777,-79.901053],[34.29484,-79.90105],[34.294903,-79.90105],[34.294965,-79.901053],[34.295028,-79.901057],[34.295091,-79.901064],[34.295153,-79.901074],[34.295246,-79.901093],[34.295307,-79.901109],[34.295367,-79.901127],[34.295427,-79.901148],[34.295486,-79.901172],[34.295544,-79.901198],[34.295601,-79.901226],[34.295657,-79.901257],[34.295712,-79.90129],[34.295766,-79.901326],[34.295818,-79.901364],[34.29587,-79.901403],[34.29592,-79.901446],[34.295969,-79.90149],[34.296016,-79.901536],[34.296062,-79.901584],[34.296106,-79.901634],[34.296149,-79.901686],[34.29619,-79.90174],[34.296249,-79.901824],[34.296286,-79.901881],[34.296321,-79.901941],[34.296355,-79.902002],[34.296387,-79.902064],[34.296417,-79.902128],[34.296446,-79.902193],[34.296473,-79.90226],[34.296498,-79.902327],[34.296522,-79.902395],[34.296543,-79.902465],[34.296563,-79.902535],[34.296581,-79.902606],[34.296598,-79.902678],[34.296613,-79.902751],[34.296626,-79.902824],[34.296639,-79.902897],[34.29665,-79.902971],[34.296666,-79.903082],[34.296676,-79.903157],[34.296685,-79.903232],[34.296693,-79.903307],[34.296701,-79.903383],[34.296708,-79.903459],[34.296715,-79.903535],[34.296722,-79.903611],[34.296729,-79.903687],[34.296736,-79.903764],[34.296743,-79.903841],[34.296749,-79.903918],[34.296756,-79.903995],[34.296759,-79.904034],[34.296766,-79.904111],[34.296773,-79.904189],[34.29678,-79.904267],[34.296787,-79.904345],[34.296795,-79.904423],[34.296802,-79.904501],[34.296809,-79.90458],[34.296817,-79.904658],[34.296824,-79.904737],[34.296832,-79.904816],[34.296839,-79.904895],[34.296847,-79.904974],[34.296854,-79.905054],[34.296862,-79.905133],[34.29687,-79.905213],[34.296874,-79.905253],[34.296882,-79.905333],[34.29689,-79.905413],[34.296898,-79.905493],[34.296906,-79.905573],[34.296914,-79.905653],[34.296922,-79.905734],[34.29693,-79.905815],[34.296938,-79.905895],[34.296942,-79.905936],[34.29695,-79.906017],[34.296958,-79.906098],[34.296966,-79.90618],[34.296974,-79.906261],[34.296981,-79.906343],[34.296989,-79.906424],[34.296997,-79.906506],[34.297001,-79.906547],[34.297009,-79.906629],[34.297017,-79.906711],[34.297025,-79.906794],[34.297033,-79.906876],[34.297042,-79.906959],[34.297046,-79.907],[34.297054,-79.907082],[34.297062,-79.907165],[34.297071,-79.907248],[34.297079,-79.907331],[34.297088,-79.907414],[34.297092,-79.907456],[34.2971,-79.907538],[34.297107,-79.90762],[34.297114,-79.9077],[34.297121,-79.90778],[34.297126,-79.907859],[34.297131,-79.907936],[34.297135,-79.908013],[34.297138,-79.908088],[34.297139,-79.908163],[34.29714,-79.908236],[34.297138,-79.908309],[34.297136,-79.908381],[34.297132,-79.908452],[34.297122,-79.908558],[34.297114,-79.908627],[34.297103,-79.908696],[34.297091,-79.908764],[34.297076,-79.90883],[34.297051,-79.908929],[34.297032,-79.908993],[34.297011,-79.909056],[34.296976,-79.909149],[34.29695,-79.909209],[34.296923,-79.909269],[34.296894,-79.909327],[34.296848,-79.909411],[34.296815,-79.909466],[34.29678,-79.909519],[34.296725,-79.909595],[34.296686,-79.909644],[34.296646,-79.909691],[34.296605,-79.909736],[34.296541,-79.9098],[34.296496,-79.90984],[34.29645,-79.909878],[34.296379,-79.90993],[34.296331,-79.909963],[34.296281,-79.909993],[34.296206,-79.910033],[34.296154,-79.910057],[34.296102,-79.910079],[34.296049,-79.910098],[34.295968,-79.910122],[34.295914,-79.910135],[34.295859,-79.910146],[34.295777,-79.910157],[34.295721,-79.910161],[34.295666,-79.910163],[34.295611,-79.910162],[34.295528,-79.910155],[34.295473,-79.910148],[34.295418,-79.910138],[34.295336,-79.910119],[34.295283,-79.910103],[34.295229,-79.910084],[34.29515,-79.910052],[34.295099,-79.910027],[34.295048,-79.91],[34.294998,-79.909971],[34.294924,-79.909922],[34.294877,-79.909887],[34.29483,-79.90985],[34.294785,-79.909811],[34.294719,-79.909749],[34.294676,-79.909705],[34.294635,-79.909659],[34.294576,-79.909587],[34.294538,-79.909537],[34.294502,-79.909485],[34.294467,-79.909431],[34.294418,-79.909348],[34.294387,-79.909291],[34.294358,-79.909233],[34.29433,-79.909173],[34.294291,-79.909082],[34.294268,-79.909019],[34.294245,-79.908956],[34.294224,-79.908892],[34.294194,-79.908795],[34.294176,-79.90873],[34.294158,-79.908663],[34.294141,-79.908597],[34.294125,-79.90853],[34.294101,-79.908428],[34.294086,-79.90836],[34.29407,-79.908292],[34.294055,-79.908223],[34.29404,-79.908154],[34.294025,-79.908085],[34.294004,-79.90798],[34.29399,-79.90791],[34.293975,-79.90784],[34.293962,-79.90777],[34.293948,-79.907699],[34.293934,-79.907628],[34.293921,-79.907556],[34.293907,-79.907485],[34.293893,-79.907413],[34.293878,-79.907341],[34.293864,-79.907269],[34.293842,-79.907161],[34.293827,-79.907089],[34.293812,-79.907016],[34.293797,-79.906943],[34.293782,-79.90687],[34.293766,-79.906797],[34.293751,-79.906723],[34.293736,-79.90665],[34.293721,-79.906576],[34.293706,-79.906502],[34.29369,-79.906428],[34.293675,-79.906353],[34.29366,-79.906279],[34.293644,-79.906204],[34.293629,-79.906129],[34.293621,-79.906092]],"gps_B":[[34.293618,-79.906061],[34.293602,-79.905986],[34.293587,-79.905911],[34.293572,-79.905836],[34.293556,-79.90576],[34.293541,-79.905685],[34.293525,-79.905609],[34.29351,-79.905533],[34.293494,-79.905456],[34.293479,-79.90538],[34.293463,-79.905303],[34.293447,-79.905226],[34.293439,-79.905188],[34.293423,-79.905111],[34.293407,-79.905033],[34.293391,-79.904956],[34.293375,-79.904878],[34.293359,-79.904801],[34.293343,-79.904723],[34.293327,-79.904645],[34.293311,-79.904566],[34.293295,-79.904488],[34.293279,-79.904409],[34.293271,-79.90437],[34.293255,-79.904291],[34.293239,-79.904212],[34.293223,-79.904133],[34.293207,-79.904054],[34.293191,-79.903974],[34.293177,-79.903894],[34.293162,-79.903814],[34.293156,-79.903774],[34.293143,-79.903693],[34.293132,-79.903613],[34.293123,-79.903532],[34.293115,-79.903451],[34.293108,-79.90337],[34.293104,-79.90329],[34.293101,-79.903209],[34.293101,-79.903129],[34.293101,-79.903089],[34.293104,-79.90301],[34.293108,-79.902932],[34.293116,-79.902854],[34.293126,-79.902777],[34.293139,-79.902702],[34.293154,-79.902627],[34.293171,-79.902554],[34.29319,-79.902481],[34.293211,-79.90241],[34.293234,-79.902339],[34.293273,-79.902235],[34.293301,-79.902168],[34.293331,-79.902102],[34.293363,-79.902037],[34.293396,-79.901974],[34.293432,-79.901913],[34.293469,-79.901853],[34.293508,-79.901795],[34.293549,-79.901738],[34.293592,-79.901684],[34.293636,-79.901631],[34.293681,-79.90158],[34.293729,-79.901532],[34.293777,-79.901485],[34.293828,-79.90144],[34.293879,-79.901398],[34.293932,-79.901357],[34.293985,-79.901319],[34.29404,-79.901283],[34.294125,-79.901233],[34.294182,-79.901203],[34.29424,-79.901175],[34.294299,-79.901149],[34.294359,-79.901126],[34.29442,-79.901106],[34.29448,-79.901087],[34.294542,-79.901071],[34.294604,-79.901058],[34.294666,-79.901048],[34.294728,-79.90104],[34.29479,-79.901035],[34.294853,-79.901033],[34.294915,-79.901033],[34.294977,-79.901036],[34.29504,-79.901042],[34.295101,-79.901051],[34.295163,-79.901062],[34.295224,-79.901075],[34.295285,-79.901092],[34.295345,-79.90111],[34.295404,-79.901132],[34.295463,-79.901155],[34.29555,-79.901196],[34.295606,-79.901226],[34.295662,-79.901258],[34.295717,-79.901293],[34.29577,-79.901331],[34.295823,-79.90137],[34.295874,-79.901412],[34.295925,-79.901456],[34.295974,-79.901502],[34.296021,-79.90155],[34.296067,-79.9016],[34.296112,-79.901652],[34.296156,-79.901706],[34.296197,-79.901762],[34.296237,-79.90182],[34.296276,-79.901879],[34.296312,-79.90194],[34.296347,-79.902002],[34.29638,-79.902066],[34.296411,-79.902132],[34.296441,-79.902198],[34.296468,-79.902266],[34.296494,-79.902335],[34.296518,-79.902405],[34.29654,-79.902477],[34.296561,-79.902549],[34.29658,-79.902622],[34.296597,-79.902695],[34.296612,-79.902769],[34.296627,-79.902844],[34.29664,-79.902919],[34.296652,-79.902995],[34.296664,-79.90307],[34.296675,-79.903147],[34.296685,-79.903223],[34.296695,-79.9033],[34.296704,-79.903377],[34.296712,-79.903455],[34.296719,-79.903532],[34.296727,-79.90361],[34.296734,-79.903688],[34.296741,-79.903767],[34.296744,-79.903806],[34.296751,-79.903885],[34.296758,-79.903964],[34.296765,-79.904043],[34.296773,-79.904122],[34.29678,-79.904201],[34.296787,-79.904281],[34.296795,-79.904361],[34.296802,-79.90444],[34.29681,-79.90452],[34.296817,-79.904601],[34.296825,-79.904681],[34.296829,-79.904721],[34.296837,-79.904802],[34.296844,-79.904883],[34.296852,-79.904963],[34.29686,-79.905044],[34.296867,-79.905126],[34.296875,-79.905207],[34.296883,-79.905289],[34.296887,-79.905329],[34.296894,-79.905411],[34.296902,-79.905493],[34.29691,-79.905575],[34.296917,-79.905657],[34.296925,-79.905739],[34.296933,-79.905822],[34.296937,-79.905863],[34.296944,-79.905946],[34.296952,-79.906029],[34.29696,-79.906112],[34.296968,-79.906195],[34.296976,-79.906278],[34.29698,-79.90632],[34.296988,-79.906403],[34.296996,-79.906487],[34.297005,-79.90657],[34.297013,-79.906654],[34.297017,-79.906696],[34.297026,-79.90678],[34.297035,-79.906864],[34.297044,-79.906948],[34.297053,-79.907033],[34.297057,-79.907075],[34.297066,-79.90716],[34.297074,-79.907244],[34.297082,-79.907328],[34.297089,-79.907411],[34.297096,-79.907493],[34.297099,-79.907534],[34.297105,-79.907616],[34.29711,-79.907696],[34.297115,-79.907776],[34.297118,-79.907856],[34.297121,-79.907934],[34.297123,-79.908013],[34.297123,-79.90809],[34.297123,-79.908167],[34.297121,-79.908243],[34.297118,-79.908319],[34.297113,-79.908393],[34.297107,-79.908468],[34.2971,-79.908541],[34.297091,-79.908614],[34.29708,-79.908686],[34.297067,-79.908756],[34.297053,-79.908826],[34.297027,-79.908928],[34.297008,-79.908994],[34.296986,-79.909059],[34.296963,-79.909122],[34.296939,-79.909184],[34.296898,-79.909273],[34.296869,-79.90933],[34.296838,-79.909386],[34.296806,-79.90944],[34.296754,-79.909517],[34.296718,-79.909566],[34.29668,-79.909613],[34.296621,-79.90968],[34.29658,-79.909723],[34.296538,-79.909763],[34.296473,-79.90982],[34.296428,-79.909855],[34.296382,-79.909888],[34.296312,-79.909934],[34.296263,-79.909961],[34.296215,-79.909987],[34.29614,-79.910021],[34.296089,-79.91004],[34.296037,-79.910058],[34.295959,-79.91008],[34.295906,-79.910092],[34.295853,-79.910102],[34.295772,-79.910112],[34.295718,-79.910116],[34.295664,-79.910117],[34.29561,-79.910116],[34.295528,-79.91011],[34.295474,-79.910103],[34.29542,-79.910093],[34.295366,-79.910081],[34.295286,-79.910059],[34.295233,-79.910041],[34.29518,-79.910021],[34.295128,-79.909998],[34.295052,-79.90996],[34.295002,-79.909931],[34.294953,-79.9099],[34.294905,-79.909867],[34.294834,-79.909813],[34.294789,-79.909775],[34.294744,-79.909734],[34.294701,-79.909692],[34.294639,-79.909624],[34.2946,-79.909577],[34.294561,-79.909528],[34.294525,-79.909477],[34.294472,-79.909398],[34.294439,-79.909343],[34.294408,-79.909287],[34.294378,-79.90923],[34.294335,-79.909141],[34.294309,-79.90908],[34.294284,-79.909019],[34.294261,-79.908956],[34.294228,-79.908861],[34.294206,-79.908797],[34.294186,-79.908732],[34.294167,-79.908666],[34.294148,-79.9086],[34.294122,-79.9085],[34.294105,-79.908433],[34.294089,-79.908365],[34.294075,-79.908296],[34.29406,-79.908228],[34.294047,-79.908158],[34.294027,-79.908054],[34.294014,-79.907984],[34.294001,-79.907913],[34.293987,-79.907843],[34.293973,-79.907772],[34.293959,-79.907701],[34.293945,-79.907631],[34.293931,-79.907559],[34.293916,-79.907488],[34.293894,-79.907381],[34.293878,-79.907309],[34.293863,-79.907237],[34.293847,-79.907165],[34.293832,-79.907093],[34.293816,-79.907021],[34.2938,-79.906948],[34.293785,-79.906875],[34.293769,-79.906802],[34.293754,-79.906729],[34.293738,-79.906655],[34.293723,-79.906582],[34.293707,-79.906507],[34.293692,-79.906433],[34.293677,-79.906359],[34.293661,-79.906284],[34.293646,-79.906209],[34.29363,-79.906134],[34.293623,-79.906097]]};
+// Canonical app colors — matches frontend/src/utils/colors.ts
+const COLOR_A = '#60a5fa';
+const COLOR_B = '#f87171';
+const MPS_TO_MPH = 2.23694;
+const C_TO_F = (c) => c * 9 / 5 + 32;
+
+const tip = document.getElementById('chartTooltip');
+function showTip(html, x, y) {
+  tip.innerHTML = html;
+  tip.style.left = (x + 14) + 'px';
+  tip.style.top = (y + 14) + 'px';
+  tip.style.opacity = '1';
+}
+function hideTip() { tip.style.opacity = '0'; }
+
+// --------------------------------------------------------------------------
+// Accumulated gap chart (interactive, click-lap → modal)
+// --------------------------------------------------------------------------
+function renderGapChart() {
+  const svg = document.getElementById('chartGap');
+  const VB_W = 900, VB_H = 340;
+  const PAD = { l: 44, r: 20, t: 16, b: 34 };
+  const W = VB_W - PAD.l - PAD.r;
+  const H = VB_H - PAD.t - PAD.b;
+
+  // Compute accumulated gap = cumA - cumB (positive = A behind)
+  const N = DEMO.laps_A.length;
+  const gapSeries = [];
+  let cumA = 0, cumB = 0;
+  for (let i = 0; i < N; i++) {
+    cumA += DEMO.laps_A[i].t;
+    cumB += DEMO.laps_B[i].t;
+    gapSeries.push({ lap: DEMO.laps_A[i].lap, gap: cumA - cumB, tA: DEMO.laps_A[i].t, tB: DEMO.laps_B[i].t });
+  }
+
+  const minGap = Math.min(0, ...gapSeries.map(p => p.gap));
+  const maxGap = Math.max(0, ...gapSeries.map(p => p.gap));
+  const yRange = Math.max(0.5, maxGap - minGap);
+  const xOf = (i) => PAD.l + (i / (N - 1)) * W;
+  const yOf = (v) => PAD.t + H - ((v - minGap) / yRange) * H;
+
+  // Build path
+  let linePath = '';
+  let areaPath = '';
+  for (let i = 0; i < N; i++) {
+    const x = xOf(i), y = yOf(gapSeries[i].gap);
+    linePath += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
+  }
+  const yZero = yOf(0);
+  areaPath = linePath + `L${xOf(N-1).toFixed(1)},${yZero.toFixed(1)}L${xOf(0).toFixed(1)},${yZero.toFixed(1)}Z`;
+
+  const lapTicks = [];
+  for (let i = 0; i < N; i += 5) lapTicks.push(i);
+  if (lapTicks[lapTicks.length-1] !== N-1) lapTicks.push(N-1);
+
+  const yTicks = [];
+  const step = yRange / 4;
+  for (let k = 0; k <= 4; k++) yTicks.push(minGap + k * step);
+
+  let s = `<defs>
+    <linearGradient id="gradGap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${COLOR_A}" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="${COLOR_A}" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>`;
+  // grid
+  for (const t of yTicks) {
+    const y = yOf(t);
+    s += `<line class="grid-line" x1="${PAD.l}" y1="${y}" x2="${PAD.l+W}" y2="${y}"/>`;
+    s += `<text class="axis-text" x="${PAD.l-6}" y="${y+3}" text-anchor="end">${t >= 0 ? '+' : ''}${t.toFixed(2)}s</text>`;
+  }
+  s += `<line class="zero-line" x1="${PAD.l}" y1="${yZero}" x2="${PAD.l+W}" y2="${yZero}"/>`;
+  // x-axis ticks
+  for (const i of lapTicks) {
+    s += `<text class="axis-text" x="${xOf(i)}" y="${PAD.t+H+18}" text-anchor="middle">L${gapSeries[i].lap}</text>`;
+  }
+  // area + line
+  s += `<path d="${areaPath}" fill="url(#gradGap)"/>`;
+  s += `<path d="${linePath}" class="line-a"/>`;
+  // hover line + dot
+  s += `<line id="gapHoverLine" class="hover-line" y1="${PAD.t}" y2="${PAD.t+H}"/>`;
+  s += `<circle id="gapHoverDot" class="hover-dot" r="5"/>`;
+  // click hit areas
+  const hitW = W / N;
+  for (let i = 0; i < N; i++) {
+    s += `<rect class="lap-hit" x="${xOf(i) - hitW/2}" y="${PAD.t}" width="${hitW}" height="${H}" data-i="${i}"/>`;
+  }
+  svg.innerHTML = s;
+
+  // interactions
+  const hoverLine = svg.querySelector('#gapHoverLine');
+  const hoverDot = svg.querySelector('#gapHoverDot');
+  svg.querySelectorAll('.lap-hit').forEach(rect => {
+    rect.addEventListener('mousemove', (e) => {
+      const i = +rect.dataset.i;
+      const p = gapSeries[i];
+      const x = xOf(i);
+      const y = yOf(p.gap);
+      hoverLine.setAttribute('x1', x);
+      hoverLine.setAttribute('x2', x);
+      hoverLine.style.opacity = '0.7';
+      hoverDot.setAttribute('cx', x);
+      hoverDot.setAttribute('cy', y);
+      hoverDot.style.opacity = '1';
+      showTip(`
+        <div class="tt-title">Lap ${p.lap}</div>
+        <div class="tt-row a"><span class="tt-label">Driver A</span><span class="tt-val">${p.tA.toFixed(3)}s</span></div>
+        <div class="tt-row b"><span class="tt-label">Driver B</span><span class="tt-val">${p.tB.toFixed(3)}s</span></div>
+        <div class="tt-row delta"><span class="tt-label">Accum gap</span><span class="tt-val">${p.gap >= 0 ? '+' : ''}${p.gap.toFixed(3)}s</span></div>
+        <div class="tt-row" style="color: var(--text-dim); font-size:0.65rem; margin-top:0.25rem;">click to compare telemetry →</div>
+      `, e.clientX, e.clientY);
+    });
+    rect.addEventListener('mouseleave', () => {
+      hoverLine.style.opacity = '0';
+      hoverDot.style.opacity = '0';
+      hideTip();
+    });
+    rect.addEventListener('click', () => {
+      const i = +rect.dataset.i;
+      openLapModal(gapSeries[i].lap, i);
+    });
+  });
+
+  // Header stats
+  const lastGap = gapSeries[N-1].gap;
+  // fade = avg last-5 time minus avg first-5 time (for each driver)
+  const avg = (arr) => arr.reduce((a,b) => a+b, 0) / arr.length;
+  const firstA = avg(DEMO.laps_A.slice(0, 5).map(l => l.t));
+  const lastA = avg(DEMO.laps_A.slice(-5).map(l => l.t));
+  const firstB = avg(DEMO.laps_B.slice(0, 5).map(l => l.t));
+  const lastB = avg(DEMO.laps_B.slice(-5).map(l => l.t));
+  document.getElementById('fadeA').textContent = `+${(lastA - firstA).toFixed(3)}s`;
+  document.getElementById('fadeB').textContent = `+${(lastB - firstB).toFixed(3)}s`;
+  document.getElementById('totalGap').textContent = `${lastGap >= 0 ? '+' : ''}${lastGap.toFixed(3)}s`;
+}
+
+// --------------------------------------------------------------------------
+// Tire temp charts (4 corners)
+// --------------------------------------------------------------------------
+function renderTireChart(svgEl, tireKey) {
+  const VB_W = 500, VB_H = 180;
+  const PAD = { l: 40, r: 14, t: 10, b: 22 };
+  const W = VB_W - PAD.l - PAD.r;
+  const H = VB_H - PAD.t - PAD.b;
+
+  const N = DEMO.laps_A.length;
+  const valsA = DEMO.laps_A.map(l => l[tireKey]);
+  const valsB = DEMO.laps_B.map(l => l[tireKey]);
+  const laps = DEMO.laps_A.map(l => l.lap);
+
+  const allVals = [...valsA, ...valsB];
+  const yMin = Math.min(...allVals) - 2;
+  const yMax = Math.max(...allVals) + 2;
+  const yRange = yMax - yMin;
+
+  const xOf = (i) => PAD.l + (i / (N - 1)) * W;
+  const yOf = (v) => PAD.t + H - ((v - yMin) / yRange) * H;
+
+  const pathA = valsA.map((v, i) => (i === 0 ? 'M' : 'L') + xOf(i).toFixed(1) + ',' + yOf(v).toFixed(1)).join('');
+  const pathB = valsB.map((v, i) => (i === 0 ? 'M' : 'L') + xOf(i).toFixed(1) + ',' + yOf(v).toFixed(1)).join('');
+
+  // Y ticks: 4 values
+  const ticks = [yMin, yMin + yRange * 0.33, yMin + yRange * 0.66, yMax];
+  let s = '';
+  for (const t of ticks) {
+    const y = yOf(t);
+    s += `<line class="grid-line" x1="${PAD.l}" y1="${y}" x2="${PAD.l+W}" y2="${y}"/>`;
+    s += `<text class="axis-text" x="${PAD.l-4}" y="${y+3}" text-anchor="end">${Math.round(t)}°F</text>`;
+  }
+  // X ticks (every 10 laps)
+  for (let i = 0; i < N; i += 10) {
+    s += `<text class="axis-text" x="${xOf(i)}" y="${PAD.t+H+14}" text-anchor="middle">L${laps[i]}</text>`;
+  }
+  s += `<path d="${pathA}" class="line-a"/>`;
+  s += `<path d="${pathB}" class="line-b"/>`;
+  // hover
+  s += `<line class="hover-line" y1="${PAD.t}" y2="${PAD.t+H}"/>`;
+  const hitW = W / N;
+  for (let i = 0; i < N; i++) {
+    s += `<rect class="lap-hit" x="${xOf(i) - hitW/2}" y="${PAD.t}" width="${hitW}" height="${H}" data-i="${i}"/>`;
+  }
+  svgEl.innerHTML = s;
+
+  const hoverLine = svgEl.querySelector('.hover-line');
+  svgEl.querySelectorAll('.lap-hit').forEach(rect => {
+    rect.addEventListener('mousemove', (e) => {
+      const i = +rect.dataset.i;
+      const x = xOf(i);
+      hoverLine.setAttribute('x1', x);
+      hoverLine.setAttribute('x2', x);
+      hoverLine.style.opacity = '0.7';
+      const vA = valsA[i], vB = valsB[i];
+      const diff = vA - vB;
+      const tireName = { rf:'Right Front', lf:'Left Front', rr:'Right Rear', lr:'Left Rear' }[tireKey];
+      showTip(`
+        <div class="tt-title">${tireName} · Lap ${laps[i]}</div>
+        <div class="tt-row a"><span class="tt-label">Driver A</span><span class="tt-val">${vA.toFixed(1)}°F</span></div>
+        <div class="tt-row b"><span class="tt-label">Driver B</span><span class="tt-val">${vB.toFixed(1)}°F</span></div>
+        <div class="tt-row delta"><span class="tt-label">Δ A – B</span><span class="tt-val">${diff >= 0 ? '+' : ''}${diff.toFixed(1)}°F</span></div>
+      `, e.clientX, e.clientY);
+    });
+    rect.addEventListener('mouseleave', () => { hoverLine.style.opacity = '0'; hideTip(); });
+  });
+
+  // Show avg delta on header flag
+  // Heat delta flag — color classifier matches the app's deltaColor() in TireHeatDescriptiveTab.tsx
+  const avgDelta = (valsA.reduce((a,b,i)=>a+(b-valsB[i]),0) / N);
+  const flagId = { rf:'rfDelta', lf:'lfDelta', rr:'rrDelta', lr:'lrDelta' }[tireKey];
+  const flagEl = document.getElementById(flagId);
+  if (flagEl) {
+    const a = Math.abs(avgDelta);
+    if (a < 0.5)      { flagEl.textContent = 'Similar'; flagEl.className = 'hot-flag neutral'; }
+    else {
+      const who = avgDelta > 0 ? 'Driver A' : 'Driver B';
+      flagEl.textContent = `${who} +${a.toFixed(1)}°F`;
+      flagEl.className = 'hot-flag ' + (a < 2 ? 'neutral' : a < 5 ? 'warm' : 'hot');
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Track map (GPS racing line)
+// --------------------------------------------------------------------------
+function renderTrackMap() {
+  const svg = document.getElementById('trackMap');
+  const VB_W = 900, VB_H = 400;
+  const PAD = 32;
+
+  const ptsA = DEMO.gps_A;
+  const ptsB = DEMO.gps_B;
+
+  // Proper geodetic projection: convert lat/lon to meters (cos-lat scaling)
+  // so the oval isn't stretched on narrow / wide viewports.
+  const allLat = [...ptsA.map(p=>p[0]), ...ptsB.map(p=>p[0])];
+  const allLon = [...ptsA.map(p=>p[1]), ...ptsB.map(p=>p[1])];
+  const latMin = Math.min(...allLat), latMax = Math.max(...allLat);
+  const lonMin = Math.min(...allLon), lonMax = Math.max(...allLon);
+  const latAvg = (latMin + latMax) / 2;
+  const cosLat = Math.cos(latAvg * Math.PI / 180);
+  const METERS_PER_DEG_LAT = 110540;
+  const METERS_PER_DEG_LON = 111320 * cosLat;
+  const toMx = (lon) => (lon - lonMin) * METERS_PER_DEG_LON;
+  const toMy = (lat) => (latMax - lat) * METERS_PER_DEG_LAT;  // north-up
+  const mapW = (lonMax - lonMin) * METERS_PER_DEG_LON;
+  const mapH = (latMax - latMin) * METERS_PER_DEG_LAT;
+
+  // Fit to viewBox preserving aspect
+  const innerW = VB_W - PAD * 2;
+  const innerH = VB_H - PAD * 2;
+  const fit = Math.min(innerW / mapW, innerH / mapH);
+  const offX = PAD + (innerW - mapW * fit) / 2;
+  const offY = PAD + (innerH - mapH * fit) / 2;
+  const xOf = (lon) => offX + toMx(lon) * fit;
+  const yOf = (lat) => offY + toMy(lat) * fit;
+
+  const toPath = (pts) => pts.map((p, i) => (i === 0 ? 'M' : 'L') + xOf(p[1]).toFixed(1) + ',' + yOf(p[0]).toFixed(1)).join('') + 'Z';
+  const pathA = toPath(ptsA);
+  const pathB = toPath(ptsB);
+
+  // Track ribbon = a thick grey stroke from the "inside" of both paths.
+  // We render B's path with a fat dark-grey stroke as the track surface.
+  // Four corner labels placed at each quadrant's approximate apex.
+  // For Darlington (oval), LDP 0 is start/finish on the front straight.
+  // T1/T2 are the first turn pair (~0.15–0.30), back straight ~0.40–0.60,
+  // T3/T4 are the second turn pair (~0.65–0.85).
+  const cornerLdps = [0.18, 0.35, 0.65, 0.83];
+  const cornerLabels = ['T1', 'T2', 'T3', 'T4'];
+  let labels = '';
+  cornerLdps.forEach((ldp, idx) => {
+    const i = Math.floor(ldp * ptsB.length);
+    const p = ptsB[i];
+    const cx = xOf(p[1]);
+    const cy = yOf(p[0]);
+    // Offset label outward from track center
+    const centerX = (xOf(lonMin) + xOf(lonMax)) / 2;
+    const centerY = (yOf(latMin) + yOf(latMax)) / 2;
+    const dx = cx - centerX;
+    const dy = cy - centerY;
+    const d = Math.sqrt(dx*dx + dy*dy) || 1;
+    const tx = cx + (dx / d) * 22;
+    const ty = cy + (dy / d) * 22;
+    labels += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="3" fill="#94a3b8" opacity="0.9"/>`;
+    labels += `<text class="corner-label" x="${tx.toFixed(1)}" y="${(ty + 3).toFixed(1)}" text-anchor="middle">${cornerLabels[idx]}</text>`;
+  });
+
+  // Start/finish marker at LDP 0
+  const sf = ptsB[0];
+  const sfX = xOf(sf[1]);
+  const sfY = yOf(sf[0]);
+
+  svg.innerHTML = `
+    <defs>
+      <filter id="trackShadow"><feGaussianBlur stdDeviation="1"/></filter>
+    </defs>
+    <!-- Track ribbon: thick dark-grey stroke following B's GPS line (both drivers are <30ft apart) -->
+    <path d="${pathB}" fill="none" stroke="#1e293b" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${pathB}" fill="none" stroke="#334155" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Start/finish line -->
+    <circle cx="${sfX.toFixed(1)}" cy="${sfY.toFixed(1)}" r="6" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
+    <text class="corner-label" x="${sfX.toFixed(1)}" y="${(sfY - 12).toFixed(1)}" text-anchor="middle" style="fill:#e2e8f0;">S/F</text>
+    <!-- Driver lines on top of ribbon -->
+    <path d="${pathA}" class="track-line-a"/>
+    <path d="${pathB}" class="track-line-b"/>
+    ${labels}
+  `;
+}
+
+// --------------------------------------------------------------------------
+// Modal — click a lap on the gap chart → overlaid telemetry
+// --------------------------------------------------------------------------
+function renderModalChart(svgId, serieA, serieB, unit, yMin, yMax, extraSerie) {
+  const svg = document.getElementById(svgId);
+  const VB_W = 900, VB_H = 180;
+  const PAD = { l: 44, r: 16, t: 12, b: 24 };
+  const W = VB_W - PAD.l - PAD.r;
+  const H = VB_H - PAD.t - PAD.b;
+  const N = serieA.length;
+  const xOf = (i) => PAD.l + (i / (N - 1)) * W;
+  const yOf = (v) => PAD.t + H - ((v - yMin) / (yMax - yMin)) * H;
+
+  const pathOf = (arr, cls) => {
+    const d = arr.map((v,i) => (i===0?'M':'L') + xOf(i).toFixed(1) + ',' + yOf(v).toFixed(1)).join('');
+    return `<path d="${d}" class="${cls}"/>`;
+  };
+
+  let s = '';
+  // y ticks
+  const yTicks = [yMin, (yMin+yMax)/2, yMax];
+  for (const t of yTicks) {
+    const y = yOf(t);
+    s += `<line class="grid-line" x1="${PAD.l}" y1="${y}" x2="${PAD.l+W}" y2="${y}"/>`;
+    s += `<text class="axis-text" x="${PAD.l-4}" y="${y+3}" text-anchor="end">${t.toFixed(0)}${unit}</text>`;
+  }
+  // x-axis: % of lap
+  for (const pct of [0, 25, 50, 75, 100]) {
+    const i = Math.round((pct/100) * (N-1));
+    s += `<text class="axis-text" x="${xOf(i)}" y="${PAD.t+H+16}" text-anchor="middle">${pct}%</text>`;
+  }
+  s += pathOf(serieA, 'line-a');
+  s += pathOf(serieB, 'line-b');
+  if (extraSerie) {
+    const d = extraSerie.arr.map((v,i) => (i===0?'M':'L') + xOf(i).toFixed(1) + ',' + yOf(v).toFixed(1)).join('');
+    s += `<path d="${d}" stroke="${extraSerie.color}" stroke-width="2" fill="none" stroke-dasharray="4 3" opacity="0.8"/>`;
+  }
+  svg.innerHTML = s;
+}
+
+function openLapModal(lap, idx) {
+  const sampleLap = DEMO.meta.sample_lap;
+  document.getElementById('modalTitle').textContent = `Lap Telemetry — Sample Lap ${sampleLap}`;
+  document.getElementById('modalSub').textContent = `Both drivers overlaid · real telemetry from Lap ${sampleLap} (representative mid-run green-flag lap)`;
+
+  // Speed — already MPH in extracted data
+  const speedA = DEMO.telemetry_A.map(p => p.speed);
+  const speedB = DEMO.telemetry_B.map(p => p.speed);
+  const speedMin = Math.min(...speedA, ...speedB) - 5;
+  const speedMax = Math.max(...speedA, ...speedB) + 5;
+  renderModalChart('modalSpeed', speedA, speedB, ' MPH', speedMin, speedMax);
+
+  // Throttle + brake (brake overlay as dashed orange)
+  const thrA = DEMO.telemetry_A.map(p => p.throttle);
+  const thrB = DEMO.telemetry_B.map(p => p.throttle);
+  renderModalChart('modalThr', thrA, thrB, '%', 0, 100, {
+    arr: DEMO.telemetry_A.map(p => p.brake),
+    color: '#f59e0b'
+  });
+
+  // Steering
+  const stA = DEMO.telemetry_A.map(p => p.steer);
+  const stB = DEMO.telemetry_B.map(p => p.steer);
+  const stAll = [...stA, ...stB];
+  const stMin = Math.min(...stAll) - 3;
+  const stMax = Math.max(...stAll) + 3;
+  renderModalChart('modalSteer', stA, stB, '°', stMin, stMax);
+
+  document.getElementById('lapModal').classList.add('open');
+}
+function closeLapModal() { document.getElementById('lapModal').classList.remove('open'); }
+
+document.getElementById('lapModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeLapModal();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLapModal(); });
+
+// --------------------------------------------------------------------------
+// Event row click → open modal with a representative lap
+// --------------------------------------------------------------------------
+document.querySelectorAll('.event-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const lap = row.querySelector('.event-lap')?.textContent.replace(/[^0-9]/g, '') || DEMO.sample_lap_A;
+    openLapModal(parseInt(lap, 10) || DEMO.sample_lap_A, 0);
+  });
+});
+
+// --------------------------------------------------------------------------
+// Expand/collapse
+// --------------------------------------------------------------------------
+document.querySelectorAll('.expand-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.expand;
+    const panel = document.getElementById(id);
+    btn.classList.toggle('open');
+    panel.classList.toggle('open');
+  });
+});
+
+// --------------------------------------------------------------------------
+// Scroll reveal
+// --------------------------------------------------------------------------
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => io.observe(el));
+
+// --------------------------------------------------------------------------
+// Tab cycling
+// --------------------------------------------------------------------------
+const tabs = document.querySelectorAll('.tab-item');
+let currentTab = 0;
+setInterval(() => {
+  tabs[currentTab].classList.remove('active');
+  currentTab = (currentTab + 1) % tabs.length;
+  tabs[currentTab].classList.add('active');
+}, 3000);
+
+// --------------------------------------------------------------------------
+// Boot
+// --------------------------------------------------------------------------
+renderGapChart();
+document.querySelectorAll('.tire-chart').forEach(svg => renderTireChart(svg, svg.dataset.tire));
+renderTrackMap();
+</script>
+
+</body>
+</html>
