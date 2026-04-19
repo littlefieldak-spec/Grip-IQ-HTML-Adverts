@@ -632,10 +632,51 @@ body {
   </p>
 
   <div class="vs-badge">
-    <div class="vs-driver a">GOOD</div>
+    <div class="vs-driver a" id="vs-left">GOOD</div>
     <div class="vs-divider">VS</div>
-    <div class="vs-driver b">BETTER</div>
+    <div class="vs-driver b" id="vs-right">BETTER</div>
   </div>
+
+  <script>
+  (function() {
+    const pairs = [
+      ["GOOD", "BETTER"],
+      ["ROOKIE", "VETERAN"],
+      ["FAST", "STEADY"],
+      ["TOP 1%", "TOP .1%"],
+      ["TEAMMATE A", "TEAMMATE B"],
+      ["SETUP A", "SETUP B"],
+      ["YOU", "BENCHMARK"],
+      ["OLD SETUP", "NEW SETUP"],
+      ["iRATING 2K", "iRATING 4K"],
+      ["BEFORE GRIPIQ", "AFTER GRIPIQ"],
+    ];
+    let idx = 0;
+    const left = document.getElementById("vs-left");
+    const right = document.getElementById("vs-right");
+    left.style.transition = "opacity 0.3s, transform 0.3s";
+    right.style.transition = "opacity 0.3s, transform 0.3s";
+    function cycle() {
+      idx = (idx + 1) % pairs.length;
+      left.style.opacity = "0";
+      right.style.opacity = "0";
+      left.style.transform = "translateY(10px)";
+      right.style.transform = "translateY(10px)";
+      setTimeout(() => {
+        left.textContent = pairs[idx][0];
+        right.textContent = pairs[idx][1];
+        left.style.opacity = "1";
+        right.style.opacity = "1";
+        left.style.transform = "translateY(0)";
+        right.style.transform = "translateY(0)";
+      }, 300);
+      // Last pair (Before/After GripIQ) holds twice as long
+      const delay = idx === pairs.length - 1 ? 6000 : 3000;
+      setTimeout(cycle, delay);
+    }
+    setTimeout(cycle, 3000);
+  })();
+  </script>
 
   <div class="scroll-cue">
     <span>Explore</span>
