@@ -631,10 +631,10 @@ body {
     <strong>Compare your times to faster drivers to improve your performance or evaluate differences among teammates.</strong>
   </p>
 
-  <div class="vs-badge">
-    <div class="vs-driver a" id="vs-left">GOOD</div>
+  <div class="vs-badge" style="display:flex; align-items:center; gap:2rem;">
+    <div class="vs-driver a" id="vs-left" style="min-width:180px; text-align:right;">GOOD</div>
     <div class="vs-divider">VS</div>
-    <div class="vs-driver b" id="vs-right">BETTER</div>
+    <div class="vs-driver b" id="vs-right" style="min-width:180px; text-align:left;">BETTER</div>
   </div>
 
   <script>
@@ -671,10 +671,10 @@ body {
         right.style.transform = "translateY(0)";
       }, 300);
       // Last pair (Before/After GripIQ) holds twice as long
-      const delay = idx === pairs.length - 1 ? 1200 : 600;
+      const delay = idx === pairs.length - 1 ? 2400 : 1200;
       setTimeout(cycle, delay);
     }
-    setTimeout(cycle, 600);
+    setTimeout(cycle, 1200);
   })();
   </script>
 
