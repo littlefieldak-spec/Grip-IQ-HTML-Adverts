@@ -632,9 +632,9 @@ body {
   </p>
 
   <div class="vs-badge" style="display:flex; align-items:center; gap:2rem;">
-    <div class="vs-driver a" id="vs-left" style="min-width:180px; text-align:right;">GOOD</div>
+    <div class="vs-driver a" id="vs-left" style="width:220px; text-align:center;">GOOD</div>
     <div class="vs-divider">VS</div>
-    <div class="vs-driver b" id="vs-right" style="min-width:180px; text-align:left;">BETTER</div>
+    <div class="vs-driver b" id="vs-right" style="width:220px; text-align:center;">BETTER</div>
   </div>
 
   <script>
@@ -671,10 +671,10 @@ body {
         right.style.transform = "translateY(0)";
       }, 300);
       // Last pair (Before/After GripIQ) holds twice as long
-      const delay = idx === pairs.length - 1 ? 2400 : 1200;
+      const delay = idx === pairs.length - 1 ? 4000 : 2000;
       setTimeout(cycle, delay);
     }
-    setTimeout(cycle, 1200);
+    setTimeout(cycle, 2000);
   })();
   </script>
 
