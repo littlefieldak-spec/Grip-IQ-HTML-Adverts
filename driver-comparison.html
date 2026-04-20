@@ -595,6 +595,199 @@ body {
   transform: translateY(0);
 }
 
+/* ==================== KEY DIFFERENCES PANEL ==================== */
+.kd-panel {
+  max-width: 920px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.kd-header {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--cyan);
+  padding: 18px 24px 0;
+}
+
+.kd-insights {
+  margin: 14px 24px 18px;
+  padding: 14px 18px;
+  border-left: 3px solid var(--cyan);
+  background: rgba(0,240,255,0.03);
+  border-radius: 0 6px 6px 0;
+}
+
+.kd-insights p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0 0 6px;
+}
+
+.kd-insights p:last-child { margin-bottom: 0; }
+
+/* Table */
+.kd-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.kd-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.kd-table tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: background 0.2s ease;
+}
+
+.kd-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+.kd-table tbody tr:last-child { border-bottom: none; }
+
+.kd-table td {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+.kd-c { text-align: center !important; }
+.kd-r { text-align: right !important; }
+
+.kd-rank {
+  font-weight: 700;
+  color: rgba(255,255,255,0.25);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.kd-input {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.kd-corner {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.78rem;
+}
+
+.kd-phase {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.kd-phase-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.kd-col-a { color: var(--driver-b) !important; }
+.kd-col-b { color: var(--driver-a) !important; }
+.kd-col-d { color: var(--orange) !important; }
+
+.kd-val-a {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--driver-b);
+}
+
+.kd-val-b {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--driver-a);
+}
+
+.kd-val-d {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.kd-cons {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--green);
+}
+
+.kd-cons-pct {
+  color: rgba(0,255,136,0.5);
+}
+
+/* Importance bar */
+.kd-imp { min-width: 110px; }
+
+.kd-bar-wrap {
+  position: relative;
+  height: 16px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.kd-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+}
+
+.kd-bar-1 { background: linear-gradient(90deg, #f97316, #ef4444); }
+.kd-bar-2 { background: linear-gradient(90deg, #f59e0b, #f97316); }
+.kd-bar-3 { background: linear-gradient(90deg, #ef4444, #f97316); }
+.kd-bar-4 { background: linear-gradient(90deg, #eab308, #f59e0b); }
+.kd-bar-5 { background: linear-gradient(90deg, #eab308, #f59e0b); }
+
+.kd-bar-pct {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+}
+
+/* Expand buttons */
+.kd-expand {
+  text-align: center;
+  padding: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--driver-a);
+  letter-spacing: 0.04em;
+  border-top: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.kd-expand:hover {
+  background: rgba(68,136,255,0.06);
+  color: var(--cyan);
+}
+
 /* ==================== CORNER ZOOM CANVAS ==================== */
 .corner-canvas-wrap {
   position: relative;
@@ -1032,7 +1225,94 @@ body {
       <h2>See the track through data.<br><span style="color: var(--cyan);">Know exactly where you're losing.</span></h2>
       <p class="splash-desc">Machine learning finds the inputs that distinguish the two drivers — consistent, measurable, actionable.</p>
     </div>
-    <div class="live-component" id="imgKeyDiff"></div>
+
+    <!-- Key Differences — real HTML component -->
+    <div class="kd-panel">
+      <div class="kd-header">KEY DIFFERENCES</div>
+
+      <div class="kd-insights">
+        <p>Analysis indicates driver signatures are distinct and the differences are consistent lap to lap.</p>
+        <p>The #1 distinguishing input is Peak Brake at T3&amp;T4 (Entry): Pro averages 17.7% vs 1.0%.</p>
+        <p>Multiple top differences cluster at T1&amp;T2 (3 of top 5), reinforcing it as the key zone where technique diverges most.</p>
+        <p>Steering differences appear in 3 of the top 5 inputs &mdash; this is fundamentally a steering/line difference that cascades into heat and grip consequences.</p>
+      </div>
+
+      <table class="kd-table">
+        <thead>
+          <tr>
+            <th class="kd-c">#</th>
+            <th class="kd-imp">Importance</th>
+            <th>Input</th>
+            <th>Corner</th>
+            <th>Phase</th>
+            <th class="kd-r kd-col-a">HL Hero</th>
+            <th class="kd-r kd-col-b">Pro</th>
+            <th class="kd-r kd-col-d">&Delta;</th>
+            <th class="kd-r">Consistency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="kd-c kd-rank">1</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-1" style="width:100%"></div><span class="kd-bar-pct">100%</span></div></td>
+            <td class="kd-input">Peak Brake</td>
+            <td class="kd-corner">T3&amp;T4</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#f59e0b"></span>Entry</td>
+            <td class="kd-r kd-val-a">0.0%</td>
+            <td class="kd-r kd-val-b">17.7%</td>
+            <td class="kd-r kd-val-d">17.7%</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+          <tr>
+            <td class="kd-c kd-rank">2</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-2" style="width:61%"></div><span class="kd-bar-pct">61%</span></div></td>
+            <td class="kd-input">Steering</td>
+            <td class="kd-corner">T1&amp;T2</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#ef4444"></span>Centre</td>
+            <td class="kd-r kd-val-a">53.0&deg;</td>
+            <td class="kd-r kd-val-b">35.4&deg;</td>
+            <td class="kd-r kd-val-d">17.6&deg;</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+          <tr>
+            <td class="kd-c kd-rank">3</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-3" style="width:54%"></div><span class="kd-bar-pct">54%</span></div></td>
+            <td class="kd-input">Peak Brake</td>
+            <td class="kd-corner">T1&amp;T2</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#f59e0b"></span>Entry</td>
+            <td class="kd-r kd-val-a">0.0%</td>
+            <td class="kd-r kd-val-b">19.9%</td>
+            <td class="kd-r kd-val-d">19.9%</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+          <tr>
+            <td class="kd-c kd-rank">4</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-4" style="width:52%"></div><span class="kd-bar-pct">52%</span></div></td>
+            <td class="kd-input">Steering</td>
+            <td class="kd-corner">T3&amp;T4</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#ef4444"></span>Centre</td>
+            <td class="kd-r kd-val-a">52.4&deg;</td>
+            <td class="kd-r kd-val-b">37.4&deg;</td>
+            <td class="kd-r kd-val-d">15.0&deg;</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+          <tr>
+            <td class="kd-c kd-rank">5</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-5" style="width:52%"></div><span class="kd-bar-pct">52%</span></div></td>
+            <td class="kd-input">Peak Steering</td>
+            <td class="kd-corner">T1&amp;T2</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#f59e0b"></span>Entry</td>
+            <td class="kd-r kd-val-a">45.3&deg;</td>
+            <td class="kd-r kd-val-b">33.5&deg;</td>
+            <td class="kd-r kd-val-d">11.8&deg;</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="kd-expand">&#x25BC; Show all 20 features</div>
+      <div class="kd-expand" style="border-top:none; margin-top:0;">&#x25BC; Show corner-by-corner breakdown</div>
+    </div>
   </div>
 </div>
 
@@ -1415,15 +1695,7 @@ svg+='</svg>';
 el.innerHTML=`<div class="lc-header"><div><div class="lc-driver a">POL</div><div class="lc-laps">49 laps</div></div><div class="lc-vs">VS</div><div><div class="lc-driver b">AL</div><div class="lc-laps">49 laps</div></div></div><div class="lc-stats"><div class="lc-stat-box"><div class="lc-driver a" style="font-size:11px;margin-bottom:2px">POL</div><div style="display:flex;gap:16px"><div><div class="lc-stat-label">Best</div><div class="lc-stat-val" style="font-size:14px">29.795s</div></div><div><div class="lc-stat-label">Average</div><div class="lc-stat-val" style="font-size:14px">31.128s</div></div><div><div class="lc-stat-label">Laps</div><div class="lc-stat-val" style="font-size:14px">49</div></div></div></div><div class="lc-stat-box"><div class="lc-driver b" style="font-size:11px;margin-bottom:2px">AL</div><div style="display:flex;gap:16px"><div><div class="lc-stat-label">Best</div><div class="lc-stat-val" style="font-size:14px">29.748s</div></div><div><div class="lc-stat-label">Average</div><div class="lc-stat-val" style="font-size:14px">30.956s</div></div><div><div class="lc-stat-label">Laps</div><div class="lc-stat-val" style="font-size:14px">49</div></div></div></div></div><div class="lc-title">ACCUMULATED GAP</div><div class="lc-ref"><span style="color:#4ade80;font-weight:700">AL</span> is the reference &middot; positive = <span style="color:#f87171;font-weight:700">POL</span> behind</div>${svg}<div class="lc-legend"><span>&mdash; <span style="color:#fbbf24">Cumulative gap</span></span><span>&#9632; <span style="color:#f87171">Per-lap loss</span></span><span>&#9632; <span style="color:#4ade80">Per-lap gain</span></span></div>`;
 })();
 
-// ── 2. KEY DIFFERENCES ──
-(function(){
-const el=document.getElementById('imgKeyDiff');if(!el)return;
-const rows=[{r:1,imp:100,name:'Brake Attack Speed',corner:'T3&T4',phase:'Entry',vA:'20.5%/s',vB:'10.1%/s',d:'10.4%/s'},{r:2,imp:84,name:'Steering',corner:'T3&T4',phase:'Entry',vA:'17.5\u00b0',vB:'16.2\u00b0',d:'1.3\u00b0'},{r:3,imp:74,name:'Throttle Rate',corner:'T1&T2',phase:'Centre',vA:'0.52%/s',vB:'-0.72%/s',d:'1.24%/s'},{r:4,imp:73,name:'Peak Steering',corner:'T1&T2',phase:'Entry',vA:'40.1\u00b0',vB:'44.4\u00b0',d:'4.3\u00b0'},{r:5,imp:73,name:'Throttle Lift Speed',corner:'T3&T4',phase:'Entry',vA:'-154.8%/s',vB:'-120.5%/s',d:'34.3%/s'}];
-let h=`<div class="lc-title">KEY DIFFERENCES</div><div class="lc-prose"><p>Analysis indicates driver signatures are distinct and the differences are consistent lap to lap.</p><p>The #1 distinguishing input is Brake Attack Speed at T3&amp;T4 (Entry): POL averages 20.5%/s vs 10.1%/s.</p><p>Multiple top differences cluster at T3&amp;T4 (3 of top 5), reinforcing it as the key zone where technique diverges most.</p></div><table class="lc-table"><thead><tr><th>#</th><th style="min-width:90px">Importance</th><th>Input</th><th>Corner</th><th class="r">Phase</th><th class="r" style="color:#60a5fa">POL</th><th class="r" style="color:#f87171">AL</th><th class="r">\u0394</th></tr></thead><tbody>`;
-rows.forEach(r=>{h+=`<tr><td style="text-align:center;font-weight:700;color:#64748b">${r.r}</td><td><div class="lc-bar-bg"><div class="lc-bar" style="width:${r.imp}%"></div><div class="lc-bar-label">${r.imp}%</div></div></td><td class="mono" style="font-weight:600">${r.name}</td><td style="color:#94a3b8">${r.corner}</td><td class="r" style="color:#94a3b8">${r.phase}</td><td class="r mono" style="color:#60a5fa">${r.vA}</td><td class="r mono" style="color:#f87171">${r.vB}</td><td class="r mono" style="color:#f97316;font-weight:600">${r.d}</td></tr>`;});
-h+='</tbody></table><div style="text-align:center;padding:8px;font-size:10px;color:#60a5fa;border:1px solid #1e293b;border-radius:0 0 4px 4px;cursor:pointer">\u25bc Show all 20 features</div>';
-el.innerHTML=h;
-})();
+// ── 2. KEY DIFFERENCES — now rendered as static HTML, JS injection removed ──
 
 // ── 3. RACING LINE ──
 (function(){
