@@ -788,68 +788,83 @@ body {
   color: var(--cyan);
 }
 
-/* ==================== MARKER LEGEND ==================== */
-.marker-legend {
+/* ==================== CORNER ZOOM FRAME ==================== */
+.cz-frame {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.cz-img {
+  width: 100%;
+  display: block;
+  clip-path: inset(3% 0 5% 0);
+}
+
+.cz-fade-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--bg-deep), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cz-fade-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to top, var(--bg-deep), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cz-bar {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-top: 2rem;
-  padding: 1.2rem 2rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+  gap: 2rem;
+  padding: 8px 24px;
+  background: rgba(10,12,20,0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  z-index: 2;
+  white-space: nowrap;
 }
 
-.marker-legend-item {
+.cz-bar-item {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: center;
+  gap: 6px;
 }
 
-.marker-icon {
-  font-size: 1rem;
-  line-height: 1;
-  margin-top: 2px;
-  flex-shrink: 0;
+.cz-bar-item strong {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
-.marker-lines {
+.cz-bar-lines {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 6px;
-  flex-shrink: 0;
+  gap: 3px;
 }
 
-.marker-lines span {
+.cz-bar-lines span {
   display: block;
-  width: 20px;
-  height: 2.5px;
+  width: 14px;
+  height: 2px;
   border-radius: 1px;
 }
 
-.marker-name {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: var(--text-primary);
-}
-
-.marker-desc {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-  margin-top: 2px;
-}
-
 @media (max-width: 768px) {
-  .marker-legend { flex-direction: column; gap: 1rem; }
+  .cz-bar { flex-direction: column; gap: 0.5rem; white-space: normal; }
 }
 
 /* ==================== RESPONSIVE ==================== */
@@ -1126,29 +1141,14 @@ body {
       <p class="splash-desc">Click a corner on the track map and the entire corner opens full-screen — racing lines, phase-by-phase coaching data, and the exact inputs that separate the two drivers.</p>
     </div>
 
-    <img src="corner-zoom.png" alt="Corner zoom — T1&amp;T2 coaching overlay with racing lines, throttle markers, and per-phase coaching data" class="splash-screenshot" style="clip-path: inset(3% 0 5% 0 round 16px);" />
-
-    <div class="marker-legend">
-      <div class="marker-legend-item">
-        <span class="marker-icon" style="color:var(--cyan)">&#x25BC;</span>
-        <div>
-          <span class="marker-name">Throttle Lift</span>
-          <span class="marker-desc">Where the driver lifts off the throttle entering the corner</span>
-        </div>
-      </div>
-      <div class="marker-legend-item">
-        <span class="marker-icon" style="color:var(--cyan)">&#x25B2;</span>
-        <div>
-          <span class="marker-name">Throttle Reapply</span>
-          <span class="marker-desc">Where the driver gets back on the throttle exiting the corner</span>
-        </div>
-      </div>
-      <div class="marker-legend-item">
-        <span class="marker-lines"><span style="background:var(--cyan)"></span><span style="background:var(--driver-b)"></span></span>
-        <div>
-          <span class="marker-name">Racing Lines</span>
-          <span class="marker-desc">Every lap overlaid — see who's consistent and where the lines diverge</span>
-        </div>
+    <div class="cz-frame">
+      <img src="corner-zoom.png" alt="Corner zoom — T1&amp;T2 coaching overlay" class="cz-img" />
+      <div class="cz-fade-top"></div>
+      <div class="cz-fade-bottom"></div>
+      <div class="cz-bar">
+        <div class="cz-bar-item"><span style="color:var(--cyan)">&#x25BC;</span> <strong>Throttle Lift</strong> &mdash; where the driver lifts off entering the corner</div>
+        <div class="cz-bar-item"><span style="color:var(--cyan)">&#x25B2;</span> <strong>Throttle Reapply</strong> &mdash; where they get back on exiting</div>
+        <div class="cz-bar-item"><span class="cz-bar-lines"><span style="background:var(--cyan)"></span><span style="background:var(--driver-b)"></span></span> <strong>Racing Lines</strong> &mdash; every lap overlaid for both drivers</div>
       </div>
     </div>
   </div>
