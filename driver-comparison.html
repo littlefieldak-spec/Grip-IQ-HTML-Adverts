@@ -807,13 +807,13 @@ body {
   <div style="text-align:center; margin-bottom:1rem;">
     <span style="font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan);">Click-through Telemetry Access™ in action</span>
   </div>
-  <div style="position:relative; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); box-shadow:0 20px 80px rgba(0,0,0,0.5); line-height:0;">
+  <div style="position:relative; overflow:hidden; line-height:0;">
     <!-- Before image (natural size, drives initial container height) -->
     <img src="before.png" alt="Select any lap on the chart" style="width:100%; display:block; transition:opacity 0.8s ease;" id="demo-before">
     <!-- After image overlaid — will expand the container when visible -->
     <img src="after.png" alt="Instantly see both drivers' telemetry" style="width:100%; display:block; opacity:0; transition:opacity 0.8s ease; position:absolute; top:0; left:0;" id="demo-after">
     <!-- Cursor hand overlay — on the lap 20 yellow dot -->
-    <div id="demo-cursor" style="position:absolute; top:62%; left:76%; transition:opacity 0.3s, transform 0.3s; pointer-events:none; font-size:32px;">👆</div>
+    <div id="demo-cursor" style="position:absolute; top:72%; left:72%; transition:opacity 0.3s, transform 0.3s; pointer-events:none; font-size:32px;">👆</div>
     <!-- Label overlays -->
     <div id="demo-label-before" style="position:absolute; bottom:16px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); padding:8px 20px; border-radius:20px; font-size:13px; color:#fbbf24; font-family:var(--font-mono); letter-spacing:0.05em; transition:opacity 0.5s; white-space:nowrap;">Click any lap to jump to telemetry →</div>
     <div id="demo-label-after" style="position:absolute; bottom:16px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); padding:8px 20px; border-radius:20px; font-size:13px; color:var(--cyan); font-family:var(--font-mono); letter-spacing:0.05em; opacity:0; transition:opacity 0.5s; white-space:nowrap;">Both drivers' inputs — side by side, same lap</div>
