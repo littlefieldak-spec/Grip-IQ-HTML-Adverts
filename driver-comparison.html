@@ -595,12 +595,176 @@ body {
   transform: translateY(0);
 }
 
+/* ==================== CORNER ZOOM CANVAS ==================== */
+.corner-canvas-wrap {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  aspect-ratio: 900 / 520;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  overflow: visible;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.5), 0 0 60px rgba(0,240,255,0.04);
+}
+
+.corner-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Phase cards */
+.phase-card {
+  position: absolute;
+  width: 240px;
+  background: rgba(10,12,20,0.92);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
+  font-family: var(--font-body);
+  z-index: 3;
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease;
+}
+
+.phase-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+/* Position the three cards around the corner shape */
+.phase-entry  { bottom: 6%;  left: 2%; }
+.phase-centre { top: 12%;   left: 50%; transform: translateX(-50%); }
+.phase-centre:hover { transform: translateX(-50%) translateY(-3px) scale(1.02); }
+.phase-exit   { top: 18%;  right: 0%; }
+
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 10px 10px 0 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.phase-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.phase-delta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.phase-delta.neg { color: var(--green); }
+.phase-delta.pos { color: var(--red); }
+
+.phase-metrics {
+  padding: 8px 12px 4px;
+}
+
+.pm-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.pm-row:last-child { border-bottom: none; }
+
+.pm-label {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.pm-vals {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-primary);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.pm-a { color: var(--driver-a); font-weight: 600; }
+.pm-b { color: var(--driver-b); font-weight: 600; }
+.pm-vs { color: var(--text-dim); font-size: 0.55rem; }
+.pm-note { color: var(--text-dim); font-size: 0.55rem; margin-left: 2px; }
+
+.pm-action {
+  padding: 6px 12px 8px;
+  font-size: 0.65rem;
+  color: var(--green);
+  line-height: 1.4;
+  border-top: 1px solid rgba(34,197,94,0.12);
+}
+
+/* Corner name + total gap bar */
+.corner-gap-bar {
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 20px;
+  background: rgba(10,12,20,0.9);
+  border: 1px solid var(--border-accent);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  z-index: 4;
+}
+
+.corner-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.08em;
+}
+
+.corner-total {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--red);
+}
+
+.corner-leader {
+  font-size: 0.65rem;
+  color: var(--driver-a);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .vs-badge { flex-direction: column; gap: 0.75rem; }
   .floating-stat { display: none; }
   .tab-item { padding: 0.6rem 0.7rem; font-size: 0.55rem; }
+  .corner-canvas-wrap { aspect-ratio: auto; min-height: 600px; }
+  .phase-card { position: relative; width: 100%; left: 0 !important; right: 0 !important; top: auto !important; bottom: auto !important; transform: none !important; margin-bottom: 0.5rem; }
+  .phase-centre { transform: none; }
+  .phase-centre:hover { transform: translateY(-3px) scale(1.02); }
+  .corner-svg { display: none; }
+  .corner-gap-bar { position: relative; bottom: auto; left: auto; transform: none; margin: 0.5rem auto 0; justify-content: center; }
 }
 </style>
 </head>
@@ -950,6 +1114,119 @@ body {
     <div class="live-component" id="imgRacingLine"></div>
   </div>
 </div>
+
+<!-- ===================== CORNER ZOOM COACHING CANVAS ===================== -->
+<section class="section reveal" style="padding-top: 3rem;">
+  <div class="splash-text" style="margin-bottom: 2rem;">
+    <div class="splash-label">Interactive Corner Coaching</div>
+    <h2>Click any corner.<br><span style="color: var(--green);">Get the whole story.</span></h2>
+    <p class="splash-desc">Click a corner on the track map and the entire corner opens full-screen — racing lines, phase-by-phase coaching data, and the exact inputs that separate the two drivers.</p>
+  </div>
+
+  <div class="corner-canvas-wrap">
+    <!-- Track corner SVG with racing lines -->
+    <svg class="corner-svg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow-a"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow-b"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <linearGradient id="phase-entry" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient>
+        <linearGradient id="phase-centre" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#ef4444"/></linearGradient>
+        <linearGradient id="phase-exit" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#22c55e"/></linearGradient>
+      </defs>
+
+      <!-- Dark track surface -->
+      <path d="M 80,460 Q 80,440 85,400 Q 95,320 140,250 Q 200,160 300,110 Q 400,60 520,55 Q 640,50 720,100 Q 780,140 810,220 L 810,460 Z" fill="rgba(255,255,255,0.03)" stroke="none"/>
+
+      <!-- Outside wall -->
+      <path d="M 80,460 Q 80,430 90,370 Q 105,280 160,210 Q 230,130 340,85 Q 450,40 570,42 Q 680,44 760,100 Q 820,145 850,240" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+      <!-- Inside wall -->
+      <path d="M 200,460 Q 200,420 210,370 Q 225,300 265,250 Q 320,185 400,155 Q 480,130 560,130 Q 630,130 690,165 Q 735,195 760,250" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+
+      <!-- Phase-colored inside wall segments -->
+      <!-- Entry: amber -->
+      <path d="M 200,460 Q 200,420 210,370 Q 225,300 265,250" fill="none" stroke="#f59e0b" stroke-width="4" opacity="0.8"/>
+      <!-- Centre: red -->
+      <path d="M 265,250 Q 320,185 400,155 Q 480,130 560,130" fill="none" stroke="#ef4444" stroke-width="4" opacity="0.8"/>
+      <!-- Exit: green -->
+      <path d="M 560,130 Q 630,130 690,165 Q 735,195 760,250" fill="none" stroke="#22c55e" stroke-width="4" opacity="0.8"/>
+
+      <!-- Phase boundary dashes -->
+      <line x1="265" y1="250" x2="160" y2="210" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="6,4"/>
+      <line x1="560" y1="130" x2="570" y2="42" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="6,4"/>
+
+      <!-- Racing line traces: Driver A (blue / Pro) — 6 laps, tight cluster -->
+      <g opacity="0.35" filter="url(#glow-a)">
+        <path d="M 150,460 Q 155,410 170,350 Q 190,280 240,230 Q 310,170 410,142 Q 510,118 590,120 Q 660,125 710,162 Q 748,195 775,255" fill="none" stroke="var(--driver-a)" stroke-width="1.5"/>
+        <path d="M 152,460 Q 157,412 172,348 Q 192,278 243,228 Q 312,168 412,140 Q 512,117 592,118 Q 662,123 712,160 Q 750,193 777,253" fill="none" stroke="var(--driver-a)" stroke-width="1.5"/>
+        <path d="M 148,460 Q 153,408 168,352 Q 188,282 238,232 Q 308,172 408,144 Q 508,120 588,122 Q 658,127 708,164 Q 746,197 773,257" fill="none" stroke="var(--driver-a)" stroke-width="1.5"/>
+        <path d="M 151,460 Q 156,411 171,349 Q 191,279 241,229 Q 311,169 411,141 Q 511,117 591,119 Q 661,124 711,161 Q 749,194 776,254" fill="none" stroke="var(--driver-a)" stroke-width="1.5"/>
+      </g>
+
+      <!-- Racing line traces: Driver B (red / HL Hero) — 6 laps, wider spread -->
+      <g opacity="0.35" filter="url(#glow-b)">
+        <path d="M 160,460 Q 165,405 180,340 Q 200,265 255,220 Q 330,158 430,132 Q 530,110 600,115 Q 665,122 720,158 Q 758,192 785,250" fill="none" stroke="var(--driver-b)" stroke-width="1.5"/>
+        <path d="M 155,460 Q 160,410 178,345 Q 198,270 250,225 Q 325,162 425,138 Q 525,115 598,118 Q 668,126 722,160 Q 760,195 788,255" fill="none" stroke="var(--driver-b)" stroke-width="1.5"/>
+        <path d="M 165,460 Q 170,400 185,335 Q 205,260 260,215 Q 335,155 435,128 Q 535,106 605,112 Q 670,118 725,155 Q 762,188 790,245" fill="none" stroke="var(--driver-b)" stroke-width="1.5"/>
+        <path d="M 158,460 Q 162,408 176,348 Q 196,268 248,222 Q 322,160 422,135 Q 522,112 596,116 Q 666,124 718,156 Q 756,190 782,248" fill="none" stroke="var(--driver-b)" stroke-width="1.5"/>
+      </g>
+
+      <!-- Legend -->
+      <line x1="60" y1="30" x2="85" y2="30" stroke="var(--driver-a)" stroke-width="2.5"/>
+      <text x="92" y="34" fill="var(--driver-a)" font-family="Rajdhani,sans-serif" font-size="13" font-weight="600">Pro</text>
+      <line x1="135" y1="30" x2="160" y2="30" stroke="var(--driver-b)" stroke-width="2.5"/>
+      <text x="167" y="34" fill="var(--driver-b)" font-family="Rajdhani,sans-serif" font-size="13" font-weight="600">HL Hero</text>
+    </svg>
+
+    <!-- Coaching phase cards positioned over the SVG -->
+    <div class="phase-card phase-entry">
+      <div class="phase-header" style="background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.4);">
+        <span class="phase-dot" style="background: #f59e0b;"></span>
+        ENTRY
+        <span class="phase-delta neg">&minus;0.043s</span>
+      </div>
+      <div class="phase-metrics">
+        <div class="pm-row"><span class="pm-label">Brake pressure</span><span class="pm-vals"><span class="pm-a">19.9%</span><span class="pm-vs">vs</span><span class="pm-b">0.0%</span></span></div>
+        <div class="pm-row"><span class="pm-label">Steering</span><span class="pm-vals"><span class="pm-a">33.5&deg;</span><span class="pm-vs">vs</span><span class="pm-b">45.3&deg;</span></span></div>
+        <div class="pm-row"><span class="pm-label">Lift rate</span><span class="pm-vals"><span class="pm-a">64.5%/s</span><span class="pm-vs">vs</span><span class="pm-b">82.2%/s</span></span></div>
+      </div>
+      <div class="pm-action">Pro uses more brake, less wheel, lifts more gradually</div>
+    </div>
+
+    <div class="phase-card phase-centre">
+      <div class="phase-header" style="background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4);">
+        <span class="phase-dot" style="background: #ef4444;"></span>
+        CENTRE
+        <span class="phase-delta pos">+0.056s</span>
+      </div>
+      <div class="phase-metrics">
+        <div class="pm-row"><span class="pm-label">Steering</span><span class="pm-vals"><span class="pm-a">35.4&deg;</span><span class="pm-vs">vs</span><span class="pm-b">53.0&deg;</span></span></div>
+        <div class="pm-row"><span class="pm-label">Throttle rate</span><span class="pm-vals"><span class="pm-a">4.3%/s</span><span class="pm-vs">vs</span><span class="pm-b">7.6%/s</span></span></div>
+        <div class="pm-row"><span class="pm-label">Line position</span><span class="pm-vals"><span class="pm-a">1%</span><span class="pm-vs">vs</span><span class="pm-b">17%</span><span class="pm-note">(~5ft tighter)</span></span></div>
+      </div>
+      <div class="pm-action">Pro uses less wheel, rolls on throttle gradually, runs tighter</div>
+    </div>
+
+    <div class="phase-card phase-exit">
+      <div class="phase-header" style="background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.4);">
+        <span class="phase-dot" style="background: #22c55e;"></span>
+        EXIT
+        <span class="phase-delta pos">+0.019s</span>
+      </div>
+      <div class="phase-metrics">
+        <div class="pm-row"><span class="pm-label">Throttle</span><span class="pm-vals"><span class="pm-a">90.7%</span><span class="pm-vs">vs</span><span class="pm-b">96.8%</span></span></div>
+        <div class="pm-row"><span class="pm-label">Line position</span><span class="pm-vals"><span class="pm-a">21%</span><span class="pm-vs">vs</span><span class="pm-b">26%</span><span class="pm-note">(~2ft tighter)</span></span></div>
+      </div>
+      <div class="pm-action">Pro carries less throttle, runs tighter line at exit</div>
+    </div>
+
+    <!-- Corner name + total gap centered -->
+    <div class="corner-gap-bar">
+      <span class="corner-name">T1 &amp; T2</span>
+      <span class="corner-total">+0.031s</span>
+      <span class="corner-leader">Pro faster</span>
+    </div>
+  </div>
+</section>
 
 <div class="section-divider"><hr></div>
 
