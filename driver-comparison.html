@@ -691,7 +691,114 @@ body {
       <h2>Great drivers are more than<br><span style="color: var(--red);">hot-lap heroes.</span></h2>
       <p class="splash-desc">They prioritize long-run speed. Our advanced analyses will identify key driver differences. Jump to any lap to compare both drivers' telemetry via<br><strong style="color: var(--cyan); font-size: 1.3em;">Click-through Telemetry Access™</strong></p>
     </div>
-    <div class="live-component" id="imgAccGap"></div>
+    <!-- Embedded Accumulated Gap Chart — real SVG, not a screenshot -->
+    <div style="max-width:900px; margin:0 auto; background:#0a0e1a; border-radius:16px; border:1px solid rgba(255,255,255,0.06); padding:24px 28px; box-shadow:0 20px 80px rgba(0,0,0,0.5);">
+      <!-- Header: driver stats -->
+      <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-bottom:16px;">
+        <div style="font-family:var(--font-display); font-size:28px; font-weight:800; color:var(--driver-a);">HL Hero</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.3); background:#1e293b; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:600;">vs</div>
+        <div style="font-family:var(--font-display); font-size:28px; font-weight:800; color:var(--driver-b);">Pro</div>
+      </div>
+      <div style="text-align:center; font-size:11px; color:rgba(255,255,255,0.35); margin-bottom:16px;">25 laps</div>
+      <!-- Stat boxes -->
+      <div style="display:flex; gap:12px; margin-bottom:20px;">
+        <div style="flex:1; background:#1e293b; border-radius:8px; padding:12px 16px;">
+          <div style="font-size:10px; color:var(--driver-a); font-weight:700; margin-bottom:2px;">HL HERO</div>
+          <div style="font-size:9px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.05em;">AVG LAP</div>
+          <div style="font-size:24px; font-weight:700; color:#e2e8f0; font-family:var(--font-mono);">23.843s</div>
+        </div>
+        <div style="flex:0.8; background:#1e293b; border-radius:8px; padding:12px 16px; text-align:center;">
+          <div style="font-size:28px; font-weight:800; color:#fbbf24; font-family:var(--font-mono);">1.1s</div>
+          <div style="font-size:10px; color:rgba(255,255,255,0.4);">total gap over 25 laps</div>
+          <div style="font-size:10px; color:#f87171; margin-top:2px;">▲ widens 0.476s/lap Q1→Q4</div>
+        </div>
+        <div style="flex:1; background:#1e293b; border-radius:8px; padding:12px 16px; text-align:right;">
+          <div style="font-size:10px; color:var(--driver-b); font-weight:700; margin-bottom:2px;">PRO</div>
+          <div style="font-size:9px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.05em;">AVG LAP</div>
+          <div style="font-size:24px; font-weight:700; color:#e2e8f0; font-family:var(--font-mono);">23.798s</div>
+        </div>
+      </div>
+      <!-- Chart label -->
+      <div style="font-size:10px; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:4px;">ACCUMULATED GAP</div>
+      <div style="font-size:9px; color:rgba(255,255,255,0.3); text-align:right; margin-bottom:6px;"><span style="color:var(--driver-b); font-weight:700;">Pro</span> is the reference · positive = <span style="color:#f87171; font-weight:700;">HL Hero</span> behind</div>
+      <!-- SVG Chart -->
+      <svg viewBox="0 0 850 280" style="width:100%; height:auto; display:block;">
+        <!-- Background -->
+        <rect x="50" y="10" width="780" height="240" rx="4" fill="#0f1420"/>
+        <!-- Grid lines -->
+        <line x1="50" y1="70" x2="830" y2="70" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="50" y1="130" x2="830" y2="130" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="50" y1="190" x2="830" y2="190" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <!-- Zero line (dashed) -->
+        <line x1="50" y1="150" x2="830" y2="150" stroke="#475569" stroke-width="1" stroke-dasharray="6,4"/>
+        <!-- Y-axis labels -->
+        <text x="45" y="45" text-anchor="end" font-size="10" fill="#475569" font-family="var(--font-mono)">+1.4s</text>
+        <text x="45" y="75" text-anchor="end" font-size="10" fill="#475569" font-family="var(--font-mono)">+0.45s</text>
+        <text x="45" y="155" text-anchor="end" font-size="10" fill="#475569" font-family="var(--font-mono)">0</text>
+        <text x="45" y="195" text-anchor="end" font-size="10" fill="#475569" font-family="var(--font-mono)">-0.55s</text>
+        <text x="45" y="235" text-anchor="end" font-size="10" fill="#475569" font-family="var(--font-mono)">-2.3s</text>
+        <!-- Quarter backgrounds -->
+        <rect x="50" y="10" width="195" height="240" fill="rgba(255,255,255,0.02)"/>
+        <rect x="440" y="10" width="195" height="240" fill="rgba(255,255,255,0.02)"/>
+        <!-- Quarter labels -->
+        <text x="147" y="268" text-anchor="middle" font-size="13" fill="#fbbf24" font-weight="700" font-family="var(--font-display)">Q1</text>
+        <text x="342" y="268" text-anchor="middle" font-size="13" fill="#fbbf24" font-weight="700" font-family="var(--font-display)">Q2</text>
+        <text x="537" y="268" text-anchor="middle" font-size="13" fill="#fbbf24" font-weight="700" font-family="var(--font-display)">Q3</text>
+        <text x="732" y="268" text-anchor="middle" font-size="13" fill="#fbbf24" font-weight="700" font-family="var(--font-display)">Q4</text>
+        <!-- Per-lap bars (gain=green, loss=red) -->
+        <!-- Laps 1-7: mostly green (HL Hero gaining) -->
+        <rect x="62" y="145" width="24" height="5" fill="#4ade80" opacity="0.5"/>
+        <rect x="93" y="140" width="24" height="10" fill="#f87171" opacity="0.4"/>
+        <rect x="124" y="142" width="24" height="8" fill="#f87171" opacity="0.4"/>
+        <rect x="155" y="143" width="24" height="7" fill="#f87171" opacity="0.4"/>
+        <rect x="186" y="141" width="24" height="9" fill="#f87171" opacity="0.4"/>
+        <rect x="217" y="144" width="24" height="6" fill="#f87171" opacity="0.4"/>
+        <!-- Laps 8-13: mixed, transitioning -->
+        <rect x="248" y="143" width="24" height="7" fill="#f87171" opacity="0.4"/>
+        <rect x="279" y="145" width="24" height="5" fill="#4ade80" opacity="0.5"/>
+        <rect x="310" y="142" width="24" height="8" fill="#f87171" opacity="0.4"/>
+        <rect x="341" y="144" width="24" height="6" fill="#f87171" opacity="0.4"/>
+        <rect x="372" y="143" width="24" height="7" fill="#f87171" opacity="0.4"/>
+        <rect x="403" y="145" width="24" height="5" fill="#4ade80" opacity="0.5"/>
+        <!-- Laps 14-19: mostly red (HL Hero losing) -->
+        <rect x="434" y="140" width="24" height="10" fill="#f87171" opacity="0.5"/>
+        <rect x="465" y="138" width="24" height="12" fill="#f87171" opacity="0.5"/>
+        <rect x="496" y="136" width="24" height="14" fill="#f87171" opacity="0.5"/>
+        <rect x="527" y="137" width="24" height="13" fill="#f87171" opacity="0.5"/>
+        <rect x="558" y="135" width="24" height="15" fill="#f87171" opacity="0.5"/>
+        <rect x="589" y="133" width="24" height="17" fill="#f87171" opacity="0.5"/>
+        <!-- Laps 20-25: heavy red (HL Hero falling apart) -->
+        <rect x="620" y="130" width="24" height="20" fill="#f87171" opacity="0.6"/>
+        <rect x="651" y="128" width="24" height="22" fill="#f87171" opacity="0.6"/>
+        <rect x="682" y="125" width="24" height="25" fill="#f87171" opacity="0.6"/>
+        <rect x="713" y="122" width="24" height="28" fill="#f87171" opacity="0.6"/>
+        <rect x="744" y="120" width="24" height="30" fill="#f87171" opacity="0.6"/>
+        <rect x="775" y="118" width="24" height="32" fill="#f87171" opacity="0.6"/>
+        <!-- Accumulated gap curve (yellow) -->
+        <!-- Points mapped: 0=lap1, gap starts at ~-0.5s (above zero=behind, below=ahead) -->
+        <!-- Y mapping: 150=zero, each pixel ≈ 0.017s. -1.73s = 150+102=252, +1.11s = 150-65=85 -->
+        <polyline fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linejoin="round"
+          points="62,158 93,165 124,172 155,180 186,190 217,198 248,205
+                  279,208 310,210 341,212 372,214 403,213
+                  434,210 465,206 496,200 527,192 558,180 589,168
+                  620,155 651,145 682,132 713,118 744,105 775,95 806,85"/>
+        <!-- Quarter marker dots -->
+        <circle cx="217" cy="198" r="6" fill="#fbbf24" stroke="#0a0e1a" stroke-width="2"/>
+        <text x="217" y="215" text-anchor="middle" font-size="11" fill="#fbbf24" font-weight="700" font-family="var(--font-mono)">-1.49s</text>
+        <circle cx="403" cy="213" r="6" fill="#fbbf24" stroke="#0a0e1a" stroke-width="2"/>
+        <text x="403" y="230" text-anchor="middle" font-size="11" fill="#fbbf24" font-weight="700" font-family="var(--font-mono)">-1.73s</text>
+        <circle cx="589" cy="168" r="6" fill="#f87171" stroke="#0a0e1a" stroke-width="2"/>
+        <text x="589" y="160" text-anchor="middle" font-size="11" fill="#f87171" font-weight="700" font-family="var(--font-mono)">-0.42s</text>
+        <circle cx="806" cy="85" r="6" fill="#fbbf24" stroke="#0a0e1a" stroke-width="2"/>
+        <text x="806" y="77" text-anchor="middle" font-size="11" fill="#4ade80" font-weight="700" font-family="var(--font-mono)">+1.11s</text>
+      </svg>
+      <!-- Legend -->
+      <div style="display:flex; gap:16px; margin-top:8px; font-size:10px;">
+        <div style="display:flex; align-items:center; gap:4px;"><span style="width:16px; height:2px; background:#fbbf24; display:inline-block;"></span><span style="color:#fbbf24;">Cumulative gap</span></div>
+        <div style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:8px; background:#f87171; opacity:0.5; display:inline-block;"></span><span style="color:#f87171;">Per-lap loss</span></div>
+        <div style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:8px; background:#4ade80; opacity:0.5; display:inline-block;"></span><span style="color:#4ade80;">Per-lap gain</span></div>
+      </div>
+    </div>
   </div>
 </div>
 
