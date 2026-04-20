@@ -788,6 +788,221 @@ body {
   color: var(--cyan);
 }
 
+/* ==================== DETAILED REPORT SUMMARY ==================== */
+.dr-section {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.dr-section-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: rgba(0,240,255,0.15);
+  line-height: 1;
+}
+
+.dr-section-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+/* Driver profiles */
+.dr-profiles {
+  display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
+  margin-bottom: 2rem;
+}
+
+.dr-profile {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: border-color 0.3s ease;
+}
+
+.dr-profile:hover { border-color: var(--border-accent); }
+
+.dr-profile-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.dr-profile-type {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 12px;
+}
+
+.dr-profile-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.dr-profile-vs {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+/* Driver checklist */
+.dr-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dr-zone {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.dr-zone:hover { border-color: var(--border-accent); }
+
+.dr-zone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.015);
+}
+
+.dr-zone-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dr-zone-gap {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.dr-zone-items {
+  padding: 16px 24px;
+}
+
+.dr-item {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.dr-item:last-child { border-bottom: none; }
+
+.dr-item-num {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--cyan);
+  background: rgba(0,240,255,0.08);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Measurement targets table */
+.dr-targets {
+  margin-bottom: 2rem;
+}
+
+.dr-targets-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dr-targets-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 16px 24px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.015);
+}
+
+.dr-targets-table tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: background 0.2s ease;
+}
+
+.dr-targets-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+.dr-targets-table tbody tr:last-child { border-bottom: none; }
+
+.dr-targets-table td {
+  padding: 16px 24px;
+  font-size: 1.05rem;
+  vertical-align: middle;
+}
+
+.dr-t-r { text-align: right !important; }
+
+.dr-t-metric {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.dr-t-target {
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.dr-t-gap {
+  color: var(--orange);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .dr-profiles { flex-direction: column; }
+  .dr-profile-vs { justify-content: center; }
+  .dr-targets-table td, .dr-targets-table th { padding: 10px 12px; font-size: 0.85rem; }
+}
+
 /* ==================== CORNER ZOOM FRAME ==================== */
 .cz-frame {
   position: relative;
@@ -1350,26 +1565,123 @@ body {
 
 <div class="section-divider"><hr></div>
 
-<!-- ===================== COACHING & REPORT ===================== -->
-<div class="splash reveal" style="margin-bottom: 2rem;">
+<!-- ===================== DETAILED REPORT SUMMARY ===================== -->
+<div class="splash reveal">
   <div class="splash-inner">
     <div class="splash-text">
-      <div class="splash-label">Actionable Intelligence</div>
+      <div class="splash-label">Detailed Report</div>
       <h2>How to close<br><span style="color: var(--green);">the gap.</span></h2>
-      <p class="splash-desc">Zone-by-zone coaching with specific input targets. Not "try harder" — exact numbers comparing what each driver does at every corner phase, with severity ratings and measurement targets.</p>
+      <p class="splash-desc">The full coaching breakdown — distilled into three sections you can act on immediately.</p>
     </div>
-    <div class="live-component" id="imgCoachingRec"></div>
+
+    <!-- ─── 1. BIG PICTURE DIFFERENCE ─── -->
+    <div class="dr-section">
+      <div class="dr-section-num">01</div>
+      <h3 class="dr-section-title">Big Picture Difference</h3>
+    </div>
+
+    <div class="dr-profiles">
+      <div class="dr-profile dr-profile-a">
+        <div class="dr-profile-name" style="color:var(--driver-b)">HL Hero</div>
+        <div class="dr-profile-type">Aggressive Entry, High Steering Load</div>
+        <div class="dr-profile-desc">Carries more steering angle through every phase, lifts later and harder, runs zero brake pressure on entry. The aggressive inputs generate more tire heat and the gap widens as the run progresses.</div>
+      </div>
+      <div class="dr-profile-vs">vs</div>
+      <div class="dr-profile dr-profile-b">
+        <div class="dr-profile-name" style="color:var(--driver-a)">Pro</div>
+        <div class="dr-profile-type">Smooth Entry, Tire-Friendly Technique</div>
+        <div class="dr-profile-desc">Lifts earlier, trail-brakes to rotate the car, carries less steering angle everywhere. Lower thermal load means the pace holds through the full run — the gap actually shrinks in Q1 but widens from Q2 onward.</div>
+      </div>
+    </div>
+
+    <!-- ─── 2. DRIVER CHECKLIST ─── -->
+    <div class="dr-section" style="margin-top:3rem">
+      <div class="dr-section-num">02</div>
+      <h3 class="dr-section-title">Driver Checklist</h3>
+    </div>
+
+    <div class="dr-checklist">
+      <div class="dr-zone">
+        <div class="dr-zone-header">
+          <span class="dr-zone-name">Turns 1 &amp; 2</span>
+          <span class="dr-zone-gap" style="color:var(--red)">+0.031s gap</span>
+        </div>
+        <div class="dr-zone-items">
+          <div class="dr-item"><span class="dr-item-num">1</span> Lift earlier (about 51ft earlier)</div>
+          <div class="dr-item"><span class="dr-item-num">2</span> Use brakes on entry (20% vs 0% currently)</div>
+          <div class="dr-item"><span class="dr-item-num">3</span> Use less steering (33.5&deg; vs 45.3&deg;)</div>
+          <div class="dr-item"><span class="dr-item-num">4</span> Roll onto throttle more gradually at exit (4.3%/s vs 7.6%/s)</div>
+          <div class="dr-item"><span class="dr-item-num">5</span> Run tighter through centre (~5ft tighter, 1% vs 17% of track)</div>
+        </div>
+      </div>
+
+      <div class="dr-zone">
+        <div class="dr-zone-header">
+          <span class="dr-zone-name">Turns 3 &amp; 4</span>
+          <span class="dr-zone-gap" style="color:var(--red)">+0.051s gap</span>
+        </div>
+        <div class="dr-zone-items">
+          <div class="dr-item"><span class="dr-item-num">1</span> Start braking on entry (17.7% vs 0% currently)</div>
+          <div class="dr-item"><span class="dr-item-num">2</span> Use less steering through centre (37.4&deg; vs 52.4&deg;)</div>
+          <div class="dr-item"><span class="dr-item-num">3</span> Unwind the wheel earlier at exit</div>
+          <div class="dr-item"><span class="dr-item-num">4</span> Carry less throttle at exit (let the car rotate)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 3. HOW TO MEASURE PROGRESS ─── -->
+    <div class="dr-section" style="margin-top:3rem">
+      <div class="dr-section-num">03</div>
+      <h3 class="dr-section-title">How to Measure Progress</h3>
+    </div>
+
+    <div class="dr-targets">
+      <table class="dr-targets-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="dr-t-r">HL Hero (Current)</th>
+            <th class="dr-t-r">Pro (Target)</th>
+            <th class="dr-t-r">Gap</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dr-t-metric">Avg Lap Time</td>
+            <td class="dr-t-r">24.167s</td>
+            <td class="dr-t-r dr-t-target">24.084s</td>
+            <td class="dr-t-r dr-t-gap">+0.082s</td>
+          </tr>
+          <tr>
+            <td class="dr-t-metric">Avg RF Temp</td>
+            <td class="dr-t-r">282&deg;F</td>
+            <td class="dr-t-r dr-t-target">217&deg;F</td>
+            <td class="dr-t-r dr-t-gap">+65&deg;F</td>
+          </tr>
+          <tr>
+            <td class="dr-t-metric">Avg RR Temp</td>
+            <td class="dr-t-r">273&deg;F</td>
+            <td class="dr-t-r dr-t-target">259&deg;F</td>
+            <td class="dr-t-r dr-t-gap">+14&deg;F</td>
+          </tr>
+          <tr>
+            <td class="dr-t-metric">Late-Run Fade</td>
+            <td class="dr-t-r">+0.712s</td>
+            <td class="dr-t-r dr-t-target">+0.260s</td>
+            <td class="dr-t-r dr-t-gap">+0.452s</td>
+          </tr>
+          <tr>
+            <td class="dr-t-metric">Gap Q1 &rarr; Q4</td>
+            <td class="dr-t-r">&minus;0.131s</td>
+            <td class="dr-t-r dr-t-target">&rarr;</td>
+            <td class="dr-t-r dr-t-gap">+0.225s (+0.356s growth)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 </div>
-
-<!-- ===================== MEASUREMENT TARGETS ===================== -->
-<section class="section reveal">
-  <div class="section-label">Track Your Progress</div>
-  <h2>Measurement targets.<br><span style="color: var(--cyan);">Session over session.</span></h2>
-  <p class="section-desc">Concrete benchmarks pulled directly from the coaching analysis. Your current values, the target to hit, and the gap — track improvement across sessions.</p>
-
-  <div class="live-component" id="imgTargets"></div>
-</section>
 
 <div class="section-divider"><hr></div>
 
@@ -1560,21 +1872,7 @@ svg+=`<text x="${W-PR}" y="${H-4}" fill="#64748b" font-size="8" text-anchor="end
 el.innerHTML=`<div class="lc-title">SLIP BALANCE \u00b7 T3&amp;T4</div><div style="margin-bottom:6px;font-size:10px;color:#94a3b8">POL trends <span style="color:#fb923c;font-weight:600">tight</span> (avg +${avgA.toFixed(2)}) \u00b7 AL runs <span style="color:#22d3ee;font-weight:600">neutral</span> (avg ${avgB.toFixed(2)})</div>${svg}<div class="lc-legend"><span style="color:#60a5fa">\u2014 POL</span><span style="color:#f87171">\u2014 AL</span><span style="color:#fb923c">\u25cf Heat-confirmed tight events</span></div>`;
 })();
 
-// ── 8. COACHING RECOMMENDATIONS ──
-(function(){
-const el=document.getElementById('imgCoachingRec');if(!el)return;
-const cards=[{sev:'major',m:'Brake Attack Speed',z:'T3&T4 Entry',c:'20.5%/s',t:'14.0%/s',d:'Reduce initial brake application speed \u2014 trail brake more progressively to carry rotation through the corner.'},{sev:'major',m:'Steering Angle',z:'T3&T4 Entry',c:'17.5\u00b0',t:'15.0\u00b0',d:'Less aggressive initial turn-in. The car will rotate more naturally with a deeper trail brake, requiring less steering input.'},{sev:'moderate',m:'Throttle Rate',z:'T1&T2 Centre',c:'0.52%/s',t:'2.0%/s',d:'Commit to throttle earlier through the centre. The current gradual application leaves exit speed on the table.'},{sev:'moderate',m:'Throttle Lift Speed',z:'T3&T4 Entry',c:'-154.8%/s',t:'-130%/s',d:'Smoother throttle lift on entry \u2014 the abrupt snap-off unsettles the car and contributes to higher front tire loading.'},{sev:'minor',m:'Track Position',z:'T3&T4 Entry',c:'42%',t:'40%',d:'Run slightly tighter on entry to set up a better exit line. Small change with compounding benefits over a long run.'}];
-el.innerHTML=`<div class="lc-title">COACHING RECOMMENDATIONS \u2014 WHAT TO CHANGE</div><div style="font-size:10px;color:#94a3b8;margin-bottom:12px">Specific input targets for <span style="color:#60a5fa;font-weight:600">POL</span> to close the gap to <span style="color:#f87171;font-weight:600">AL</span></div>${cards.map(c=>`<div class="lc-coach-card ${c.sev}"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div style="font-size:13px;font-weight:700;color:#e2e8f0">${c.m}</div><div class="lc-badge ${c.sev}">${c.sev}</div></div><div style="font-size:10px;color:#94a3b8;margin-bottom:6px">${c.z}</div><div style="display:flex;gap:16px;margin-bottom:8px;font-family:'Space Mono',monospace;font-size:11px"><div><span style="color:#64748b">Current: </span><span style="color:#f87171">${c.c}</span></div><div><span style="color:#64748b">Target: </span><span style="color:#4ade80">${c.t}</span></div></div><div style="font-size:11px;color:#cbd5e1;line-height:1.5">${c.d}</div></div>`).join('')}`;
-})();
-
-// ── 9. MEASUREMENT TARGETS ──
-(function(){
-const el=document.getElementById('imgTargets');if(!el)return;
-const tgts=[{m:'Brake Attack Speed',z:'T3&T4 Entry',c:20.5,t:14.0,u:'%/s'},{m:'Steering Angle',z:'T3&T4 Entry',c:17.5,t:15.0,u:'\u00b0'},{m:'Throttle Rate',z:'T1&T2 Centre',c:0.52,t:2.0,u:'%/s'},{m:'RF Temperature',z:'T3&T4',c:237,t:228,u:'\u00b0F'},{m:'Understeer Events',z:'T3&T4',c:12,t:6,u:'/run'},{m:'Avg Lap Time',z:'Overall',c:31.128,t:30.956,u:'s'}];
-let h=`<div class="lc-title">MEASUREMENT TARGETS \u2014 TRACK YOUR PROGRESS</div><div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #1e293b;font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:0.05em"><div style="flex:2">Metric</div><div style="flex:1">Zone</div><div style="flex:1;text-align:right">Current</div><div style="flex:1;text-align:right">Target</div><div style="flex:0.7;text-align:right">Gap</div><div style="flex:1.5">Progress</div></div>`;
-tgts.forEach(t=>{const gap=Math.abs(t.c-t.t),pct=Math.max(0,Math.min(100,100-gap/Math.max(t.c,t.t)*100)),color=pct>=80?'#4ade80':pct>=50?'#f59e0b':'#f87171';h+=`<div class="lc-target-row"><div class="lc-target-metric">${t.m}</div><div class="lc-target-zone">${t.z}</div><div class="lc-target-val" style="color:#f87171">${t.c}${t.u}</div><div class="lc-target-val" style="color:#4ade80">${t.t}${t.u}</div><div class="lc-target-val" style="color:#f59e0b">${gap.toFixed(1)}${t.u}</div><div class="lc-progress"><div class="lc-progress-fill" style="width:${pct}%;background:${color}"></div></div></div>`;});
-el.innerHTML=h;
-})();
+// ── 8 & 9: Coaching + Targets — now rendered as static HTML ──
 
 </script>
 </body>
