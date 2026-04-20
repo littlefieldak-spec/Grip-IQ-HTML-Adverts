@@ -794,7 +794,6 @@ body {
   max-width: 1100px;
   margin: 0 auto;
   overflow: hidden;
-  border-radius: 16px;
 }
 
 .cz-img {
@@ -806,8 +805,8 @@ body {
 .cz-fade-top {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 60px;
-  background: linear-gradient(to bottom, var(--bg-deep), transparent);
+  height: 100px;
+  background: linear-gradient(to bottom, var(--bg-deep) 0%, var(--bg-deep) 30%, transparent 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -815,8 +814,27 @@ body {
 .cz-fade-bottom {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 80px;
-  background: linear-gradient(to top, var(--bg-deep), transparent);
+  height: 120px;
+  background: linear-gradient(to top, var(--bg-deep) 0%, var(--bg-deep) 30%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Side fades to blend left/right edges */
+.cz-fade-left {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 60px;
+  background: linear-gradient(to right, var(--bg-deep), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cz-fade-right {
+  position: absolute;
+  top: 0; bottom: 0; right: 0;
+  width: 60px;
+  background: linear-gradient(to left, var(--bg-deep), transparent);
   pointer-events: none;
   z-index: 1;
 }
@@ -1145,6 +1163,8 @@ body {
       <img src="corner-zoom.png" alt="Corner zoom — T1&amp;T2 coaching overlay" class="cz-img" />
       <div class="cz-fade-top"></div>
       <div class="cz-fade-bottom"></div>
+      <div class="cz-fade-left"></div>
+      <div class="cz-fade-right"></div>
       <div class="cz-bar">
         <div class="cz-bar-item"><span style="color:var(--cyan)">&#x25BC;</span> <strong>Throttle Lift</strong> &mdash; where the driver lifts off entering the corner</div>
         <div class="cz-bar-item"><span style="color:var(--cyan)">&#x25B2;</span> <strong>Throttle Reapply</strong> &mdash; where they get back on exiting</div>
