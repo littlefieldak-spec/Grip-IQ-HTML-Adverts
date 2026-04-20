@@ -788,7 +788,69 @@ body {
   color: var(--cyan);
 }
 
-/* (corner zoom section uses a simple screenshot) */
+/* ==================== MARKER LEGEND ==================== */
+.marker-legend {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 2rem;
+  padding: 1.2rem 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.marker-legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.marker-icon {
+  font-size: 1rem;
+  line-height: 1;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.marker-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.marker-lines span {
+  display: block;
+  width: 20px;
+  height: 2.5px;
+  border-radius: 1px;
+}
+
+.marker-name {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+}
+
+.marker-desc {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+  .marker-legend { flex-direction: column; gap: 1rem; }
+}
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
@@ -1065,6 +1127,30 @@ body {
     </div>
 
     <img src="corner-zoom.png" alt="Corner zoom — T1&amp;T2 coaching overlay with racing lines, throttle markers, and per-phase coaching data" class="splash-screenshot" style="clip-path: inset(3% 0 5% 0 round 16px);" />
+
+    <div class="marker-legend">
+      <div class="marker-legend-item">
+        <span class="marker-icon" style="color:var(--cyan)">&#x25BC;</span>
+        <div>
+          <span class="marker-name">Throttle Lift</span>
+          <span class="marker-desc">Where the driver lifts off the throttle entering the corner</span>
+        </div>
+      </div>
+      <div class="marker-legend-item">
+        <span class="marker-icon" style="color:var(--cyan)">&#x25B2;</span>
+        <div>
+          <span class="marker-name">Throttle Reapply</span>
+          <span class="marker-desc">Where the driver gets back on the throttle exiting the corner</span>
+        </div>
+      </div>
+      <div class="marker-legend-item">
+        <span class="marker-lines"><span style="background:var(--cyan)"></span><span style="background:var(--driver-b)"></span></span>
+        <div>
+          <span class="marker-name">Racing Lines</span>
+          <span class="marker-desc">Every lap overlaid — see who's consistent and where the lines diverge</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
