@@ -788,7 +788,112 @@ body {
   color: var(--cyan);
 }
 
-/* (corner zoom uses screenshot image — no custom CSS needed) */
+/* ==================== CORNER ZOOM — screenshot + HTML overlay boxes ==================== */
+.cz-wrap {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.5), 0 0 60px rgba(0,240,255,0.06);
+}
+
+.cz-bg {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+}
+
+.cz-box {
+  position: absolute;
+  background: rgba(8,10,18,0.94);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  max-width: 340px;
+  z-index: 2;
+}
+
+.cz-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+}
+
+.cz-head span:first-child {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.cz-delta {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.cz-sub {
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.cz-line {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+}
+
+/* Box positions — overlay the compact boxes in the screenshot */
+.cz-entry {
+  top: 12%;
+  left: 1%;
+  border-color: rgba(245,158,11,0.3);
+  width: 32%;
+}
+
+.cz-exit {
+  top: 16%;
+  right: 1%;
+  border-color: rgba(34,197,94,0.3);
+  width: 26%;
+}
+
+.cz-centre {
+  bottom: 16%;
+  left: 28%;
+  border-color: rgba(239,68,68,0.3);
+  width: 30%;
+}
+
+.cz-racingline {
+  top: 56%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36%;
+  border-color: rgba(255,255,255,0.1);
+  text-align: center;
+}
+
+.cz-rl-title {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+}
+
+.cz-rl-text {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.55;
+  text-align: left;
+}
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
@@ -1064,7 +1169,41 @@ body {
       <p class="splash-desc">Click a corner on the track map and the entire corner opens full-screen — racing lines, phase-by-phase coaching data, and the exact inputs that separate the two drivers.</p>
     </div>
 
-    <img src="corner-zoom.png" alt="Corner Zoom — T1&amp;T2 coaching overlay showing Entry, Centre, Exit phase boxes with racing lines and throttle markers" class="splash-screenshot" />
+    <div class="cz-wrap">
+      <img src="corner-zoom.png" alt="Corner zoom overlay — T1&amp;T2" class="cz-bg" />
+
+      <!-- Entry box — top left, covers the compact box in screenshot -->
+      <div class="cz-box cz-entry">
+        <div class="cz-head"><span style="color:#f59e0b">ENTRY</span><span class="cz-delta" style="color:#4ade80">&minus;0.043s</span></div>
+        <div class="cz-sub" style="color:#4ade80">Pro 0.043s slower</div>
+        <div class="cz-line">Pro uses more brake (19.9% vs 0.0%)</div>
+        <div class="cz-line">Pro uses less wheel (33.5&deg; vs 45.3&deg;)</div>
+        <div class="cz-line">Pro lifts more gradually (64.5%/s vs 82.2%/s)</div>
+      </div>
+
+      <!-- Exit box — top right -->
+      <div class="cz-box cz-exit">
+        <div class="cz-head"><span style="color:#22c55e">EXIT</span><span class="cz-delta" style="color:#f87171">+0.019s</span></div>
+        <div class="cz-sub" style="color:#f87171">HL Hero 0.019s slower</div>
+        <div class="cz-line">Pro carries less throttle (90.7% vs 96.8%)</div>
+        <div class="cz-line">Pro runs tighter (~2ft) (21% vs 26% of track)</div>
+      </div>
+
+      <!-- Centre box — bottom left -->
+      <div class="cz-box cz-centre">
+        <div class="cz-head"><span style="color:#ef4444">CENTRE</span><span class="cz-delta" style="color:#f87171">+0.056s</span></div>
+        <div class="cz-sub" style="color:#f87171">HL Hero 0.056s slower</div>
+        <div class="cz-line">Pro uses less wheel (35.4&deg; vs 53.0&deg;)</div>
+        <div class="cz-line">Pro rolls onto throttle more gradually (4.3%/s vs 7.6%/s)</div>
+        <div class="cz-line">Pro runs tighter (~5ft) (0% vs 15% of track)</div>
+      </div>
+
+      <!-- Racing Line box — center -->
+      <div class="cz-box cz-racingline">
+        <div class="cz-rl-title">RACING LINE</div>
+        <div class="cz-rl-text">HL Hero runs about 2ft (5% of track width) wider on entry than Pro; HL Hero runs about 5ft (15% of track width) wider on centre than Pro; HL Hero runs about 2ft (6% of track width) wider on exit than Pro. HL Hero's line wanders 3.1&times; more lap-to-lap than Pro's (&plusmn;8.0% vs &plusmn;2.6% of track width). Pro takes a sharper arc through the corner (14&deg; less than HL Hero).</div>
+      </div>
+    </div>
   </div>
 </div>
 
