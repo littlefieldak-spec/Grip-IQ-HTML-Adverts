@@ -802,6 +802,61 @@ body {
   </div>
 </div>
 
+<!-- Click-through Telemetry Access Demo -->
+<div style="max-width:900px; margin:2rem auto 4rem; padding:0 2rem;">
+  <div style="text-align:center; margin-bottom:1rem;">
+    <span style="font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan);">Click-through Telemetry Access™ in action</span>
+  </div>
+  <div style="position:relative; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.06); box-shadow:0 20px 80px rgba(0,0,0,0.5);">
+    <!-- Before image (chart with selected lap) -->
+    <img src="before.png" alt="Select any lap on the chart" style="width:100%; display:block; transition:opacity 1s ease;" id="demo-before">
+    <!-- After image (telemetry view) -->
+    <img src="after.png" alt="Instantly see both drivers' telemetry" style="width:100%; display:block; position:absolute; top:0; left:0; opacity:0; transition:opacity 1s ease;" id="demo-after">
+    <!-- Cursor hand overlay on the before image -->
+    <div id="demo-cursor" style="position:absolute; top:37%; left:68%; transition:opacity 0.5s; pointer-events:none;">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v0M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/>
+        <path d="M18 8a2 2 0 0 1 2 2v7.21a4 4 0 0 1-.49 1.93l-1.78 3.27A2 2 0 0 1 16 24H9.22a4 4 0 0 1-2.15-.63L6 22.5"/>
+      </svg>
+    </div>
+    <!-- Label overlays -->
+    <div id="demo-label-before" style="position:absolute; bottom:12px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); padding:6px 16px; border-radius:20px; font-size:12px; color:#fbbf24; font-family:var(--font-mono); letter-spacing:0.05em; transition:opacity 0.5s;">Click any lap to jump to telemetry →</div>
+    <div id="demo-label-after" style="position:absolute; bottom:12px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); padding:6px 16px; border-radius:20px; font-size:12px; color:var(--cyan); font-family:var(--font-mono); letter-spacing:0.05em; opacity:0; transition:opacity 0.5s;">Both drivers' inputs — side by side, same lap</div>
+  </div>
+  <script>
+  (function() {
+    const before = document.getElementById('demo-before');
+    const after = document.getElementById('demo-after');
+    const cursor = document.getElementById('demo-cursor');
+    const labelB = document.getElementById('demo-label-before');
+    const labelA = document.getElementById('demo-label-after');
+    let showing = 'before';
+    setInterval(() => {
+      if (showing === 'before') {
+        // Simulate click: cursor pulses then switches to after
+        cursor.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+          before.style.opacity = '0';
+          after.style.opacity = '1';
+          cursor.style.opacity = '0';
+          labelB.style.opacity = '0';
+          labelA.style.opacity = '1';
+          showing = 'after';
+        }, 300);
+      } else {
+        before.style.opacity = '1';
+        after.style.opacity = '0';
+        cursor.style.opacity = '1';
+        cursor.style.transform = 'scale(1)';
+        labelB.style.opacity = '1';
+        labelA.style.opacity = '0';
+        showing = 'before';
+      }
+    }, 4000);
+  })();
+  </script>
+</div>
+
 <!-- ===================== SPLASH 2: KEY DIFFERENCES ===================== -->
 <div class="splash reveal">
   <div class="splash-inner">
