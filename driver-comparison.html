@@ -595,6 +595,181 @@ body {
   transform: translateY(0);
 }
 
+/* ==================== REPORT SUMMARY ==================== */
+.rs-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin: 2rem 0 1.2rem;
+}
+
+.rs-num {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  color: rgba(0,240,255,0.12);
+  line-height: 1;
+}
+
+.rs-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Driver profiles */
+.rs-profiles {
+  display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
+  margin-bottom: 1rem;
+}
+
+.rs-profile {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 2rem 2.2rem;
+}
+
+.rs-profile-name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.rs-profile-type {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 14px;
+}
+
+.rs-profile-desc {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.rs-vs {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+/* Zone checklist */
+.rs-zone {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.rs-zone-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.015);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.rs-zone-gap {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.rs-zone-items { padding: 12px 24px; }
+
+.rs-item {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.rs-item:last-child { border-bottom: none; }
+
+.rs-item-num {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--cyan);
+  background: rgba(0,240,255,0.08);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Targets table */
+.rs-targets {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rs-targets thead th {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 16px 24px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.015);
+}
+
+.rs-targets tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.rs-targets tbody tr:last-child { border-bottom: none; }
+.rs-targets tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+.rs-targets td {
+  padding: 16px 24px;
+  font-size: 1.05rem;
+}
+
+.rs-r { text-align: right !important; }
+.rs-metric { font-weight: 600; color: var(--text-primary); font-family: var(--font-mono); font-size: 0.95rem; }
+.rs-target { color: var(--green); font-family: var(--font-mono); font-weight: 600; }
+.rs-gap { color: var(--orange); font-family: var(--font-mono); font-weight: 700; }
+
+@media (max-width: 768px) {
+  .rs-profiles { flex-direction: column; }
+  .rs-vs { justify-content: center; }
+}
+
 /* ==================== KEY DIFFERENCES PANEL ==================== */
 .kd-panel {
   max-width: 920px;
@@ -1468,6 +1643,70 @@ body {
     </div>
   </div>
 </div>
+
+<!-- ===================== REPORT SUMMARY ===================== -->
+<section class="section reveal" style="padding-bottom: 2rem;">
+  <div class="splash-text" style="margin-bottom: 2rem;">
+    <div class="splash-label">Detailed Report</div>
+    <h2>How to close<br><span style="color: var(--green);">the gap.</span></h2>
+    <p class="splash-desc">The full coaching breakdown — distilled into three sections you can act on immediately.</p>
+  </div>
+
+  <!-- 01 Big Picture Difference -->
+  <div class="rs-section-head"><span class="rs-num">01</span><span class="rs-title">Big Picture Difference</span></div>
+  <div class="rs-profiles">
+    <div class="rs-profile">
+      <div class="rs-profile-name" style="color:var(--driver-b)">HL Hero</div>
+      <div class="rs-profile-type">Aggressive Entry, High Thermal Load</div>
+      <div class="rs-profile-desc">Carries more steering angle through every phase, lifts later and harder, runs zero brake pressure on entry. The aggressive inputs generate more tire heat and the gap widens as the run progresses.</div>
+    </div>
+    <div class="rs-vs">vs</div>
+    <div class="rs-profile">
+      <div class="rs-profile-name" style="color:var(--driver-a)">Pro</div>
+      <div class="rs-profile-type">Smooth Entry, Tire-Friendly Technique</div>
+      <div class="rs-profile-desc">Lifts earlier, trail-brakes to rotate the car, carries less steering angle everywhere. Lower thermal load means the pace holds through the full run.</div>
+    </div>
+  </div>
+
+  <!-- 02 Driver Checklist -->
+  <div class="rs-section-head"><span class="rs-num">02</span><span class="rs-title">Driver Checklist</span></div>
+
+  <div class="rs-zone">
+    <div class="rs-zone-head"><span>Turns 1 &amp; 2</span><span class="rs-zone-gap" style="color:var(--red)">+0.030s</span></div>
+    <div class="rs-zone-items">
+      <div class="rs-item"><span class="rs-item-num">1</span> Use less steering &mdash; both avg (35.4&deg; vs 53.0&deg;) and max (33.5&deg; vs 45.3&deg;)</div>
+      <div class="rs-item"><span class="rs-item-num">2</span> Use brake (20% vs 0% currently)</div>
+      <div class="rs-item"><span class="rs-item-num">3</span> Lift more gradually (64.5%/s vs 82.2%/s)</div>
+    </div>
+  </div>
+
+  <div class="rs-zone">
+    <div class="rs-zone-head"><span>Turns 3 &amp; 4</span><span class="rs-zone-gap" style="color:var(--red)">+0.012s</span></div>
+    <div class="rs-zone-items">
+      <div class="rs-item"><span class="rs-item-num">1</span> Use brake (18% vs 0% currently)</div>
+      <div class="rs-item"><span class="rs-item-num">2</span> Use less steering &mdash; both avg (37.4&deg; vs 52.4&deg;) and max (31.9&deg; vs 41.1&deg;)</div>
+      <div class="rs-item"><span class="rs-item-num">3</span> Lift earlier (4.7% vs 5.7% of lap)</div>
+    </div>
+  </div>
+
+  <!-- 03 How to Measure Progress -->
+  <div class="rs-section-head"><span class="rs-num">03</span><span class="rs-title">How to Measure Progress</span></div>
+
+  <table class="rs-targets">
+    <thead>
+      <tr><th>Metric</th><th class="rs-r">HL Hero (Current)</th><th class="rs-r">Pro (Target)</th><th class="rs-r">Gap</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="rs-metric">Avg Lap Time</td><td class="rs-r">24.167s</td><td class="rs-r rs-target">24.084s</td><td class="rs-r rs-gap">+0.082s</td></tr>
+      <tr><td class="rs-metric">Avg RF Temp</td><td class="rs-r">282&deg;F</td><td class="rs-r rs-target">217&deg;F</td><td class="rs-r rs-gap">+65&deg;F</td></tr>
+      <tr><td class="rs-metric">Avg RR Temp</td><td class="rs-r">273&deg;F</td><td class="rs-r rs-target">259&deg;F</td><td class="rs-r rs-gap">+14&deg;F</td></tr>
+      <tr><td class="rs-metric">Late-Run Fade</td><td class="rs-r">+0.712s</td><td class="rs-r rs-target">+0.260s</td><td class="rs-r rs-gap">+0.452s</td></tr>
+      <tr><td class="rs-metric">Gap Q1 &rarr; Q4</td><td class="rs-r">&minus;0.131s</td><td class="rs-r rs-target">&rarr;</td><td class="rs-r rs-gap">+0.225s (+0.356s growth)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="section-divider"><hr></div>
 
 <!-- ===================== TABS OVERVIEW ===================== -->
 <section class="section reveal">
