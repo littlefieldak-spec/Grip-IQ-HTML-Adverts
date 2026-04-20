@@ -803,7 +803,7 @@ body {
   width: 100%;
   display: block;
   border-radius: 16px;
-  clip-path: inset(4% 0 5% 0 round 16px);
+  clip-path: inset(3% 0 5% 0 round 16px);
 }
 
 .cz-box {
@@ -849,7 +849,49 @@ body {
   line-height: 1.6;
 }
 
-/* Box positions — cover the compact boxes in the screenshot */
+/* Cover divs — hide original compact boxes in the screenshot */
+.cz-cover {
+  position: absolute;
+  background: #080a12;
+  z-index: 1;
+}
+
+/* HTML legend — top right */
+.cz-legend {
+  position: absolute;
+  top: 5%;
+  right: 2%;
+  background: #080a12;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 16px;
+  z-index: 3;
+}
+
+.cz-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.8;
+}
+
+.cz-leg-line {
+  display: inline-block;
+  width: 18px;
+  height: 2.5px;
+  border-radius: 1px;
+}
+
+.cz-leg-marker {
+  font-size: 0.6rem;
+  width: 18px;
+  text-align: center;
+  color: rgba(255,255,255,0.5);
+}
+
+/* Box positions */
 .cz-entry {
   top: 13%;
   left: 1%;
@@ -872,7 +914,7 @@ body {
 }
 
 .cz-racingline {
-  top: 44%;
+  top: 42%;
   left: 50%;
   transform: translateX(-50%);
   width: 36%;
@@ -1173,7 +1215,22 @@ body {
     <div class="cz-wrap">
       <img src="corner-zoom.png" alt="Corner zoom overlay — T1&amp;T2" class="cz-bg" />
 
-      <!-- Entry box — top left, covers the compact box in screenshot -->
+      <!-- Cover divs: hide original screenshot boxes -->
+      <div class="cz-cover" style="top:15%;left:25%;width:30%;height:20%"></div>
+      <div class="cz-cover" style="top:20%;right:0;width:22%;height:8%"></div>
+      <div class="cz-cover" style="bottom:11%;left:35%;width:26%;height:10%"></div>
+      <div class="cz-cover" style="top:57%;left:35%;width:32%;height:5%"></div>
+      <div class="cz-cover" style="top:2%;right:0;width:20%;height:12%"></div>
+
+      <!-- HTML legend — replaces the cut-off screenshot legend -->
+      <div class="cz-legend">
+        <div class="cz-legend-row"><span class="cz-leg-line" style="background:var(--cyan)"></span> HL Hero</div>
+        <div class="cz-legend-row"><span class="cz-leg-line" style="background:var(--driver-b)"></span> Pro</div>
+        <div class="cz-legend-row"><span class="cz-leg-marker" style="color:var(--cyan)">&#x25BC;</span> Throttle Lift</div>
+        <div class="cz-legend-row"><span class="cz-leg-marker">&#x25B2;</span> Throttle Reapply</div>
+      </div>
+
+      <!-- Entry box — left side -->
       <div class="cz-box cz-entry">
         <div class="cz-head"><span style="color:#f59e0b">ENTRY</span><span class="cz-delta" style="color:#4ade80">&minus;0.043s</span></div>
         <div class="cz-sub" style="color:#4ade80">Pro 0.043s slower</div>
@@ -1182,7 +1239,7 @@ body {
         <div class="cz-line">Pro lifts more gradually (64.5%/s vs 82.2%/s)</div>
       </div>
 
-      <!-- Exit box — top right -->
+      <!-- Exit box — right side -->
       <div class="cz-box cz-exit">
         <div class="cz-head"><span style="color:#22c55e">EXIT</span><span class="cz-delta" style="color:#f87171">+0.019s</span></div>
         <div class="cz-sub" style="color:#f87171">HL Hero 0.019s slower</div>
