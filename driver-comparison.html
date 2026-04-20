@@ -1309,18 +1309,6 @@ body {
   </div>
 </section>
 
-<!-- ===================== SPLASH 3: RACING LINE ===================== -->
-<div class="splash reveal">
-  <div class="splash-inner">
-    <div class="splash-text">
-      <div class="splash-label">GPS Racing Line Comparison</div>
-      <h2>See the line.<br><span style="color: var(--driver-a);">Every</span> <span style="color: var(--driver-b);">lap.</span></h2>
-      <p class="splash-desc">Every lap overlaid for both drivers at every corner. See who's consistent, who wanders, and exactly where the lines diverge — entry, apex, and exit.</p>
-    </div>
-    <div class="live-component" id="imgRacingLine"></div>
-  </div>
-</div>
-
 <div class="section-divider"><hr></div>
 
 <!-- ===================== TIRE HEAT ===================== -->
@@ -1510,20 +1498,7 @@ el.innerHTML=`<div class="lc-header"><div><div class="lc-driver a">POL</div><div
 
 // ── 2. KEY DIFFERENCES — now rendered as static HTML, JS injection removed ──
 
-// ── 3. RACING LINE ──
-(function(){
-const el=document.getElementById('imgRacingLine');if(!el)return;
-const W=600,H=360,cx=300,cy=180;
-const pts=(rx,ry,sk,n)=>{const p=[];for(let i=0;i<n;i++){const a=2*Math.PI*i/n,r=rx*(1+sk*Math.cos(a));p.push([cx+r*Math.cos(a),cy+ry*Math.sin(a)]);}return p;};
-const pD=p=>p.map((pt,i)=>`${i===0?'M':'L'}${pt[0].toFixed(1)},${pt[1].toFixed(1)}`).join(' ')+'Z';
-const dL=(rx,ry,sk,off,n)=>{const p=[];for(let i=0;i<n;i++){const a=2*Math.PI*i/n,r=(rx+off*Math.sin(2*a))*(1+sk*Math.cos(a));p.push([cx+r*Math.cos(a),cy+ry*Math.sin(a)]);}return p;};
-let svg=`<svg width="100%" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"><rect width="${W}" height="${H}" fill="#080b12" rx="8"/><path d="${pD(pts(240,130,0.12,80))}" fill="#1c2133"/><path d="${pD(pts(190,85,0.12,80))}" fill="#080b12"/><path d="${pD(pts(240,130,0.12,80))}" fill="none" stroke="#475569" stroke-width="1.5"/><path d="${pD(pts(190,85,0.12,80))}" fill="none" stroke="#94a3b8" stroke-width="1.5"/>`;
-for(let l=0;l<3;l++){svg+=`<path d="${pD(dL(215,108,0.12,3+l*1.5,80))}" fill="none" stroke="#60a5fa" stroke-width="1.2" opacity="${0.3+l*0.2}"/><path d="${pD(dL(215,108,0.12,-2-l*1.2,80))}" fill="none" stroke="#f87171" stroke-width="1.2" opacity="${0.3+l*0.2}"/>`;}
-svg+=`<text x="${cx+260}" y="${cy-10}" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="'Space Mono',monospace" font-weight="600">T1&amp;T2</text><text x="${cx-260}" y="${cy-10}" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="'Space Mono',monospace" font-weight="600">T3&amp;T4</text>`;
-svg+=`<line x1="${cx+215}" y1="${cy-20}" x2="${cx+215}" y2="${cy+20}" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,3"/><text x="${cx+215}" y="${cy-25}" fill="#fbbf24" font-size="8" text-anchor="middle" font-family="'Space Mono',monospace">S/F</text>`;
-svg+=`<rect x="20" y="${H-30}" width="8" height="3" fill="#60a5fa" rx="1"/><text x="32" y="${H-26}" fill="#60a5fa" font-size="9" font-family="'Space Mono',monospace">POL</text><rect x="80" y="${H-30}" width="8" height="3" fill="#f87171" rx="1"/><text x="92" y="${H-26}" fill="#f87171" font-size="9" font-family="'Space Mono',monospace">AL</text></svg>`;
-el.innerHTML=svg;
-})();
+// ── 3. RACING LINE — removed (fake SVG oval deleted) ──
 
 // ── 4. TIRE HEAT SPARKLINES ──
 (function(){
