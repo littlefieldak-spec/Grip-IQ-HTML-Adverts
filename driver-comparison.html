@@ -807,13 +807,13 @@ body {
   <div style="text-align:center; margin-bottom:1rem;">
     <span style="font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan);">Click-through Telemetry Access™ in action</span>
   </div>
-  <div style="position:relative; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); box-shadow:0 20px 80px rgba(0,0,0,0.5); background:#0a0e1a; line-height:0; aspect-ratio:16/9;">
-    <!-- Before image (chart with selected lap) -->
-    <img src="before.png" alt="Select any lap on the chart" style="width:100%; height:100%; object-fit:contain; display:block; transition:opacity 0.8s ease;" id="demo-before">
-    <!-- After image (telemetry view) -->
-    <img src="after.png" alt="Instantly see both drivers' telemetry" style="width:100%; height:100%; object-fit:contain; display:block; position:absolute; top:0; left:0; opacity:0; transition:opacity 0.8s ease;" id="demo-after">
-    <!-- Cursor hand overlay — positioned on the lap 20 dot -->
-    <div id="demo-cursor" style="position:absolute; top:55%; left:75%; transition:opacity 0.3s, transform 0.3s; pointer-events:none; font-size:28px;">👆</div>
+  <div style="position:relative; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); box-shadow:0 20px 80px rgba(0,0,0,0.5); background:#0a0e1a; line-height:0;">
+    <!-- After image drives the container height (it's the taller image) -->
+    <img src="after.png" alt="Instantly see both drivers' telemetry" style="width:100%; display:block; opacity:0; transition:opacity 0.8s ease;" id="demo-after">
+    <!-- Before image overlaid, centered vertically -->
+    <img src="before.png" alt="Select any lap on the chart" style="width:100%; display:block; position:absolute; top:50%; left:0; transform:translateY(-50%); transition:opacity 0.8s ease;" id="demo-before">
+    <!-- Cursor hand overlay — on the lap 20 dot area of the before image -->
+    <div id="demo-cursor" style="position:absolute; top:45%; left:72%; transition:opacity 0.3s, transform 0.3s; pointer-events:none; font-size:32px;">👆</div>
     <!-- Label overlays -->
     <div id="demo-label-before" style="position:absolute; bottom:16px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); padding:8px 20px; border-radius:20px; font-size:13px; color:#fbbf24; font-family:var(--font-mono); letter-spacing:0.05em; transition:opacity 0.5s; white-space:nowrap;">Click any lap to jump to telemetry →</div>
     <div id="demo-label-after" style="position:absolute; bottom:16px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); padding:8px 20px; border-radius:20px; font-size:13px; color:var(--cyan); font-family:var(--font-mono); letter-spacing:0.05em; opacity:0; transition:opacity 0.5s; white-space:nowrap;">Both drivers' inputs — side by side, same lap</div>
