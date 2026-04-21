@@ -1767,6 +1767,101 @@ body {
   </div>
 </section>
 
+<!-- ===================== TIRE HEAT OVERVIEW ===================== -->
+<section class="section reveal" style="padding-bottom: 2rem;">
+  <div class="splash-text" style="margin-bottom: 2rem;">
+    <div class="splash-label">Thermal Intelligence</div>
+    <h2>The tire story.<br><span style="color: var(--orange);">Written in heat.</span></h2>
+  </div>
+
+  <!-- Tire Heat Summary -->
+  <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:12px; padding:18px 24px; margin-bottom:1.5rem;">
+    <div style="font-family:var(--font-display); font-size:0.75rem; font-weight:700; color:var(--orange); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Tire Heat Overview</div>
+    <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.6; margin:0 0 4px;">HL Hero's right front tires run 42.3&deg;F hotter on average.</p>
+    <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.6; margin:0 0 4px;">HL Hero runs hotter across all four tires &mdash; 31.3&deg;F on the fronts, 15.1&deg;F on the rears.</p>
+    <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.6; margin:0;">HL Hero's right front temps rise 36.9&deg;F from Q1 to Q4; Pro's right rear temps rise 29.7&deg;F from Q1 to Q4.</p>
+  </div>
+
+  <!-- Legend -->
+  <div style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem; padding-left:4px;">
+    <span style="color:#60a5fa;">&FilledSmallSquare;</span> HL Hero &nbsp;
+    <span style="color:#f87171;">&FilledSmallSquare;</span> Pro &nbsp;
+    <span style="color:var(--text-dim);">&middot; dashed = average</span>
+  </div>
+
+  <!-- 4 charts: LF | RF on top, LR | RR on bottom -->
+  <div id="tire-heat-charts" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;"></div>
+</section>
+
+<script>
+(function(){
+  const charts = [
+    { title: "Left Front (LF)", delta: "+28.4°F",
+      a: [153,155,160,166,172,176,178,181,183,182,186,188,187,190,189,191,190,192,191,190,193,192,194,193,195],
+      b: [151,153,156,158,160,162,163,165,166,167,168,169,170,171,170,171,172,171,172,171,172,171,172,171,172] },
+    { title: "Right Front (RF)", delta: "+42.3°F",
+      a: [178,182,190,198,205,210,214,218,220,222,225,226,228,230,231,233,234,235,236,237,238,239,240,241,242],
+      b: [165,164,166,168,170,172,174,176,178,180,181,183,184,186,187,188,189,190,191,192,193,194,194,195,196] },
+    { title: "Left Rear (LR)", delta: "+11.1°F",
+      a: [148,150,156,160,164,168,170,173,175,174,176,178,177,179,178,180,179,181,180,182,181,183,182,184,185],
+      b: [160,161,162,163,164,165,165,166,166,167,167,168,168,169,169,169,170,170,170,170,170,170,171,171,171] },
+    { title: "Right Rear (RR)", delta: "+19.0°F",
+      a: [175,178,185,192,198,204,208,212,215,218,220,222,223,224,225,226,227,228,228,229,229,230,230,231,231],
+      b: [190,191,193,195,198,200,202,204,206,207,208,210,211,212,214,215,216,218,219,220,221,222,223,224,225] },
+  ];
+  const el = document.getElementById("tire-heat-charts");
+  if (!el) return;
+  const W=520, H=280, PL=42, PR=12, PT=36, PB=28;
+  const cW=W-PL-PR, cH=H-PT-PB;
+
+  charts.forEach(ch => {
+    const all = [...ch.a, ...ch.b];
+    const mn = Math.min(...all) - 3, mx = Math.max(...all) + 3;
+    const rng = mx - mn || 1;
+    const n = ch.a.length;
+    const tx = i => PL + (i/(n-1))*cW;
+    const ty = v => PT + ((mx-v)/rng)*cH;
+    const avgA = ch.a.reduce((s,v)=>s+v,0)/n;
+    const avgB = ch.b.reduce((s,v)=>s+v,0)/n;
+    const mkPath = arr => arr.map((v,i) => `${i===0?'M':'L'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ');
+    const mkArea = arr => mkPath(arr) + ` L${tx(n-1).toFixed(1)},${ty(mn).toFixed(1)} L${tx(0).toFixed(1)},${ty(mn).toFixed(1)} Z`;
+
+    // Y-axis: 5 ticks
+    let yTicks = '';
+    for (let i=0; i<=4; i++) {
+      const v = mn + (rng*i)/4;
+      const y = ty(v);
+      yTicks += `<line x1="${PL}" x2="${W-PR}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>`;
+      yTicks += `<text x="${PL-6}" y="${y+3}" fill="#64748b" font-size="10" text-anchor="end" font-family="'Space Mono',monospace">${Math.round(v)}°</text>`;
+    }
+
+    // X-axis: every other lap
+    let xTicks = '';
+    for (let i=0; i<n; i+=2) {
+      xTicks += `<text x="${tx(i)}" y="${H-6}" fill="#64748b" font-size="9" text-anchor="middle" font-family="'Space Mono',monospace">${i+1}</text>`;
+    }
+
+    const svg = `<svg width="100%" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="display:block;">
+      <rect width="${W}" height="${H}" fill="#0a0e1a" rx="8"/>
+      <text x="12" y="22" fill="#e2e8f0" font-size="12" font-weight="700" font-family="Rajdhani,sans-serif">${ch.title}</text>
+      <text x="${W-12}" y="22" fill="#f87171" font-size="11" font-weight="700" text-anchor="end" font-family="'Space Mono',monospace">HL Hero ${ch.delta}</text>
+      ${yTicks}${xTicks}
+      <path d="${mkArea(ch.a)}" fill="#60a5fa" opacity="0.06"/>
+      <path d="${mkArea(ch.b)}" fill="#f87171" opacity="0.06"/>
+      <line x1="${PL}" x2="${W-PR}" y1="${ty(avgA)}" y2="${ty(avgA)}" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,4" opacity="0.5"/>
+      <line x1="${PL}" x2="${W-PR}" y1="${ty(avgB)}" y2="${ty(avgB)}" stroke="#f87171" stroke-width="1" stroke-dasharray="6,4" opacity="0.5"/>
+      <path d="${mkPath(ch.a)}" fill="none" stroke="#60a5fa" stroke-width="2"/>
+      <path d="${mkPath(ch.b)}" fill="none" stroke="#f87171" stroke-width="2"/>
+    </svg>`;
+
+    const card = document.createElement('div');
+    card.style.cssText = 'background:var(--bg-card); border:1px solid rgba(255,255,255,0.06); border-radius:10px; overflow:hidden; padding:4px;';
+    card.innerHTML = svg;
+    el.appendChild(card);
+  });
+})();
+</script>
+
 <div class="section-divider"><hr></div>
 
 <!-- ===================== TABS OVERVIEW ===================== -->
