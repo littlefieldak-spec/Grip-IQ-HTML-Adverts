@@ -1678,7 +1678,7 @@ body {
   <div class="splash-text" style="margin-bottom: 2rem;">
     <div class="splash-label">Detailed Report</div>
     <h2>How to close<br><span style="color: var(--green);">the gap.</span></h2>
-    <p class="splash-desc">The full coaching breakdown &mdash; distilled into three sections you can act on immediately &mdash; followed by a <a href="#coaching-detail" style="color:var(--cyan); text-decoration:underline; cursor:pointer;">detailed coaching report</a>.</p>
+    <p class="splash-desc">The full coaching breakdown &mdash; distilled into three sections you can act on immediately &mdash; followed by a <a href="#coaching-detail" onclick="event.preventDefault(); var el=document.getElementById('coaching-detail'); el.style.display=el.style.display==='none'?'block':'none'; if(el.style.display==='block') el.scrollIntoView({behavior:'smooth',block:'start'});" style="color:var(--cyan); text-decoration:underline; cursor:pointer;">detailed coaching report</a>.</p>
   </div>
 
   <!-- 01 Big Picture Difference -->
@@ -1734,8 +1734,8 @@ body {
     </tbody>
   </table>
 
-  <!-- Detailed Coaching Report -->
-  <div id="coaching-detail" class="rs-coaching-report" style="margin-top: 3rem;">
+  <!-- Detailed Coaching Report — hidden until clicked -->
+  <div id="coaching-detail" class="rs-coaching-report" style="margin-top: 3rem; display: none;">
     <div class="rs-section-head"><span class="rs-num" style="font-size:2rem"></span><span class="rs-title">Detailed Coaching Report</span></div>
 
     <div class="rs-coaching-prose">
