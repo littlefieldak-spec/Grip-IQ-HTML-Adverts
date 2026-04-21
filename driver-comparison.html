@@ -1945,13 +1945,13 @@ body {
   <h2>ML-verified<br><span style="color: var(--red);">grip events.</span></h2>
   <p class="section-desc">Every understeer, oversteer, and wheelspin event — detected by machine learning, verified against tire data, with causal analysis showing exactly what the driver did to trigger it.</p>
 
-  <div class="live-component" id="imgWheelspin"></div>
-
-  <div class="live-component" id="imgGripHeat"></div>
+  <div class="cz-frame" style="margin-top:1.5rem;">
+    <img src="wheelspin-analysis.png" alt="Wheelspin Analysis — T1&amp;T2 with 4-phase snapshot and track map" class="cz-img" style="clip-path:none;" />
+    <div class="cz-fade-left"></div>
+    <div class="cz-fade-right"></div>
+    <div class="cz-fade-bottom"></div>
+  </div>
 </section>
-
-<div class="section-divider"><hr></div>
-
 
 <div class="section-divider"><hr></div>
 
@@ -2110,37 +2110,7 @@ el.innerHTML=`<div class="lc-title" style="margin-bottom:12px">RIGHT FRONT \u00b
 <div class="lc-coaching-box"><p>Reduce front tire loading through T3&amp;T4 by unwinding the wheel earlier at exit. The RF runs 9\u00b0F hotter on average \u2014 primarily driven by steering angle differences at entry. Trail braking deeper would reduce the need for aggressive mid-corner steering corrections.</p></div>`;
 })();
 
-// ── 6. WHEELSPIN ──
-(function(){
-const el=document.getElementById('imgWheelspin');if(!el)return;
-const n=49,W=500,H=80,PL=40,PR=12,PT=10,PB=20,cW=W-PL-PR,cH=H-PT-PB;const tx=i=>PL+(i/(n-1))*cW;
-const evA=[0,0,0,0,1,0,0,0,2,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,2,0,0,1,0,0,3,0,0,1,0,0,2,0,1,0,0,1,0,0,2,0,1,0,3];
-const evB=[0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,0];
-const mkD=(ev,color,yO)=>{let s='';ev.forEach((v,i)=>{const x=tx(i),y=PT+cH/2+yO;if(v>0)s+=`<circle cx="${x}" cy="${y}" r="${2+v}" fill="#fb923c" opacity="0.8"/>`;else s+=`<circle cx="${x}" cy="${y}" r="1.5" fill="${color}" opacity="0.3"/>`;});return s;};
-let svg=`<svg width="100%" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#0a0e1a" rx="4"/><line x1="${PL}" x2="${W-PR}" y1="${PT+cH/2}" y2="${PT+cH/2}" stroke="#1e293b" stroke-width="0.5"/>${mkD(evA,'#60a5fa',-12)}${mkD(evB,'#f87171',12)}`;
-const pkA=evA.indexOf(3);svg+=`<circle cx="${tx(pkA)}" cy="${PT+cH/2-12}" r="6" fill="none" stroke="#fb923c" stroke-width="1.5"/><text x="${tx(pkA)}" y="${PT+cH/2-22}" fill="#fb923c" font-size="8" text-anchor="middle" font-family="'Space Mono',monospace" font-weight="700">L${pkA+1}</text>`;
-svg+=`<text x="${PL-4}" y="${PT+cH/2-10}" fill="#60a5fa" font-size="8" text-anchor="end" font-family="'Space Mono',monospace">POL</text><text x="${PL-4}" y="${PT+cH/2+14}" fill="#f87171" font-size="8" text-anchor="end" font-family="'Space Mono',monospace">AL</text></svg>`;
-const totA=evA.reduce((a,b)=>a+b,0),totB=evB.reduce((a,b)=>a+b,0);
-el.innerHTML=`<div class="lc-title">WHEELSPIN EVENTS \u00b7 T3&amp;T4 EXIT</div>${svg}<div style="display:flex;gap:8px;margin-top:8px">${['Q1','Q2','Q3','Q4'].map((q,i)=>{const s=Math.floor(n/4),qA=evA.slice(i*s,(i+1)*s).reduce((a,b)=>a+b,0),qB=evB.slice(i*s,(i+1)*s).reduce((a,b)=>a+b,0);return`<div style="flex:1;background:#111827;border-radius:4px;padding:6px 8px;text-align:center"><div style="font-size:9px;color:#64748b;margin-bottom:3px">${q}</div><div style="font-size:11px"><span style="color:#60a5fa;font-weight:700">${qA}</span><span style="color:#334155;margin:0 4px">|</span><span style="color:#f87171;font-weight:700">${qB}</span></div></div>`;}).join('')}</div><div style="margin-top:6px;font-size:10px;color:#94a3b8">Total events: <span style="color:#60a5fa;font-weight:600">${totA} POL</span> \u00b7 <span style="color:#f87171;font-weight:600">${totB} AL</span></div>`;
-})();
-
-// ── 7. GRIP & HEAT ──
-(function(){
-const el=document.getElementById('imgGripHeat');if(!el)return;
-const n=49,W=560,H=120,PL=40,PR=12,PT=12,PB=20,cW=W-PL-PR,cH=H-PT-PB;const tx=i=>PL+(i/(n-1))*cW;
-const gen=(bias,ns)=>{const v=[];for(let i=0;i<n;i++)v.push(bias+ns*(Math.sin(i*0.7)*0.6+Math.cos(i*0.3)*0.4));return v;};
-const bA=gen(0.15,0.25),bB=gen(-0.05,0.2);const mn=-0.8,mx=0.8,rng=mx-mn;
-const ty=v=>PT+((mx-v)/rng)*cH,zY=ty(0);
-const mkL=(vals,color)=>vals.map((v,i)=>`${i===0?'M':'L'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ');
-let svg=`<svg width="100%" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#0a0e1a" rx="4"/><rect x="${PL}" y="${PT}" width="${cW}" height="${cH/2}" fill="#fb923c" opacity="0.03"/><rect x="${PL}" y="${PT+cH/2}" width="${cW}" height="${cH/2}" fill="#22d3ee" opacity="0.03"/><line x1="${PL}" x2="${W-PR}" y1="${zY}" y2="${zY}" stroke="#475569" stroke-width="1"/>`;
-svg+=`<text x="${PL-4}" y="${PT+8}" fill="#fb923c" font-size="7" text-anchor="end" font-family="'Space Mono',monospace" opacity="0.5">TIGHT</text><text x="${PL-4}" y="${PT+cH-2}" fill="#22d3ee" font-size="7" text-anchor="end" font-family="'Space Mono',monospace" opacity="0.5">LOOSE</text>`;
-svg+=`<path d="${mkL(bA,'#60a5fa')}" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.8"/><path d="${mkL(bB,'#f87171')}" fill="none" stroke="#f87171" stroke-width="1.5" opacity="0.8"/>`;
-const avgA=bA.reduce((a,b)=>a+b,0)/n,avgB=bB.reduce((a,b)=>a+b,0)/n;
-svg+=`<line x1="${PL}" x2="${W-PR}" y1="${ty(avgA)}" y2="${ty(avgA)}" stroke="#60a5fa" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/><line x1="${PL}" x2="${W-PR}" y1="${ty(avgB)}" y2="${ty(avgB)}" stroke="#f87171" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>`;
-[8,22,31,44].forEach(l=>{svg+=`<circle cx="${tx(l)}" cy="${ty(bA[l])}" r="4" fill="none" stroke="#fb923c" stroke-width="1.5"/><circle cx="${tx(l)}" cy="${ty(bA[l])}" r="2" fill="#fb923c"/>`;});
-svg+=`<text x="${W-PR}" y="${H-4}" fill="#64748b" font-size="8" text-anchor="end" font-family="'Space Mono',monospace">\u25cf heat-confirmed events</text></svg>`;
-el.innerHTML=`<div class="lc-title">SLIP BALANCE \u00b7 T3&amp;T4</div><div style="margin-bottom:6px;font-size:10px;color:#94a3b8">POL trends <span style="color:#fb923c;font-weight:600">tight</span> (avg +${avgA.toFixed(2)}) \u00b7 AL runs <span style="color:#22d3ee;font-weight:600">neutral</span> (avg ${avgB.toFixed(2)})</div>${svg}<div class="lc-legend"><span style="color:#60a5fa">\u2014 POL</span><span style="color:#f87171">\u2014 AL</span><span style="color:#fb923c">\u25cf Heat-confirmed tight events</span></div>`;
-})();
+// ── 6 & 7: Wheelspin + Grip — now using real screenshot ──
 
 // ── 8 & 9: Coaching + Targets — now rendered as static HTML ──
 
