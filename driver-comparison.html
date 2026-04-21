@@ -1791,6 +1791,23 @@ body {
 
   <!-- 4 charts: LF | RF on top, LR | RR on bottom -->
   <div id="tire-heat-charts" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;"></div>
+
+  <!-- Heat Spike + Causal Chain cards -->
+  <div class="feature-showcase grid-2" style="margin-top: 2rem;">
+    <div class="feature-card">
+      <div class="card-icon orange">📈</div>
+      <h3>Heat Spike Detection</h3>
+      <p>Identifies laps where tire temps spike above trend — with driver input comparison on hot vs cool laps and "What Should Change" recommendations.</p>
+    </div>
+    <div class="feature-card">
+      <div class="card-icon red">🔗</div>
+      <h3>Causal Chain</h3>
+      <p>Links driver inputs (steering, throttle, braking) to tire temperatures to grip events to lap time. The full cause-and-effect story.</p>
+    </div>
+  </div>
+
+  <!-- Tire Heat Analysis -->
+  <div class="live-component" id="imgTireHeatAnalysis" style="margin-top: 1.5rem;"></div>
 </section>
 
 <script>
@@ -1921,31 +1938,6 @@ body {
 
 <div class="section-divider"><hr></div>
 
-<!-- ===================== TIRE HEAT ===================== -->
-<section class="section reveal">
-  <div class="section-label">Thermal Intelligence</div>
-  <h2>The tire story.<br><span style="color: var(--orange);">Written in heat.</span></h2>
-  <p class="section-desc">All four tires compared across the full run. See who runs hotter, where the heat spikes, what inputs cause them — and how it all connects to grip and pace.</p>
-
-  <div class="live-component" id="imgTireHeat"></div>
-
-  <div class="feature-showcase grid-2">
-    <div class="feature-card">
-      <div class="card-icon orange">📈</div>
-      <h3>Heat Spike Detection</h3>
-      <p>Identifies laps where tire temps spike above trend — with driver input comparison on hot vs cool laps and "What Should Change" recommendations.</p>
-    </div>
-    <div class="feature-card">
-      <div class="card-icon red">🔗</div>
-      <h3>Causal Chain</h3>
-      <p>Links driver inputs (steering, throttle, braking) to tire temperatures to grip events to lap time. The full cause-and-effect story.</p>
-    </div>
-  </div>
-
-  <div class="live-component" id="imgTireHeatAnalysis"></div>
-</section>
-
-<div class="section-divider"><hr></div>
 
 <!-- ===================== GRIP & HANDLING ===================== -->
 <section class="section reveal">
