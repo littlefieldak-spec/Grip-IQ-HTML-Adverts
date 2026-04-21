@@ -770,6 +770,35 @@ body {
   .rs-vs { justify-content: center; }
 }
 
+/* ==================== COACHING PROSE ==================== */
+.rs-coaching-prose {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  margin-top: 1rem;
+}
+
+.rs-coaching-prose p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.rs-coaching-prose p:last-child { margin-bottom: 0; }
+
+.rs-coaching-prose strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.rs-coaching-prose h4 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
 /* ==================== KEY DIFFERENCES PANEL ==================== */
 .kd-panel {
   max-width: 920px;
@@ -1649,7 +1678,7 @@ body {
   <div class="splash-text" style="margin-bottom: 2rem;">
     <div class="splash-label">Detailed Report</div>
     <h2>How to close<br><span style="color: var(--green);">the gap.</span></h2>
-    <p class="splash-desc">The full coaching breakdown — distilled into three sections you can act on immediately.</p>
+    <p class="splash-desc">The full coaching breakdown &mdash; distilled into three sections you can act on immediately &mdash; followed by a <a href="#coaching-detail" style="color:var(--cyan); text-decoration:underline; cursor:pointer;">detailed coaching report</a>.</p>
   </div>
 
   <!-- 01 Big Picture Difference -->
@@ -1657,14 +1686,14 @@ body {
   <div class="rs-profiles">
     <div class="rs-profile">
       <div class="rs-profile-name" style="color:var(--driver-b)">HL Hero</div>
-      <div class="rs-profile-type">Aggressive Entry, High Thermal Load</div>
-      <div class="rs-profile-desc">Carries more steering angle through every phase, lifts later and harder, runs zero brake pressure on entry. The aggressive inputs generate more tire heat and the gap widens as the run progresses.</div>
+      <div class="rs-profile-type">Early Burner</div>
+      <div class="rs-profile-desc">Fast early but fades &mdash; burns through the tires with aggressive inputs, building a lead that evaporates as the run progresses.</div>
     </div>
     <div class="rs-vs">vs</div>
     <div class="rs-profile">
       <div class="rs-profile-name" style="color:var(--driver-a)">Pro</div>
-      <div class="rs-profile-type">Smooth Entry, Tire-Friendly Technique</div>
-      <div class="rs-profile-desc">Lifts earlier, trail-brakes to rotate the car, carries less steering angle everywhere. Lower thermal load means the pace holds through the full run.</div>
+      <div class="rs-profile-type">Tire Preserver</div>
+      <div class="rs-profile-desc">Slower early but sustainable &mdash; preserves the tires and maintains pace late in the run when it matters most.</div>
     </div>
   </div>
 
@@ -1672,20 +1701,20 @@ body {
   <div class="rs-section-head"><span class="rs-num">02</span><span class="rs-title">Driver Checklist</span></div>
 
   <div class="rs-zone">
-    <div class="rs-zone-head"><span>Turns 1 &amp; 2</span><span class="rs-zone-gap" style="color:var(--red)">+0.030s</span></div>
+    <div class="rs-zone-head"><span>Turns 1 &amp; 2</span><span class="rs-zone-gap" style="color:var(--green)">&minus;0.015s</span></div>
     <div class="rs-zone-items">
-      <div class="rs-item"><span class="rs-item-num">1</span> Use less steering &mdash; both avg (35.4&deg; vs 53.0&deg;) and max (33.5&deg; vs 45.3&deg;)</div>
-      <div class="rs-item"><span class="rs-item-num">2</span> Use brake (20% vs 0% currently)</div>
-      <div class="rs-item"><span class="rs-item-num">3</span> Lift more gradually (64.5%/s vs 82.2%/s)</div>
+      <div class="rs-item"><span class="rs-item-num">1</span> Lift earlier on entry (about 106 ft) (3.8% vs 5.9% of lap) and use less peak steering (35.0&deg; vs 45.2&deg;)</div>
+      <div class="rs-item"><span class="rs-item-num">2</span> Use brake on entry (17% vs 0% currently)</div>
+      <div class="rs-item"><span class="rs-item-num">3</span> Get back on throttle earlier through centre (about 242 ft sooner) (12.9% vs 17.6% of lap)</div>
     </div>
   </div>
 
   <div class="rs-zone">
-    <div class="rs-zone-head"><span>Turns 3 &amp; 4</span><span class="rs-zone-gap" style="color:var(--red)">+0.012s</span></div>
+    <div class="rs-zone-head"><span>Turns 3 &amp; 4</span><span class="rs-zone-gap" style="color:var(--green)">&minus;0.007s</span></div>
     <div class="rs-zone-items">
-      <div class="rs-item"><span class="rs-item-num">1</span> Use brake (18% vs 0% currently)</div>
-      <div class="rs-item"><span class="rs-item-num">2</span> Use less steering &mdash; both avg (37.4&deg; vs 52.4&deg;) and max (31.9&deg; vs 41.1&deg;)</div>
-      <div class="rs-item"><span class="rs-item-num">3</span> Lift earlier (4.7% vs 5.7% of lap)</div>
+      <div class="rs-item"><span class="rs-item-num">1</span> Lift earlier on entry (about 104 ft) (53.3% vs 55.3% of lap) and use less peak steering (34.0&deg; vs 42.6&deg;)</div>
+      <div class="rs-item"><span class="rs-item-num">2</span> Get back on throttle earlier through centre (about 269 ft sooner) (60.1% vs 65.4% of lap)</div>
+      <div class="rs-item"><span class="rs-item-num">3</span> Run tighter at exit (~2 ft) (13% vs 19% of track)</div>
     </div>
   </div>
 
@@ -1697,13 +1726,46 @@ body {
       <tr><th>Metric</th><th class="rs-r">HL Hero (Current)</th><th class="rs-r">Pro (Target)</th><th class="rs-r">Gap</th></tr>
     </thead>
     <tbody>
-      <tr><td class="rs-metric">Avg Lap Time</td><td class="rs-r">24.167s</td><td class="rs-r rs-target">24.084s</td><td class="rs-r rs-gap">+0.082s</td></tr>
-      <tr><td class="rs-metric">Avg RF Temp</td><td class="rs-r">282&deg;F</td><td class="rs-r rs-target">217&deg;F</td><td class="rs-r rs-gap">+65&deg;F</td></tr>
-      <tr><td class="rs-metric">Avg RR Temp</td><td class="rs-r">273&deg;F</td><td class="rs-r rs-target">259&deg;F</td><td class="rs-r rs-gap">+14&deg;F</td></tr>
-      <tr><td class="rs-metric">Late-Run Fade</td><td class="rs-r">+0.712s</td><td class="rs-r rs-target">+0.260s</td><td class="rs-r rs-gap">+0.452s</td></tr>
-      <tr><td class="rs-metric">Gap Q1 &rarr; Q4</td><td class="rs-r">&minus;0.131s</td><td class="rs-r rs-target">&rarr;</td><td class="rs-r rs-gap">+0.225s (+0.356s growth)</td></tr>
+      <tr><td class="rs-metric">Avg Lap Time</td><td class="rs-r">23.843s</td><td class="rs-r rs-target">23.798s</td><td class="rs-r rs-gap">+0.044s</td></tr>
+      <tr><td class="rs-metric">Avg RF Temp</td><td class="rs-r">272&deg;F</td><td class="rs-r rs-target">207&deg;F</td><td class="rs-r rs-gap">+65&deg;F</td></tr>
+      <tr><td class="rs-metric">Avg RR Temp</td><td class="rs-r">268&deg;F</td><td class="rs-r rs-target">241&deg;F</td><td class="rs-r rs-gap">+27&deg;F</td></tr>
+      <tr><td class="rs-metric">Late-Run Fade</td><td class="rs-r">+1.139s</td><td class="rs-r rs-target">+0.674s</td><td class="rs-r rs-gap">+0.465s</td></tr>
+      <tr><td class="rs-metric">Gap Q1 &rarr; Q4</td><td class="rs-r">&minus;0.249s</td><td class="rs-r rs-target">&rarr;</td><td class="rs-r rs-gap">+0.227s (+0.476s growth)</td></tr>
     </tbody>
   </table>
+
+  <!-- Detailed Coaching Report -->
+  <div id="coaching-detail" class="rs-coaching-report" style="margin-top: 3rem;">
+    <div class="rs-section-head"><span class="rs-num" style="font-size:2rem"></span><span class="rs-title">Detailed Coaching Report</span></div>
+
+    <div class="rs-coaching-prose">
+      <p><strong>Driver profiles:</strong> Pro is the &ldquo;tire preserver&rdquo; &mdash; slower early but sustainable &mdash; preserves the tires and maintains pace late in the run when it matters most. HL Hero is the &ldquo;early burner&rdquo; &mdash; fast early but fades &mdash; burns through the tires with aggressive inputs, building a lead that evaporates as the run progresses.</p>
+
+      <p>Recommendations for HL Hero (closing a +1.111s total gap to Pro over 25 laps &mdash; +0.044s/lap):</p>
+
+      <p><strong>The story of the run:</strong> HL Hero is faster early (+0.249s/lap in Q1) but the pace doesn&rsquo;t last &mdash; by Q4, Pro is +0.227s/lap faster. HL Hero&rsquo;s early speed comes at the cost of tire life. Other telemetry software would call HL Hero the faster driver based on best laps &mdash; but across the full 25-lap run, Pro&rsquo;s sustainable approach wins by +1.111s.</p>
+
+      <p><strong>The primary coaching theme is tire preservation.</strong> HL Hero is +0.249s/lap faster in Q1, but the advantage disappears &mdash; by Q4, Pro is +0.227s/lap faster. This +0.476s swing is driven by RF temperatures running 65&deg;F hotter. The per-corner recommendations below are the specific inputs generating that excess heat. Fix the cause and the late-run fade (+0.465s worse) fixes itself.</p>
+
+      <p><strong>Pro&rsquo;s approach: set up the exit.</strong> Pro sacrifices +0.089s/lap on entry to gain +0.055s/lap on exit &mdash; a more patient entry produces a better run off the corner.</p>
+
+      <h4 style="color:var(--cyan); margin: 1.5rem 0 0.5rem;">1. T1&amp;T2</h4>
+      <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:0.8rem;">HL Hero is +0.015s/lap faster here, but the aggressive inputs are contributing to tire wear.</p>
+
+      <p>Pro lifts earlier (about 106 ft earlier) &mdash; 3.8% vs 5.9% of lap. On entry: HL Hero should use less wheel (35.0&deg; vs 45.2&deg;); HL Hero should start braking (16.7% vs 0.1% currently); HL Hero should carry less throttle (17% vs 31%). Pro gets back on the throttle significantly earlier (about 242 ft sooner) &mdash; 12.9% vs 17.6% of lap. This earlier reapply lets Pro build speed through the middle of the corner. Through centre: HL Hero should use less wheel (43.9&deg; vs 58.5&deg;); HL Hero should run a tighter line (~3 ft) (0% vs 12% of track); once on the throttle earlier, ease onto it more gradually (4.6%/s vs 6.7%/s). On exit: HL Hero should get on the throttle more aggressively (1.9%/s vs 0.8%/s); HL Hero should run a tighter line (~1 ft) (21% vs 26% of track).</p>
+
+      <p style="color:var(--orange); font-size:0.9rem;">HL Hero is running higher front tire temps at T1&amp;T2 (225&deg;F vs 179&deg;F) and higher rear tire temps (226&deg;F vs 204&deg;F) &mdash; front heat driven by steering and peak steering. Front temps rise 39&deg;F from Q1 to Q4.</p>
+
+      <h4 style="color:var(--cyan); margin: 1.5rem 0 0.5rem;">2. T3&amp;T4</h4>
+      <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:0.8rem;">HL Hero is +0.007s/lap faster here, but the aggressive inputs are contributing to tire wear.</p>
+
+      <p>Pro lifts earlier (about 104 ft earlier) &mdash; 53.3% vs 55.3% of lap. On entry: HL Hero should carry less throttle (34% vs 50%); HL Hero should start braking (15.3% vs 0.0% currently); HL Hero should use less wheel (34.0&deg; vs 42.6&deg;). Pro gets back on the throttle significantly earlier (about 269 ft sooner) &mdash; 60.1% vs 65.4% of lap. This earlier reapply lets Pro build speed through the middle of the corner. Through centre: HL Hero should use less wheel (38.4&deg; vs 52.3&deg;); HL Hero should carry a bit more throttle (60% vs 48%); HL Hero should run a tighter line (~2 ft) (2% vs 8% of track). On exit: HL Hero should run a tighter line (~2 ft) (13% vs 19% of track).</p>
+
+      <p style="color:var(--orange); font-size:0.9rem;">HL Hero is running higher front tire temps at T3&amp;T4 (226&deg;F vs 186&deg;F) and higher rear tire temps (226&deg;F vs 209&deg;F) &mdash; front heat driven by steering. Front temps rise 36&deg;F from Q1 to Q4.</p>
+
+      <p style="margin-top: 1.5rem;"><em>Pro also fades +0.674s &mdash; even the benchmark driver has room to preserve tires. Both drivers would benefit from saving tires early.</em></p>
+    </div>
+  </div>
 </section>
 
 <div class="section-divider"><hr></div>
@@ -1804,123 +1866,6 @@ body {
 
 <div class="section-divider"><hr></div>
 
-<!-- ===================== DETAILED REPORT SUMMARY ===================== -->
-<div class="splash reveal">
-  <div class="splash-inner">
-    <div class="splash-text">
-      <div class="splash-label">Detailed Report</div>
-      <h2>How to close<br><span style="color: var(--green);">the gap.</span></h2>
-      <p class="splash-desc">The full coaching breakdown — distilled into three sections you can act on immediately.</p>
-    </div>
-
-    <!-- ─── 1. BIG PICTURE DIFFERENCE ─── -->
-    <div class="dr-section">
-      <div class="dr-section-num">01</div>
-      <h3 class="dr-section-title">Big Picture Difference</h3>
-    </div>
-
-    <div class="dr-profiles">
-      <div class="dr-profile dr-profile-a">
-        <div class="dr-profile-name" style="color:var(--driver-b)">HL Hero</div>
-        <div class="dr-profile-type">Aggressive Entry, High Steering Load</div>
-        <div class="dr-profile-desc">Carries more steering angle through every phase, lifts later and harder, runs zero brake pressure on entry. The aggressive inputs generate more tire heat and the gap widens as the run progresses.</div>
-      </div>
-      <div class="dr-profile-vs">vs</div>
-      <div class="dr-profile dr-profile-b">
-        <div class="dr-profile-name" style="color:var(--driver-a)">Pro</div>
-        <div class="dr-profile-type">Smooth Entry, Tire-Friendly Technique</div>
-        <div class="dr-profile-desc">Lifts earlier, trail-brakes to rotate the car, carries less steering angle everywhere. Lower thermal load means the pace holds through the full run — the gap actually shrinks in Q1 but widens from Q2 onward.</div>
-      </div>
-    </div>
-
-    <!-- ─── 2. DRIVER CHECKLIST ─── -->
-    <div class="dr-section" style="margin-top:3rem">
-      <div class="dr-section-num">02</div>
-      <h3 class="dr-section-title">Driver Checklist</h3>
-    </div>
-
-    <div class="dr-checklist">
-      <div class="dr-zone">
-        <div class="dr-zone-header">
-          <span class="dr-zone-name">Turns 1 &amp; 2</span>
-          <span class="dr-zone-gap" style="color:var(--red)">+0.031s gap</span>
-        </div>
-        <div class="dr-zone-items">
-          <div class="dr-item"><span class="dr-item-num">1</span> Lift earlier (about 51ft earlier)</div>
-          <div class="dr-item"><span class="dr-item-num">2</span> Use brakes on entry (20% vs 0% currently)</div>
-          <div class="dr-item"><span class="dr-item-num">3</span> Use less steering (33.5&deg; vs 45.3&deg;)</div>
-          <div class="dr-item"><span class="dr-item-num">4</span> Roll onto throttle more gradually at exit (4.3%/s vs 7.6%/s)</div>
-          <div class="dr-item"><span class="dr-item-num">5</span> Run tighter through centre (~5ft tighter, 1% vs 17% of track)</div>
-        </div>
-      </div>
-
-      <div class="dr-zone">
-        <div class="dr-zone-header">
-          <span class="dr-zone-name">Turns 3 &amp; 4</span>
-          <span class="dr-zone-gap" style="color:var(--red)">+0.051s gap</span>
-        </div>
-        <div class="dr-zone-items">
-          <div class="dr-item"><span class="dr-item-num">1</span> Start braking on entry (17.7% vs 0% currently)</div>
-          <div class="dr-item"><span class="dr-item-num">2</span> Use less steering through centre (37.4&deg; vs 52.4&deg;)</div>
-          <div class="dr-item"><span class="dr-item-num">3</span> Unwind the wheel earlier at exit</div>
-          <div class="dr-item"><span class="dr-item-num">4</span> Carry less throttle at exit (let the car rotate)</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ─── 3. HOW TO MEASURE PROGRESS ─── -->
-    <div class="dr-section" style="margin-top:3rem">
-      <div class="dr-section-num">03</div>
-      <h3 class="dr-section-title">How to Measure Progress</h3>
-    </div>
-
-    <div class="dr-targets">
-      <table class="dr-targets-table">
-        <thead>
-          <tr>
-            <th>Metric</th>
-            <th class="dr-t-r">HL Hero (Current)</th>
-            <th class="dr-t-r">Pro (Target)</th>
-            <th class="dr-t-r">Gap</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="dr-t-metric">Avg Lap Time</td>
-            <td class="dr-t-r">24.167s</td>
-            <td class="dr-t-r dr-t-target">24.084s</td>
-            <td class="dr-t-r dr-t-gap">+0.082s</td>
-          </tr>
-          <tr>
-            <td class="dr-t-metric">Avg RF Temp</td>
-            <td class="dr-t-r">282&deg;F</td>
-            <td class="dr-t-r dr-t-target">217&deg;F</td>
-            <td class="dr-t-r dr-t-gap">+65&deg;F</td>
-          </tr>
-          <tr>
-            <td class="dr-t-metric">Avg RR Temp</td>
-            <td class="dr-t-r">273&deg;F</td>
-            <td class="dr-t-r dr-t-target">259&deg;F</td>
-            <td class="dr-t-r dr-t-gap">+14&deg;F</td>
-          </tr>
-          <tr>
-            <td class="dr-t-metric">Late-Run Fade</td>
-            <td class="dr-t-r">+0.712s</td>
-            <td class="dr-t-r dr-t-target">+0.260s</td>
-            <td class="dr-t-r dr-t-gap">+0.452s</td>
-          </tr>
-          <tr>
-            <td class="dr-t-metric">Gap Q1 &rarr; Q4</td>
-            <td class="dr-t-r">&minus;0.131s</td>
-            <td class="dr-t-r dr-t-target">&rarr;</td>
-            <td class="dr-t-r dr-t-gap">+0.225s (+0.356s growth)</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-  </div>
-</div>
 
 <div class="section-divider"><hr></div>
 
