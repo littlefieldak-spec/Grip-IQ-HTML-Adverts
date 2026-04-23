@@ -2349,22 +2349,70 @@ body {
         </div>
 
         <!-- Causal chain flow -->
-        <div style="position:relative; padding:16px 18px; background:linear-gradient(135deg, rgba(168,85,247,0.08), rgba(251,146,60,0.06)); border:1px solid rgba(168,85,247,0.2); border-radius:10px;">
+        <div id="ccChain" style="position:relative; padding:16px 18px; background:linear-gradient(135deg, rgba(168,85,247,0.08), rgba(251,146,60,0.06)); border:1px solid rgba(168,85,247,0.2); border-radius:10px;">
           <div style="font-size:10px; font-weight:700; color:#a855f7; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px;">Causal Chain</div>
           <div style="display:flex; align-items:center; gap:3px; font-size:10px; line-height:1;">
-            <span style="background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.2); color:#4ade80; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap;">tighter line (~18 ft)</span>
-            <span style="color:#64748b;">+</span>
-            <span style="background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.2); color:#4ade80; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap;">lifted later (~245 ft)</span>
-            <span style="color:#64748b;">&rarr;</span>
-            <span style="background:rgba(251,191,36,0.1); border:1px solid rgba(251,191,36,0.2); color:#fbbf24; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap;">tighter mid-corner (~25 ft)</span>
-            <span style="color:#64748b;">&rarr;</span>
-            <span style="background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); color:#f87171; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap;">more throttle</span>
-            <span style="color:#64748b;">+</span>
-            <span style="background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); color:#f87171; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap;">thr-steer overlap</span>
-            <span style="color:#64748b;">&rarr;</span>
-            <span style="background:rgba(251,146,60,0.15); border:1px solid rgba(251,146,60,0.4); color:#fb923c; padding:4px 10px; border-radius:4px; font-weight:800; font-size:11px; text-shadow:0 0 10px rgba(251,146,60,0.3); white-space:nowrap;">oversteer at exit</span>
+            <span class="cc-pill" data-cc="0" style="background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.2); color:#4ade80; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap; opacity:0.3; transition:opacity 0.4s, transform 0.4s, box-shadow 0.4s;">tighter line (~18 ft)</span>
+            <span class="cc-sep" data-cc="0" style="color:#64748b; opacity:0.3; transition:opacity 0.4s;">+</span>
+            <span class="cc-pill" data-cc="0" style="background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.2); color:#4ade80; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap; opacity:0.3; transition:opacity 0.4s, transform 0.4s, box-shadow 0.4s;">lifted later (~245 ft)</span>
+            <span class="cc-sep" data-cc="0" style="color:#64748b; opacity:0.3; transition:opacity 0.4s;">&rarr;</span>
+            <span class="cc-pill" data-cc="1" style="background:rgba(251,191,36,0.1); border:1px solid rgba(251,191,36,0.2); color:#fbbf24; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap; opacity:0.3; transition:opacity 0.4s, transform 0.4s, box-shadow 0.4s;">tighter mid-corner (~25 ft)</span>
+            <span class="cc-sep" data-cc="1" style="color:#64748b; opacity:0.3; transition:opacity 0.4s;">&rarr;</span>
+            <span class="cc-pill" data-cc="2" style="background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); color:#f87171; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap; opacity:0.3; transition:opacity 0.4s, transform 0.4s, box-shadow 0.4s;">more throttle</span>
+            <span class="cc-sep" data-cc="2" style="color:#64748b; opacity:0.3; transition:opacity 0.4s;">+</span>
+            <span class="cc-pill" data-cc="2" style="background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); color:#f87171; padding:3px 6px; border-radius:3px; font-weight:600; white-space:nowrap; opacity:0.3; transition:opacity 0.4s, transform 0.4s, box-shadow 0.4s;">thr-steer overlap</span>
+            <span class="cc-sep" data-cc="2" style="color:#64748b; opacity:0.3; transition:opacity 0.4s;">&rarr;</span>
+            <span class="cc-pill" data-cc="3" style="background:rgba(251,146,60,0.15); border:1px solid rgba(251,146,60,0.4); color:#fb923c; padding:4px 10px; border-radius:4px; font-weight:800; font-size:11px; text-shadow:0 0 10px rgba(251,146,60,0.3); white-space:nowrap; opacity:0.3; transition:opacity 0.4s, transform 0.4s, box-shadow 0.4s;">oversteer at exit</span>
           </div>
         </div>
+
+        <!-- Causal chain cycling animation -->
+        <script>
+        (function() {
+          const groups = [0,1,2,3];
+          let running = false, idx = -1;
+
+          function cycle() {
+            // Dim all
+            document.querySelectorAll('.cc-pill, .cc-sep').forEach(el => {
+              el.style.opacity = '0.3';
+              el.style.transform = 'scale(1)';
+              el.style.boxShadow = 'none';
+            });
+
+            idx = (idx + 1) % groups.length;
+
+            setTimeout(() => {
+              document.querySelectorAll(`[data-cc="${idx}"]`).forEach(el => {
+                el.style.opacity = '1';
+                if (el.classList.contains('cc-pill')) {
+                  el.style.transform = 'scale(1.08)';
+                  el.style.boxShadow = '0 0 12px rgba(255,255,255,0.15)';
+                }
+              });
+            }, 200);
+
+            setTimeout(() => {
+              document.querySelectorAll(`[data-cc="${idx}"].cc-pill`).forEach(el => {
+                el.style.transform = 'scale(1)';
+              });
+            }, 600);
+
+            setTimeout(cycle, 2000);
+          }
+
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting && !running) {
+                running = true;
+                setTimeout(cycle, 500);
+              }
+            });
+          }, { threshold: 0.3 });
+          const el = document.getElementById('ccChain');
+          if (el) observer.observe(el);
+        })();
+        </script>
       </div>
     </div>
   </div>
