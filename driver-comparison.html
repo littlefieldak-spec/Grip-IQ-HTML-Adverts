@@ -754,9 +754,24 @@ body {
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
+.rs-item.highlight-row {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.rs-item.highlight-row span:not(.rs-item-num) {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(0,240,255,0.3);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
 .rs-item.checked-row {
-  opacity: 0.7;
-  transition: opacity 0.4s ease;
+  opacity: 0.5;
+  transition: opacity 0.4s ease 0.2s;
+}
+.rs-item.checked-row span:not(.rs-item-num) {
+  color: var(--text-secondary);
+  text-shadow: none;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 /* Targets table */
@@ -1724,39 +1739,44 @@ body {
     </div>
   </div>
 
-  <!-- Checklist check-off animation — cycles forever -->
+  <!-- Checklist check-off animation — highlight then check, cycles forever -->
   <script>
   (function() {
     let running = false;
 
     function runCycle(section) {
-      const zones = section.querySelectorAll('.rs-zone');
       const allItems = [];
-      zones.forEach(zone => {
-        zone.querySelectorAll('.rs-item').forEach(item => allItems.push(item));
-      });
+      section.querySelectorAll('.rs-zone .rs-item').forEach(item => allItems.push(item));
 
       // Reset all
       allItems.forEach(item => {
         const num = item.querySelector('.rs-item-num');
         if (num) num.classList.remove('checked');
-        item.classList.remove('checked-row');
+        item.classList.remove('checked-row', 'highlight-row');
       });
 
-      // Check off one by one
-      let delay = 600;
-      allItems.forEach((item, i) => {
+      // For each item: highlight → pause → check → dim
+      let delay = 500;
+      allItems.forEach((item) => {
+        const num = item.querySelector('.rs-item-num');
+
+        // Step 1: Highlight the row (brighten text)
         setTimeout(() => {
-          const num = item.querySelector('.rs-item-num');
+          item.classList.add('highlight-row');
+        }, delay);
+
+        // Step 2: After a beat, check it off and dim
+        setTimeout(() => {
+          item.classList.remove('highlight-row');
           if (num) num.classList.add('checked');
           item.classList.add('checked-row');
-        }, delay);
-        delay += 700;
+        }, delay + 600);
+
+        delay += 1000;
       });
 
-      // After all checked, pause then reset and restart
-      const totalTime = delay + 1500;
-      setTimeout(() => runCycle(section), totalTime);
+      // After all done, pause then restart
+      setTimeout(() => runCycle(section), delay + 1800);
     }
 
     const observer = new IntersectionObserver((entries) => {
