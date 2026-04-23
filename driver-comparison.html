@@ -1554,11 +1554,20 @@ body {
         <div class="phase-item">HL Hero runs wider (~1 ft) (26% vs 21% of track)</div>
       </div>
 
-      <!-- Legend bar — positioned above the T1&T2 label area -->
-      <div class="cz-bar" style="z-index:3; bottom:auto; top:28%;">
-        <div class="cz-bar-item"><span style="color:#4ade80">&#x25BC;</span> <strong>Throttle Lift</strong> &mdash; where the driver lifts off entering the corner</div>
-        <div class="cz-bar-item"><span style="color:#fb923c">&#x25B2;</span> <strong>Throttle Reapply</strong> &mdash; where they get back on exiting</div>
-        <div class="cz-bar-item"><span class="cz-bar-lines"><span style="background:#60a5fa"></span><span style="background:#f87171"></span></span> <strong>Racing Lines</strong> &mdash; every lap overlaid for both drivers</div>
+      <!-- Legend — stacked in bottom-left corner -->
+      <div style="position:absolute; z-index:3; bottom:12%; left:4%; display:flex; flex-direction:column; gap:6px; font-family:'Rajdhani',sans-serif; font-size:12px;">
+        <div style="display:flex; align-items:center; gap:8px; background:rgba(10,14,26,0.7); padding:5px 12px; border-radius:6px; backdrop-filter:blur(6px);">
+          <span style="color:#4ade80; font-size:14px;">&#x25BC;</span>
+          <span style="color:#94a3b8;"><strong style="color:#e2e8f0;">Throttle Lift</strong> &mdash; where the driver lifts off</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; background:rgba(10,14,26,0.7); padding:5px 12px; border-radius:6px; backdrop-filter:blur(6px);">
+          <span style="color:#fb923c; font-size:14px;">&#x25B2;</span>
+          <span style="color:#94a3b8;"><strong style="color:#e2e8f0;">Throttle Reapply</strong> &mdash; where they get back on</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; background:rgba(10,14,26,0.7); padding:5px 12px; border-radius:6px; backdrop-filter:blur(6px);">
+          <span style="display:flex; gap:2px;"><span style="width:12px; height:3px; background:#60a5fa; border-radius:1px;"></span><span style="width:12px; height:3px; background:#f87171; border-radius:1px;"></span></span>
+          <span style="color:#94a3b8;"><strong style="color:#e2e8f0;">Racing Lines</strong> &mdash; every lap overlaid</span>
+        </div>
       </div>
 
       <!-- Cycling animation: Entry → Centre → Exit → repeat -->
