@@ -1486,57 +1486,70 @@ body {
 <section class="section reveal" style="padding:3rem 2rem 5rem;">
   <div style="text-align:center; margin-bottom:2.5rem;">
     <div style="font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:0.8rem;">Why GripIQ</div>
-    <h2 style="font-family:var(--font-display); font-size:2.2rem; font-weight:900; color:#e2e8f0;">Not just another<br><span style="color:var(--cyan);">telemetry overlay.</span></h2>
+    <h2 style="font-family:var(--font-display); font-size:2.2rem; font-weight:900; color:#e2e8f0;">Not just another telemetry overlay<br><span style="color:var(--cyan);">or AI-graded reference lap.</span></h2>
   </div>
 
-  <div style="max-width:900px; margin:0 auto; border-radius:12px; overflow:hidden; border:1px solid rgba(0,240,255,0.1);">
-    <!-- Header row -->
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; border-bottom:1px solid rgba(255,255,255,0.06);">
-      <div style="padding:16px 20px;"></div>
-      <div style="padding:16px 20px; text-align:center; font-family:var(--font-mono); font-size:0.75rem; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.1em; background:rgba(255,255,255,0.02);">Traditional Telemetry</div>
-      <div style="padding:16px 20px; text-align:center; font-family:var(--font-mono); font-size:0.75rem; font-weight:600; color:var(--cyan); text-transform:uppercase; letter-spacing:0.1em; background:rgba(0,240,255,0.04);">GripIQ Pace Trace</div>
+  <style>
+    .cmp-grid { display:grid; grid-template-columns:160px 1fr 1fr; align-items:stretch; }
+    .cmp-label { padding:20px 22px; font-family:var(--font-display); font-size:0.85rem; font-weight:700; color:#e2e8f0; display:flex; align-items:center; border-bottom:1px solid rgba(255,255,255,0.04); position:relative; }
+    .cmp-label::before { content:''; position:absolute; left:0; top:20%; bottom:20%; width:3px; border-radius:2px; }
+    .cmp-trad { padding:20px 24px; text-align:center; color:#94a3b8; font-size:0.95rem; line-height:1.6; border-bottom:1px solid rgba(255,255,255,0.04); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+    .cmp-grip { padding:20px 24px; text-align:center; color:#e2e8f0; font-size:0.98rem; font-weight:600; line-height:1.6; border-bottom:1px solid rgba(255,255,255,0.04); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+    .cmp-x { color:#f87171; font-size:14px; margin-bottom:2px; }
+    .cmp-check { color:#4ade80; font-size:14px; margin-bottom:2px; }
+  </style>
+  <div style="max-width:960px; margin:0 auto; border-radius:14px; overflow:hidden; background:var(--bg-card); border:1px solid rgba(0,240,255,0.08); box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+
+    <!-- Header -->
+    <div class="cmp-grid" style="background:rgba(255,255,255,0.02); border-bottom:2px solid rgba(0,240,255,0.1);">
+      <div style="padding:18px 22px;"></div>
+      <div style="padding:18px 20px; text-align:center; font-family:var(--font-mono); font-size:0.7rem; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.12em; display:flex; align-items:center; justify-content:center;">Traditional Telemetry</div>
+      <div style="padding:18px 20px; text-align:center; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; color:var(--cyan); text-transform:uppercase; letter-spacing:0.12em; display:flex; align-items:center; justify-content:center; gap:8px;">
+        <span style="width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px rgba(0,240,255,0.5);"></span>
+        GripIQ Pace Trace
+      </div>
     </div>
 
     <!-- Row 1: Analysis -->
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; border-bottom:1px solid rgba(255,255,255,0.04); align-items:center;">
-      <div style="padding:18px 20px; font-family:var(--font-display); font-size:0.85rem; font-weight:700; color:#e2e8f0;">Analysis</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1rem;">One lap vs one lap</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1.02rem; font-weight:600; ">Full stint &mdash; every lap analyzed together</div>
+    <div class="cmp-grid">
+      <div class="cmp-label" style=""><div style="position:absolute; left:0; top:20%; bottom:20%; width:3px; background:#f59e0b; border-radius:2px;"></div>Analysis</div>
+      <div class="cmp-trad"><span class="cmp-x">&#10005;</span> One lap vs one lap</div>
+      <div class="cmp-grip"><span class="cmp-check">&#10003;</span> Full stint &mdash; every lap analyzed together</div>
     </div>
 
     <!-- Row 2: What it finds -->
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; border-bottom:1px solid rgba(255,255,255,0.04); align-items:center;">
-      <div style="padding:18px 20px; font-family:var(--font-display); font-size:0.85rem; font-weight:700; color:#e2e8f0;">What it finds</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1rem;">You read the traces manually to guess what predicts long-run speed</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1.02rem; font-weight:600; ">Analysis ranks which inputs distinguish drivers across an entire run</div>
+    <div class="cmp-grid" style="background:rgba(255,255,255,0.01);">
+      <div class="cmp-label"><div style="position:absolute; left:0; top:20%; bottom:20%; width:3px; background:#a855f7; border-radius:2px;"></div>What it finds</div>
+      <div class="cmp-trad"><span class="cmp-x">&#10005;</span> You read traces manually to guess what predicts long-run speed</div>
+      <div class="cmp-grip"><span class="cmp-check">&#10003;</span> Analysis ranks which inputs distinguish drivers across an entire run</div>
     </div>
 
     <!-- Row 3: Coaching -->
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; border-bottom:1px solid rgba(255,255,255,0.04); align-items:center;">
-      <div style="padding:18px 20px; font-family:var(--font-display); font-size:0.85rem; font-weight:700; color:#e2e8f0;">Coaching</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1rem;">&ldquo;You are driving too hard on entry&rdquo;</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1.02rem; font-weight:600; ">&ldquo;Lift 95 ft earlier, use 10&deg; less wheel, reapply throttle 245 ft sooner&rdquo;</div>
+    <div class="cmp-grid">
+      <div class="cmp-label"><div style="position:absolute; left:0; top:20%; bottom:20%; width:3px; background:#4ade80; border-radius:2px;"></div>Coaching</div>
+      <div class="cmp-trad"><span class="cmp-x">&#10005;</span> &ldquo;You are driving too hard on entry&rdquo;</div>
+      <div class="cmp-grip"><span class="cmp-check">&#10003;</span> &ldquo;Lift 95 ft earlier, use 10&deg; less wheel, reapply throttle 245 ft sooner&rdquo;</div>
     </div>
 
     <!-- Row 4: Tire connection -->
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; border-bottom:1px solid rgba(255,255,255,0.04); align-items:center;">
-      <div style="padding:18px 20px; font-family:var(--font-display); font-size:0.85rem; font-weight:700; color:#e2e8f0;">Tire connection</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1rem;">Separate tool, if at all</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1.02rem; font-weight:600; ">Causal chain: inputs &rarr; tire heat &rarr; grip events &rarr; lap time</div>
+    <div class="cmp-grid" style="background:rgba(255,255,255,0.01);">
+      <div class="cmp-label"><div style="position:absolute; left:0; top:20%; bottom:20%; width:3px; background:#f87171; border-radius:2px;"></div>Tire connection</div>
+      <div class="cmp-trad"><span class="cmp-x">&#10005;</span> Separate tool, if at all</div>
+      <div class="cmp-grip"><span class="cmp-check">&#10003;</span> Causal chain: inputs &rarr; tire heat &rarr; grip events &rarr; lap time</div>
     </div>
 
     <!-- Row 5: Consistency -->
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; align-items:center;">
-      <div style="padding:18px 20px; font-family:var(--font-display); font-size:0.85rem; font-weight:700; color:#e2e8f0;">Consistency</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1rem;">No verification</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1.02rem; font-weight:600; ">Every difference checked lap-by-lap &mdash; real or a one-lap fluke?</div>
+    <div class="cmp-grid">
+      <div class="cmp-label"><div style="position:absolute; left:0; top:20%; bottom:20%; width:3px; background:#60a5fa; border-radius:2px;"></div>Consistency</div>
+      <div class="cmp-trad"><span class="cmp-x">&#10005;</span> No verification</div>
+      <div class="cmp-grip"><span class="cmp-check">&#10003;</span> Every difference checked lap-by-lap &mdash; real or a one-lap fluke?</div>
     </div>
 
     <!-- Row 6: Grip & wheelspin -->
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; align-items:center;">
-      <div style="padding:18px 20px; font-family:var(--font-display); font-size:0.85rem; font-weight:700; color:#e2e8f0;">Grip &amp; wheelspin</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1rem;">No detection &mdash; watch replays or guess from traces</div>
-      <div style="padding:18px 20px; text-align:center; color:#e2e8f0; font-size:1.02rem; font-weight:600; ">ML-verified understeer, oversteer, and wheelspin events with severity, causal chains, and per-event telemetry</div>
+    <div class="cmp-grid" style="background:rgba(255,255,255,0.01);">
+      <div class="cmp-label" style="border-bottom:none;"><div style="position:absolute; left:0; top:20%; bottom:20%; width:3px; background:#fb923c; border-radius:2px;"></div>Grip &amp; wheelspin</div>
+      <div class="cmp-trad" style="border-bottom:none;"><span class="cmp-x">&#10005;</span> No detection &mdash; watch replays or guess from traces</div>
+      <div class="cmp-grip" style="border-bottom:none;"><span class="cmp-check">&#10003;</span> ML-verified understeer, oversteer, and wheelspin with severity, causal chains, and per-event telemetry</div>
     </div>
   </div>
 </section>
