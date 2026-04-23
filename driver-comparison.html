@@ -1505,95 +1505,7 @@ body {
       <p class="splash-desc">Machine learning finds the inputs that distinguish the two drivers — consistent, measurable, actionable.</p>
     </div>
 
-    <!-- Key Differences — real HTML component -->
-    <div class="kd-panel">
-      <div class="kd-header">KEY DIFFERENCES</div>
-
-      <div class="kd-insights">
-        <p>Analysis indicates driver signatures are distinct and the differences are consistent lap to lap.</p>
-        <p>The #1 distinguishing input is Peak Brake at T3&amp;T4 (Entry): Pro averages 17.7% vs 1.0%.</p>
-        <p>Multiple top differences cluster at T1&amp;T2 (3 of top 5), reinforcing it as the key zone where technique diverges most.</p>
-        <p>Steering differences appear in 3 of the top 5 inputs &mdash; this is fundamentally a steering/line difference that cascades into heat and grip consequences.</p>
-      </div>
-
-      <table class="kd-table">
-        <thead>
-          <tr>
-            <th class="kd-c">#</th>
-            <th class="kd-imp">Importance</th>
-            <th>Input</th>
-            <th>Corner</th>
-            <th>Phase</th>
-            <th class="kd-r kd-col-a">HL Hero</th>
-            <th class="kd-r kd-col-b">Pro</th>
-            <th class="kd-r kd-col-d">&Delta;</th>
-            <th class="kd-r">Consistency</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="kd-c kd-rank">1</td>
-            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-1" style="width:100%"></div><span class="kd-bar-pct">100%</span></div></td>
-            <td class="kd-input">Peak Brake</td>
-            <td class="kd-corner">T3&amp;T4</td>
-            <td class="kd-phase"><span class="kd-phase-dot" style="background:#f59e0b"></span>Entry</td>
-            <td class="kd-r kd-val-a">0.0%</td>
-            <td class="kd-r kd-val-b">17.7%</td>
-            <td class="kd-r kd-val-d">17.7%</td>
-            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
-          </tr>
-          <tr>
-            <td class="kd-c kd-rank">2</td>
-            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-2" style="width:61%"></div><span class="kd-bar-pct">61%</span></div></td>
-            <td class="kd-input">Steering</td>
-            <td class="kd-corner">T1&amp;T2</td>
-            <td class="kd-phase"><span class="kd-phase-dot" style="background:#ef4444"></span>Centre</td>
-            <td class="kd-r kd-val-a">53.0&deg;</td>
-            <td class="kd-r kd-val-b">35.4&deg;</td>
-            <td class="kd-r kd-val-d">17.6&deg;</td>
-            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
-          </tr>
-          <tr>
-            <td class="kd-c kd-rank">3</td>
-            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-3" style="width:54%"></div><span class="kd-bar-pct">54%</span></div></td>
-            <td class="kd-input">Peak Brake</td>
-            <td class="kd-corner">T1&amp;T2</td>
-            <td class="kd-phase"><span class="kd-phase-dot" style="background:#f59e0b"></span>Entry</td>
-            <td class="kd-r kd-val-a">0.0%</td>
-            <td class="kd-r kd-val-b">19.9%</td>
-            <td class="kd-r kd-val-d">19.9%</td>
-            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
-          </tr>
-          <tr>
-            <td class="kd-c kd-rank">4</td>
-            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-4" style="width:52%"></div><span class="kd-bar-pct">52%</span></div></td>
-            <td class="kd-input">Steering</td>
-            <td class="kd-corner">T3&amp;T4</td>
-            <td class="kd-phase"><span class="kd-phase-dot" style="background:#ef4444"></span>Centre</td>
-            <td class="kd-r kd-val-a">52.4&deg;</td>
-            <td class="kd-r kd-val-b">37.4&deg;</td>
-            <td class="kd-r kd-val-d">15.0&deg;</td>
-            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
-          </tr>
-          <tr>
-            <td class="kd-c kd-rank">5</td>
-            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-5" style="width:52%"></div><span class="kd-bar-pct">52%</span></div></td>
-            <td class="kd-input">Peak Steering</td>
-            <td class="kd-corner">T1&amp;T2</td>
-            <td class="kd-phase"><span class="kd-phase-dot" style="background:#f59e0b"></span>Entry</td>
-            <td class="kd-r kd-val-a">45.3&deg;</td>
-            <td class="kd-r kd-val-b">33.5&deg;</td>
-            <td class="kd-r kd-val-d">11.8&deg;</td>
-            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="kd-expand">&#x25BC; Show all 20 features</div>
-      <div class="kd-expand" style="border-top:none; margin-top:0;">&#x25BC; Show corner-by-corner breakdown</div>
-    </div>
-
-    <!-- Track corner with animated phase boxes -->
+    <!-- Track corner with animated phase boxes (moved above Key Differences) -->
     <div class="cz-frame" style="margin-top: 3rem;">
       <img src="trackclean.png" alt="Corner zoom — T1&amp;T2 clean track" class="cz-img" />
       <div class="cz-fade-left"></div>
@@ -1684,6 +1596,94 @@ body {
         if (frame) observer.observe(frame);
       })();
       </script>
+    </div>
+
+    <!-- Key Differences — below the track -->
+    <div class="kd-panel" style="margin-top:3rem;">
+      <div class="kd-header">KEY DIFFERENCES</div>
+
+      <div class="kd-insights">
+        <p>Analysis indicates driver signatures are distinct and the differences are consistent lap to lap.</p>
+        <p>The #1 distinguishing input is Peak Brake at T3&amp;T4 (Entry): Pro averages 17.7% vs 1.0%.</p>
+        <p>Multiple top differences cluster at T1&amp;T2 (3 of top 5), reinforcing it as the key zone where technique diverges most.</p>
+        <p>Steering differences appear in 3 of the top 5 inputs &mdash; this is fundamentally a steering/line difference that cascades into heat and grip consequences.</p>
+      </div>
+
+      <table class="kd-table">
+        <thead>
+          <tr>
+            <th class="kd-c">#</th>
+            <th class="kd-imp">Importance</th>
+            <th>Input</th>
+            <th>Corner</th>
+            <th>Phase</th>
+            <th class="kd-r kd-col-a">HL Hero</th>
+            <th class="kd-r kd-col-b">Pro</th>
+            <th class="kd-r kd-col-d">&Delta;</th>
+            <th class="kd-r">Consistency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="kd-c kd-rank">1</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-1" style="width:100%"></div><span class="kd-bar-pct">100%</span></div></td>
+            <td class="kd-input">Peak Brake</td>
+            <td class="kd-corner">T3&amp;T4</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#f59e0b"></span>Entry</td>
+            <td class="kd-r kd-val-a">0.0%</td>
+            <td class="kd-r kd-val-b">17.7%</td>
+            <td class="kd-r kd-val-d">17.7%</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+          <tr>
+            <td class="kd-c kd-rank">2</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-2" style="width:61%"></div><span class="kd-bar-pct">61%</span></div></td>
+            <td class="kd-input">Steering</td>
+            <td class="kd-corner">T1&amp;T2</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#ef4444"></span>Centre</td>
+            <td class="kd-r kd-val-a">53.0&deg;</td>
+            <td class="kd-r kd-val-b">35.4&deg;</td>
+            <td class="kd-r kd-val-d">17.6&deg;</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+          <tr>
+            <td class="kd-c kd-rank">3</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-3" style="width:54%"></div><span class="kd-bar-pct">54%</span></div></td>
+            <td class="kd-input">Peak Brake</td>
+            <td class="kd-corner">T1&amp;T2</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#f59e0b"></span>Entry</td>
+            <td class="kd-r kd-val-a">0.0%</td>
+            <td class="kd-r kd-val-b">19.9%</td>
+            <td class="kd-r kd-val-d">19.9%</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+          <tr>
+            <td class="kd-c kd-rank">4</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-4" style="width:52%"></div><span class="kd-bar-pct">52%</span></div></td>
+            <td class="kd-input">Steering</td>
+            <td class="kd-corner">T3&amp;T4</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#ef4444"></span>Centre</td>
+            <td class="kd-r kd-val-a">52.4&deg;</td>
+            <td class="kd-r kd-val-b">37.4&deg;</td>
+            <td class="kd-r kd-val-d">15.0&deg;</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+          <tr>
+            <td class="kd-c kd-rank">5</td>
+            <td><div class="kd-bar-wrap"><div class="kd-bar kd-bar-5" style="width:52%"></div><span class="kd-bar-pct">52%</span></div></td>
+            <td class="kd-input">Peak Steering</td>
+            <td class="kd-corner">T1&amp;T2</td>
+            <td class="kd-phase"><span class="kd-phase-dot" style="background:#f59e0b"></span>Entry</td>
+            <td class="kd-r kd-val-a">45.3&deg;</td>
+            <td class="kd-r kd-val-b">33.5&deg;</td>
+            <td class="kd-r kd-val-d">11.8&deg;</td>
+            <td class="kd-r kd-cons">14/14 <span class="kd-cons-pct">(100%)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="kd-expand">&#x25BC; Show all 20 features</div>
+      <div class="kd-expand" style="border-top:none; margin-top:0;">&#x25BC; Show corner-by-corner breakdown</div>
     </div>
   </div>
 </div>
