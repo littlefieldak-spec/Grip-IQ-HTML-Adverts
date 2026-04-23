@@ -1887,6 +1887,197 @@ body {
       </div>
     </div>
   </div>
+
+  <!-- ── Grip Limit: Oversteer Detection Demo ── -->
+  <div class="live-component" style="max-width:1000px; margin:2.5rem auto 0; font-family:'Space Mono',monospace;">
+
+    <!-- Header bar -->
+    <div style="display:flex; align-items:center; gap:12px; padding:10px 16px; background:linear-gradient(90deg, rgba(248,113,113,0.12), rgba(248,113,113,0.03)); border:1px solid rgba(248,113,113,0.25); border-radius:10px 10px 0 0;">
+      <span style="font-size:15px; font-weight:800; color:#e2e8f0; letter-spacing:0.03em;">T1&amp;T2</span>
+      <span style="display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:#fb923c; background:rgba(251,146,60,0.12); padding:3px 10px; border-radius:20px;">
+        <span style="width:7px; height:7px; border-radius:50%; background:#fb923c; box-shadow:0 0 6px rgba(251,146,60,0.6);"></span>
+        Loose / Oversteer
+      </span>
+      <span style="display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; color:#4ade80;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+        ML Verified
+      </span>
+    </div>
+
+    <!-- Main content -->
+    <div style="background:#111827; border:1px solid rgba(255,255,255,0.06); border-top:none; border-radius:0 0 10px 10px; padding:20px;">
+
+      <!-- Two-column: stats left, chart right -->
+      <div style="display:flex; gap:24px; flex-wrap:wrap;">
+
+        <!-- Left: driver stats -->
+        <div style="flex:0 0 340px; min-width:300px;">
+          <div style="font-size:18px; font-weight:800; color:var(--driver-b); margin-bottom:8px; letter-spacing:0.02em;">
+            HCJ — Worst Lap: <span style="color:#fb923c; text-shadow:0 0 12px rgba(251,146,60,0.4);">L64</span>
+          </div>
+
+          <!-- Big stats row -->
+          <div style="display:flex; gap:20px; align-items:baseline; margin-bottom:14px; flex-wrap:wrap;">
+            <div>
+              <span style="font-size:28px; font-weight:800; color:#fb923c; text-shadow:0 0 10px rgba(251,146,60,0.3);">7</span>
+              <span style="font-size:12px; color:#94a3b8; margin-left:4px;">loose events</span>
+            </div>
+            <div>
+              <span style="font-size:28px; font-weight:800; color:#e2e8f0;">6</span>
+              <span style="font-size:12px; color:#94a3b8; margin-left:4px;">laps affected</span>
+            </div>
+          </div>
+
+          <div style="font-size:13px; color:#94a3b8; margin-bottom:6px; line-height:1.6;">
+            <span style="font-size:11px; color:#64748b;">(2 events confirmed by RR temp &gt;110.4°F)</span>
+          </div>
+          <div style="font-size:13px; color:#94a3b8; margin-bottom:18px; line-height:1.6;">
+            Severity: <span style="font-weight:800; color:#fb923c; font-size:15px;">0.118</span> <span style="color:#64748b;">deg&middot;s per event</span> — <span style="color:#fbbf24; font-weight:600;">brief limit-brushing</span>
+          </div>
+
+          <!-- Quarter badges -->
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;">
+            <span style="font-size:11px; padding:5px 10px; border-radius:5px; border:1px solid rgba(255,255,255,0.1); color:#64748b; font-weight:600;">Q1 <span style="color:#94a3b8;">0/ev</span></span>
+            <span style="font-size:11px; padding:5px 10px; border-radius:5px; border:1px solid rgba(251,146,60,0.35); color:#fb923c; background:rgba(251,146,60,0.1); font-weight:600;">Q2 <span style="font-weight:800;">3</span> ev <span style="color:#fbbf24;">0.18/ev</span></span>
+            <span style="font-size:11px; padding:5px 10px; border-radius:5px; border:1px solid rgba(251,146,60,0.35); color:#fb923c; background:rgba(251,146,60,0.1); font-weight:600;">Q3 <span style="font-weight:800;">4</span> ev <span style="color:#fbbf24;">0.07/ev</span></span>
+            <span style="font-size:11px; padding:5px 10px; border-radius:5px; border:1px solid rgba(255,255,255,0.1); color:#64748b; font-weight:600;">Q4 <span style="color:#94a3b8;">1</span> ev <span style="color:#94a3b8;">0.06/ev</span></span>
+          </div>
+
+          <!-- Comparison links -->
+          <div style="font-size:12px; color:#64748b; margin-bottom:10px; line-height:1.7;">
+            vs own <span style="color:#94a3b8;">L57</span> (speed-matched clean lap)<br>
+            vs <span style="color:#60a5fa;">AL's</span> <span style="color:#94a3b8;">L74</span> (speed-matched, no event)
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span style="font-size:12px; padding:6px 14px; border-radius:6px; background:rgba(96,165,250,0.12); border:1px solid rgba(96,165,250,0.3); color:#60a5fa; cursor:pointer; font-weight:600; transition:all 0.2s;">
+              L64 vs own L57
+            </span>
+            <span style="font-size:12px; padding:6px 14px; border-radius:6px; background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.3); color:#a855f7; cursor:pointer; font-weight:600; transition:all 0.2s;">
+              L64 vs AL's L74
+            </span>
+          </div>
+        </div>
+
+        <!-- Right: events-per-lap chart -->
+        <div style="flex:1; min-width:300px;">
+          <div style="font-size:12px; color:#64748b; margin-bottom:8px;">Loose events per lap</div>
+          <svg viewBox="0 0 600 160" style="width:100%; height:auto;" xmlns="http://www.w3.org/2000/svg">
+            <!-- Threshold line -->
+            <line x1="0" y1="80" x2="600" y2="80" stroke="#f87171" stroke-width="1" stroke-dasharray="6,4" opacity="0.5"/>
+            <text x="594" y="74" fill="#f87171" font-size="10" text-anchor="end" opacity="0.7" font-family="Space Mono">&ge;1 event</text>
+
+            <!-- Event line path -->
+            <polyline points="20,140 60,140 100,95 140,90 180,75 220,90 260,70 300,85 340,60 380,85 420,70 460,90 500,55 540,80 580,140"
+              fill="none" stroke="#fb923c" stroke-width="2.5" stroke-linejoin="round"
+              style="filter:drop-shadow(0 0 4px rgba(251,146,60,0.4));" />
+
+            <!-- Event dots -->
+            <circle cx="100" cy="95" r="5" fill="#fb923c" opacity="0.8"/>
+            <circle cx="140" cy="90" r="5" fill="#fb923c" opacity="0.8"/>
+            <circle cx="180" cy="75" r="5" fill="#fb923c" opacity="0.8"/>
+            <circle cx="260" cy="70" r="5" fill="#fb923c" opacity="0.8"/>
+            <circle cx="340" cy="60" r="6" fill="#fb923c" opacity="0.8"/>
+            <circle cx="420" cy="70" r="5" fill="#fb923c" opacity="0.8"/>
+            <circle cx="500" cy="55" r="5" fill="#fb923c" opacity="0.8"/>
+
+            <!-- Highlighted worst lap L64 -->
+            <circle cx="340" cy="60" r="14" fill="rgba(251,146,60,0.15)" stroke="#fb923c" stroke-width="2">
+              <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="340" cy="60" r="7" fill="#fb923c" style="filter:drop-shadow(0 0 8px rgba(251,146,60,0.8));"/>
+            <text x="340" y="38" fill="#e2e8f0" font-size="14" font-weight="700" text-anchor="middle" font-family="Space Mono">L64</text>
+          </svg>
+
+          <!-- Legend -->
+          <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+            <span style="width:10px; height:10px; border-radius:50%; background:#fb923c; box-shadow:0 0 6px rgba(251,146,60,0.5);"></span>
+            <span style="font-size:11px; color:#64748b;">ML-verified event</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Causal Analysis -->
+      <div style="margin-top:20px; border-top:1px solid rgba(255,255,255,0.06); padding-top:16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; cursor:pointer;">
+          <span style="color:#a855f7; font-size:12px;">&#9660;</span>
+          <span style="font-size:14px; font-weight:800; color:#e2e8f0;">What Caused This?</span>
+        </div>
+        <div style="font-size:10px; color:#64748b; margin-bottom:12px;">Compared to: <span style="color:#60a5fa;">AL's clean L74</span></div>
+
+        <!-- ENTRY -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px; font-weight:700; color:#4ade80; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px;">Entry</div>
+          <div style="font-size:11px; color:#94a3b8; margin-bottom:6px; padding-left:8px;">Entry Steering was 0.5&deg; lower</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 8px 4px 16px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="color:#fbbf24; font-size:12px;">&#9888;</span>
+              <span style="font-size:12px; color:#e2e8f0;">ran a tighter entry line</span>
+            </div>
+            <div style="font-size:11px; font-family:'Space Mono',monospace;">
+              <span style="color:#f87171; font-weight:700;">-0.48&deg;</span>
+              <span style="color:#64748b;"> (2.7x)</span>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 8px 4px 16px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="color:#fbbf24; font-size:12px;">&#9888;</span>
+              <span style="font-size:12px; color:#e2e8f0;">lifted throttle later</span>
+            </div>
+            <div style="font-size:11px; font-family:'Space Mono',monospace;">
+              <span style="color:#4ade80; font-weight:700;">+3.2%</span>
+              <span style="color:#64748b;"> (1.9x)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTRE -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px; font-weight:700; color:#fbbf24; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px;">Centre</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 8px 4px 16px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="color:#fbbf24; font-size:12px;">&#9888;</span>
+              <span style="font-size:12px; color:#e2e8f0;">ran a tighter mid-corner line</span>
+            </div>
+            <div style="font-size:11px; font-family:'Space Mono',monospace;">
+              <span style="color:#f87171; font-weight:700;">-0.33</span>
+              <span style="color:#64748b;"> (3.8x)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- EXIT -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px; font-weight:700; color:#f87171; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px;">Exit</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 8px 4px 16px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="color:#fbbf24; font-size:12px;">&#9888;</span>
+              <span style="font-size:12px; color:#e2e8f0;">applied more throttle at exit</span>
+            </div>
+            <div style="font-size:11px; font-family:'Space Mono',monospace;">
+              <span style="color:#4ade80; font-weight:700;">+12.2%</span>
+              <span style="color:#64748b;"> (4.3x)</span>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 8px 4px 16px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="color:#fbbf24; font-size:12px;">&#9888;</span>
+              <span style="font-size:12px; color:#e2e8f0;">had more throttle-steering overlap at exit</span>
+            </div>
+            <div style="font-size:11px; font-family:'Space Mono',monospace;">
+              <span style="color:#4ade80; font-weight:700;">+12.5%</span>
+              <span style="color:#64748b;"> (2.3x)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Causal chain summary -->
+        <div style="margin-top:12px; padding:10px 14px; background:rgba(168,85,247,0.06); border:1px solid rgba(168,85,247,0.15); border-radius:8px; font-size:11px; color:#c4b5fd; line-height:1.6;">
+          Ran a tighter entry line and lifted throttle later, then ran a tighter mid-corner line, then applied more throttle at exit and had more throttle-steering overlap at exit &rarr; <span style="color:#fb923c; font-weight:700;">oversteer at exit</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <div class="section-divider"><hr></div>
