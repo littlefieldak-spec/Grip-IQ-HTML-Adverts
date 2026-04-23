@@ -1698,14 +1698,14 @@ body {
 
   <!-- 01 Big Picture Difference -->
   <div class="rs-section-head"><span class="rs-num">01</span><span class="rs-title">Big Picture Difference</span></div>
-  <div class="rs-profiles">
-    <div class="rs-profile">
+  <div class="rs-profiles" id="rsProfiles">
+    <div class="rs-profile" id="rsProfileA" style="transition:opacity 0.4s, border-color 0.4s, box-shadow 0.4s; opacity:0.4;">
       <div class="rs-profile-name" style="color:var(--driver-b)">HL Hero</div>
       <div class="rs-profile-type">Early Burner</div>
       <div class="rs-profile-desc">Fast early but fades &mdash; burns through the tires with aggressive inputs, building a lead that evaporates as the run progresses.</div>
     </div>
-    <div class="rs-vs">vs</div>
-    <div class="rs-profile">
+    <div class="rs-vs" id="rsVs" style="transition:opacity 0.4s, color 0.4s, transform 0.4s; opacity:0.4;">vs</div>
+    <div class="rs-profile" id="rsProfileB" style="transition:opacity 0.4s, border-color 0.4s, box-shadow 0.4s; opacity:0.4;">
       <div class="rs-profile-name" style="color:var(--driver-a)">Pro</div>
       <div class="rs-profile-type">Tire Preserver</div>
       <div class="rs-profile-desc">Slower early but sustainable &mdash; preserves the tires and maintains pace late in the run when it matters most.</div>
@@ -1733,43 +1733,80 @@ body {
     </div>
   </div>
 
-  <!-- Checklist check-off animation — highlight then check, cycles forever -->
+  <!-- Profile + Checklist combined animation — cycles forever -->
   <script>
   (function() {
     let running = false;
+    const pA = document.getElementById('rsProfileA');
+    const pVs = document.getElementById('rsVs');
+    const pB = document.getElementById('rsProfileB');
+
+    function dimProfiles() {
+      [pA, pVs, pB].forEach(el => {
+        if (!el) return;
+        el.style.opacity = '0.4';
+        el.style.borderColor = '';
+        el.style.boxShadow = '';
+        el.style.color = '';
+        el.style.transform = '';
+      });
+    }
+
+    function highlightEl(el, glow) {
+      if (!el) return;
+      el.style.opacity = '1';
+      if (el.classList.contains('rs-profile')) {
+        el.style.borderColor = glow;
+        el.style.boxShadow = `0 0 20px ${glow}44, inset 0 0 15px ${glow}11`;
+      }
+      if (el.id === 'rsVs') {
+        el.style.color = '#ffffff';
+        el.style.transform = 'scale(1.3)';
+      }
+    }
 
     function runCycle(section) {
-      const allItems = [];
-      section.querySelectorAll('.rs-zone .rs-item').forEach(item => allItems.push(item));
+      const allItems = [...section.querySelectorAll('.rs-zone .rs-item')];
 
-      // Reset all
+      // Reset everything
+      dimProfiles();
       allItems.forEach(item => {
         const num = item.querySelector('.rs-item-num');
         if (num) num.classList.remove('checked');
         item.classList.remove('checked-row', 'highlight-row');
       });
 
-      // For each item: highlight → pause → check → dim
-      let delay = 500;
+      let delay = 400;
+
+      // Step 1: HL Hero profile
+      setTimeout(() => highlightEl(pA, '#f87171'), delay);
+      setTimeout(() => dimProfiles(), delay + 1200);
+      delay += 1600;
+
+      // Step 2: vs
+      setTimeout(() => highlightEl(pVs, '#ffffff'), delay);
+      setTimeout(() => dimProfiles(), delay + 800);
+      delay += 1200;
+
+      // Step 3: Pro profile
+      setTimeout(() => highlightEl(pB, '#60a5fa'), delay);
+      setTimeout(() => dimProfiles(), delay + 1200);
+      delay += 1600;
+
+      // Step 4: Checklist items
+      delay += 300;
       allItems.forEach((item) => {
         const num = item.querySelector('.rs-item-num');
-
-        // Step 1: Highlight the row (brighten text)
-        setTimeout(() => {
-          item.classList.add('highlight-row');
-        }, delay);
-
-        // Step 2: After a beat, check it off and dim
+        setTimeout(() => item.classList.add('highlight-row'), delay);
         setTimeout(() => {
           item.classList.remove('highlight-row');
           if (num) num.classList.add('checked');
           item.classList.add('checked-row');
         }, delay + 600);
-
         delay += 1000;
       });
 
-      // After all done, pause then restart
+      // Restart
       setTimeout(() => runCycle(section), delay + 1800);
     }
 
@@ -1780,8 +1817,8 @@ body {
           runCycle(entry.target);
         }
       });
-    }, { threshold: 0.3 });
-    const section = document.querySelector('.rs-section-head + .rs-zone')?.parentElement;
+    }, { threshold: 0.2 });
+    const section = document.getElementById('rsProfiles')?.closest('section');
     if (section) observer.observe(section);
   })();
   </script>
