@@ -723,6 +723,40 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.rs-item-num.checked {
+  color: transparent;
+  background: rgba(0,255,136,0.15);
+  border: 2px solid var(--green);
+  animation: checkPop 0.4s ease;
+}
+
+.rs-item-num.checked::after {
+  content: '✓';
+  position: absolute;
+  color: var(--green);
+  font-size: 16px;
+  font-weight: 900;
+  animation: checkDraw 0.3s ease 0.1s both;
+}
+
+@keyframes checkPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes checkDraw {
+  0% { opacity: 0; transform: scale(0.3) rotate(-10deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.rs-item.checked-row {
+  opacity: 0.7;
+  transition: opacity 0.4s ease;
 }
 
 /* Targets table */
@@ -1674,6 +1708,34 @@ body {
       <div class="rs-item"><span class="rs-item-num">3</span> Run tighter at exit (~2 ft) (13% vs 19% of track)</div>
     </div>
   </div>
+
+  <!-- Checklist check-off animation -->
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const zones = entry.target.querySelectorAll('.rs-zone');
+        let delay = 600;
+        zones.forEach(zone => {
+          const items = zone.querySelectorAll('.rs-item');
+          items.forEach(item => {
+            const num = item.querySelector('.rs-item-num');
+            setTimeout(() => {
+              if (num) num.classList.add('checked');
+              item.classList.add('checked-row');
+            }, delay);
+            delay += 700;
+          });
+          delay += 300;
+        });
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.3 });
+    const section = document.querySelector('.rs-section-head + .rs-zone')?.parentElement;
+    if (section) observer.observe(section);
+  })();
+  </script>
 
   <!-- 03 How to Measure Progress -->
   <div class="rs-section-head"><span class="rs-num">03</span><span class="rs-title">How to Measure Progress</span></div>
