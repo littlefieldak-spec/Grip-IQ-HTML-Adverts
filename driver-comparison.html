@@ -1295,7 +1295,7 @@ body {
 
 .cz-bar {
   position: absolute;
-  bottom: -30px;
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -1510,7 +1510,7 @@ body {
       <img src="trackclean.png" alt="Corner zoom — T1&amp;T2 clean track" class="cz-img" />
       <div class="cz-fade-left"></div>
       <div class="cz-fade-right"></div>
-      <div class="cz-fade-bottom"></div>
+      <!-- bottom fade removed to show full track -->
 
       <!-- Cycling phase boxes -->
       <style>
@@ -1555,8 +1555,8 @@ body {
         <div class="phase-item">HL Hero runs wider (~1 ft) (26% vs 21% of track)</div>
       </div>
 
-      <!-- Legend bar -->
-      <div class="cz-bar" style="z-index:3;">
+      <!-- Legend bar — positioned above the T1&T2 label area -->
+      <div class="cz-bar" style="z-index:3; bottom:auto; top:28%;">
         <div class="cz-bar-item"><span style="color:#4ade80">&#x25BC;</span> <strong>Throttle Lift</strong> &mdash; where the driver lifts off entering the corner</div>
         <div class="cz-bar-item"><span style="color:#fb923c">&#x25B2;</span> <strong>Throttle Reapply</strong> &mdash; where they get back on exiting</div>
         <div class="cz-bar-item"><span class="cz-bar-lines"><span style="background:#60a5fa"></span><span style="background:#f87171"></span></span> <strong>Racing Lines</strong> &mdash; every lap overlaid for both drivers</div>
@@ -1697,7 +1697,7 @@ body {
   </div>
 
   <!-- 01 Big Picture Difference -->
-  <div class="rs-section-head"><span class="rs-num">01</span><span class="rs-title">Big Picture Difference</span></div>
+  <div class="rs-section-head" id="rsHead01" style="transition:opacity 0.4s, text-shadow 0.4s; opacity:0.5;"><span class="rs-num">01</span><span class="rs-title">Big Picture Difference</span></div>
   <div class="rs-profiles" id="rsProfiles">
     <div class="rs-profile" id="rsProfileA" style="transition:opacity 0.4s, border-color 0.4s, box-shadow 0.4s; opacity:0.4;">
       <div class="rs-profile-name" style="color:var(--driver-b)">HL Hero</div>
@@ -1713,7 +1713,7 @@ body {
   </div>
 
   <!-- 02 Driver Checklist -->
-  <div class="rs-section-head"><span class="rs-num">02</span><span class="rs-title">Driver Checklist</span></div>
+  <div class="rs-section-head" id="rsHead02" style="transition:opacity 0.4s, text-shadow 0.4s; opacity:0.5;"><span class="rs-num">02</span><span class="rs-title">Driver Checklist</span></div>
 
   <div class="rs-zone">
     <div class="rs-zone-head"><span>Turns 1 &amp; 2</span><span class="rs-zone-gap" style="color:var(--green)">&minus;0.015s</span></div>
@@ -1740,8 +1740,11 @@ body {
     const pA = document.getElementById('rsProfileA');
     const pVs = document.getElementById('rsVs');
     const pB = document.getElementById('rsProfileB');
+    const h01 = document.getElementById('rsHead01');
+    const h02 = document.getElementById('rsHead02');
+    const h03 = document.getElementById('rsHead03');
 
-    function dimProfiles() {
+    function dimAll() {
       [pA, pVs, pB].forEach(el => {
         if (!el) return;
         el.style.opacity = '0.4';
@@ -1750,6 +1753,18 @@ body {
         el.style.color = '';
         el.style.transform = '';
       });
+      [h01, h02, h03].forEach(el => {
+        if (!el) return;
+        el.style.opacity = '0.5';
+        el.querySelectorAll('.rs-num, .rs-title').forEach(s => { s.style.color = ''; s.style.textShadow = ''; });
+      });
+    }
+
+    function highlightHead(el) {
+      if (!el) return;
+      el.style.opacity = '1';
+      el.querySelectorAll('.rs-num').forEach(s => { s.style.color = '#00f0ff'; s.style.textShadow = '0 0 12px rgba(0,240,255,0.5)'; });
+      el.querySelectorAll('.rs-title').forEach(s => { s.style.color = '#ffffff'; s.style.textShadow = '0 0 8px rgba(255,255,255,0.3)'; });
     }
 
     function highlightEl(el, glow) {
@@ -1769,7 +1784,7 @@ body {
       const allItems = [...section.querySelectorAll('.rs-zone .rs-item')];
 
       // Reset everything
-      dimProfiles();
+      dimAll();
       allItems.forEach(item => {
         const num = item.querySelector('.rs-item-num');
         if (num) num.classList.remove('checked');
@@ -1778,23 +1793,32 @@ body {
 
       let delay = 400;
 
-      // Step 1: HL Hero profile
+      // Highlight 01 header
+      setTimeout(() => highlightHead(h01), delay);
+      setTimeout(() => dimAll(), delay + 1000);
+      delay += 1400;
+
+      // HL Hero profile
       setTimeout(() => highlightEl(pA, '#f87171'), delay);
-      setTimeout(() => dimProfiles(), delay + 1200);
+      setTimeout(() => dimAll(), delay + 1200);
       delay += 1600;
 
-      // Step 2: vs
+      // vs
       setTimeout(() => highlightEl(pVs, '#ffffff'), delay);
-      setTimeout(() => dimProfiles(), delay + 800);
+      setTimeout(() => dimAll(), delay + 800);
       delay += 1200;
 
-      // Step 3: Pro profile
+      // Pro profile
       setTimeout(() => highlightEl(pB, '#60a5fa'), delay);
-      setTimeout(() => dimProfiles(), delay + 1200);
+      setTimeout(() => dimAll(), delay + 1200);
       delay += 1600;
 
-      // Step 4: Checklist items
-      delay += 300;
+      // Highlight 02 header
+      setTimeout(() => highlightHead(h02), delay);
+      setTimeout(() => dimAll(), delay + 1000);
+      delay += 1400;
+
+      // Checklist items
       allItems.forEach((item) => {
         const num = item.querySelector('.rs-item-num');
         setTimeout(() => item.classList.add('highlight-row'), delay);
@@ -1806,8 +1830,15 @@ body {
         delay += 1000;
       });
 
+      delay += 600;
+
+      // Highlight 03 header
+      setTimeout(() => highlightHead(h03), delay);
+      setTimeout(() => dimAll(), delay + 1000);
+      delay += 1400;
+
       // Restart
-      setTimeout(() => runCycle(section), delay + 1800);
+      setTimeout(() => runCycle(section), delay + 1200);
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -1824,7 +1855,7 @@ body {
   </script>
 
   <!-- 03 How to Measure Progress -->
-  <div class="rs-section-head"><span class="rs-num">03</span><span class="rs-title">How to Measure Progress</span></div>
+  <div class="rs-section-head" id="rsHead03" style="transition:opacity 0.4s, text-shadow 0.4s; opacity:0.5;"><span class="rs-num">03</span><span class="rs-title">How to Measure Progress</span></div>
 
   <table class="rs-targets">
     <thead>
