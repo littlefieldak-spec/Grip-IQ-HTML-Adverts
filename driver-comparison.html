@@ -1591,19 +1591,29 @@ body {
       <div class="cz-fade-right"></div>
       <div class="cz-fade-bottom"></div>
 
-      <!-- Animated phase boxes — appear sequentially -->
+      <!-- Dark covers to hide baked-in boxes from the PNG -->
+      <div style="position:absolute; top:5%; left:5%; width:50%; height:30%; background:var(--bg-deep); z-index:1; opacity:0.95; border-radius:4px;"></div>
+      <div style="position:absolute; top:5%; right:0; width:28%; height:35%; background:var(--bg-deep); z-index:1; opacity:0.95; border-radius:4px;"></div>
+      <div style="position:absolute; bottom:5%; left:25%; width:50%; height:28%; background:var(--bg-deep); z-index:1; opacity:0.95; border-radius:4px;"></div>
+      <!-- Cover the centre T1&T2 label area -->
+      <div style="position:absolute; top:35%; left:35%; width:30%; height:18%; background:var(--bg-deep); z-index:1; opacity:0.95;"></div>
+      <!-- Cover RACING LINE bar -->
+      <div style="position:absolute; top:52%; left:30%; width:40%; height:8%; background:var(--bg-deep); z-index:1; opacity:0.95;"></div>
+
+      <!-- Cycling phase boxes -->
       <style>
-        .phase-box { position:absolute; z-index:2; opacity:0; transform:translateY(12px); border-radius:10px; padding:18px 22px; font-family:'Space Mono',monospace; backdrop-filter:blur(12px); transition:none; }
-        .phase-box.visible { opacity:1; transform:translateY(0); transition:opacity 0.8s ease, transform 0.8s ease; }
-        .phase-box .phase-label { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:4px; }
-        .phase-box .phase-slower { font-size:11px; margin-bottom:10px; }
-        .phase-box .phase-delta { font-family:'Space Mono',monospace; font-size:22px; font-weight:800; position:absolute; top:16px; right:20px; }
-        .phase-box .phase-item { font-size:12px; color:#cbd5e1; margin-bottom:6px; line-height:1.5; }
+        .phase-box { position:absolute; z-index:3; opacity:0; transform:translateY(10px) scale(0.97); border-radius:12px; padding:20px 24px; font-family:'Space Mono',monospace; backdrop-filter:blur(16px); pointer-events:none; }
+        .phase-box.active { opacity:1; transform:translateY(0) scale(1); transition:opacity 0.6s ease, transform 0.6s ease; pointer-events:auto; }
+        .phase-box.fading { opacity:0; transform:translateY(-8px) scale(0.97); transition:opacity 0.5s ease, transform 0.5s ease; }
+        .phase-box .phase-label { font-size:14px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:4px; }
+        .phase-box .phase-slower { font-size:12px; margin-bottom:12px; }
+        .phase-box .phase-delta { font-family:'Space Mono',monospace; font-size:24px; font-weight:800; position:absolute; top:18px; right:22px; }
+        .phase-box .phase-item { font-size:13px; color:#cbd5e1; margin-bottom:8px; line-height:1.5; }
       </style>
 
-      <!-- ENTRY — top-left, appears first -->
-      <div class="phase-box" id="czEntry" style="top:10%; left:8%; width:420px; background:rgba(74,222,128,0.06); border:1px solid rgba(74,222,128,0.25);">
-        <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, #4ade80, rgba(74,222,128,0.2)); border-radius:10px 10px 0 0;"></div>
+      <!-- ENTRY -->
+      <div class="phase-box" id="czEntry" style="top:8%; left:6%; width:440px; background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.3); box-shadow:0 8px 32px rgba(74,222,128,0.1);">
+        <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, #4ade80, rgba(74,222,128,0.15)); border-radius:12px 12px 0 0;"></div>
         <div class="phase-label" style="color:#4ade80;">Entry</div>
         <div class="phase-delta" style="color:#4ade80;">-0.043s</div>
         <div class="phase-slower" style="color:#4ade80;">Pro 0.043s slower</div>
@@ -1612,9 +1622,9 @@ body {
         <div class="phase-item">Pro lifts more gradually (64.5%/s vs 82.2%/s)</div>
       </div>
 
-      <!-- CENTRE — bottom-center, appears second -->
-      <div class="phase-box" id="czCentre" style="bottom:14%; left:50%; transform:translateX(-50%) translateY(12px); width:420px; background:rgba(251,191,36,0.06); border:1px solid rgba(251,191,36,0.25);">
-        <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, #fbbf24, rgba(251,191,36,0.2)); border-radius:10px 10px 0 0;"></div>
+      <!-- CENTRE -->
+      <div class="phase-box" id="czCentre" style="bottom:12%; left:50%; margin-left:-220px; width:440px; background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.3); box-shadow:0 8px 32px rgba(251,191,36,0.1);">
+        <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, #fbbf24, rgba(251,191,36,0.15)); border-radius:12px 12px 0 0;"></div>
         <div class="phase-label" style="color:#fbbf24;">Centre</div>
         <div class="phase-delta" style="color:#f87171;">+0.018s</div>
         <div class="phase-slower" style="color:#f87171;">HL Hero 0.018s slower</div>
@@ -1623,9 +1633,9 @@ body {
         <div class="phase-item">HL Hero gets on throttle quicker (6.7%/s vs 4.6%/s)</div>
       </div>
 
-      <!-- EXIT — top-right, appears third -->
-      <div class="phase-box" id="czExit" style="top:10%; right:4%; width:380px; background:rgba(248,113,113,0.06); border:1px solid rgba(248,113,113,0.25);">
-        <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, #f87171, rgba(248,113,113,0.2)); border-radius:10px 10px 0 0;"></div>
+      <!-- EXIT -->
+      <div class="phase-box" id="czExit" style="top:8%; right:3%; width:400px; background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.3); box-shadow:0 8px 32px rgba(248,113,113,0.1);">
+        <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, #f87171, rgba(248,113,113,0.15)); border-radius:12px 12px 0 0;"></div>
         <div class="phase-label" style="color:#f87171;">Exit</div>
         <div class="phase-delta" style="color:#f87171;">+0.015s</div>
         <div class="phase-slower" style="color:#f87171;">HL Hero 0.015s slower</div>
@@ -1634,28 +1644,42 @@ body {
       </div>
 
       <!-- Legend bar -->
-      <div class="cz-bar">
+      <div class="cz-bar" style="z-index:3;">
         <div class="cz-bar-item"><span style="color:#4ade80">&#x25BC;</span> <strong>Throttle Lift</strong> &mdash; where the driver lifts off entering the corner</div>
         <div class="cz-bar-item"><span style="color:#fb923c">&#x25B2;</span> <strong>Throttle Reapply</strong> &mdash; where they get back on exiting</div>
         <div class="cz-bar-item"><span class="cz-bar-lines"><span style="background:#60a5fa"></span><span style="background:#f87171"></span></span> <strong>Racing Lines</strong> &mdash; every lap overlaid for both drivers</div>
       </div>
 
-      <!-- Animation trigger -->
+      <!-- Cycling animation: Entry → Centre → Exit → repeat -->
       <script>
       (function() {
+        const ids = ['czEntry','czCentre','czExit'];
+        const SHOW = 2500, FADE = 500, PAUSE = 300;
+        const CYCLE = SHOW + FADE + PAUSE;
+        let current = -1, running = false;
+
+        function showNext() {
+          const prev = current >= 0 ? document.getElementById(ids[current]) : null;
+          if (prev) { prev.classList.remove('active'); prev.classList.add('fading'); }
+
+          current = (current + 1) % ids.length;
+
+          setTimeout(() => {
+            if (prev) prev.classList.remove('fading');
+            const el = document.getElementById(ids[current]);
+            if (el) el.classList.add('active');
+            setTimeout(showNext, SHOW);
+          }, FADE + PAUSE);
+        }
+
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              setTimeout(() => document.getElementById('czEntry')?.classList.add('visible'), 400);
-              setTimeout(() => {
-                const c = document.getElementById('czCentre');
-                if (c) { c.style.transform = 'translateX(-50%) translateY(0)'; c.style.opacity = '1'; c.style.transition = 'opacity 0.8s ease, transform 0.8s ease'; }
-              }, 1400);
-              setTimeout(() => document.getElementById('czExit')?.classList.add('visible'), 2400);
-              observer.unobserve(entry.target);
+            if (entry.isIntersecting && !running) {
+              running = true;
+              setTimeout(showNext, 400);
             }
           });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.2 });
         const frame = document.querySelector('.cz-frame');
         if (frame) observer.observe(frame);
       })();
