@@ -2378,6 +2378,8 @@ body {
               el.style.opacity = '0.3';
               el.style.transform = 'scale(1)';
               el.style.boxShadow = 'none';
+              el.style.color = '';
+              el.style.fontSize = '';
             });
 
             idx = (idx + 1) % groups.length;
@@ -2388,6 +2390,10 @@ body {
                 if (el.classList.contains('cc-pill')) {
                   el.style.transform = 'scale(1.08)';
                   el.style.boxShadow = '0 0 12px rgba(255,255,255,0.15)';
+                }
+                if (el.classList.contains('cc-sep')) {
+                  el.style.color = '#ffffff';
+                  el.style.fontSize = '14px';
                 }
               });
             }, 200);
