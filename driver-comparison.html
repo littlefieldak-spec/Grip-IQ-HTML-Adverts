@@ -1750,9 +1750,10 @@ body {
     const pB = document.getElementById('rsProfileB');
     const h01 = document.getElementById('rsHead01');
     const h02 = document.getElementById('rsHead02');
-    const h03 = document.getElementById('rsHead03');
+    let h03 = null;
 
     function dimAll() {
+      if (!h03) h03 = document.getElementById('rsHead03');
       [pA, pVs, pB].forEach(el => {
         if (!el) return;
         el.style.borderColor = '';
