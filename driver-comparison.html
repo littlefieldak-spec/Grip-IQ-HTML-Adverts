@@ -2479,6 +2479,62 @@ body {
       <p>Event-by-event wheelspin analysis with phases, tire temps, throttle data, and track position for every occurrence.</p>
     </div>
   </div>
+
+  <!-- Tab cards wave animation -->
+  <style>
+    .feature-card {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .feature-card.wave-active {
+      border-color: rgba(0,240,255,0.4) !important;
+      box-shadow: 0 0 20px rgba(0,240,255,0.15), inset 0 0 20px rgba(0,240,255,0.03) !important;
+      transform: translateY(-2px);
+    }
+    .feature-card.wave-active .card-icon {
+      transform: scale(1.15);
+      transition: transform 0.3s ease;
+    }
+    .feature-card.wave-active h3 {
+      color: #ffffff !important;
+      text-shadow: 0 0 8px rgba(0,240,255,0.3);
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+  </style>
+  <script>
+  (function() {
+    let running = false;
+
+    function runWave(cards) {
+      let i = 0;
+      function step() {
+        cards.forEach(c => c.classList.remove('wave-active'));
+        if (i < cards.length) {
+          cards[i].classList.add('wave-active');
+          i++;
+          setTimeout(step, 400);
+        } else {
+          setTimeout(() => {
+            cards.forEach(c => c.classList.remove('wave-active'));
+            setTimeout(() => runWave(cards), 600);
+          }, 400);
+        }
+      }
+      step();
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !running) {
+          running = true;
+          const cards = [...entry.target.querySelectorAll('.feature-card')];
+          if (cards.length) setTimeout(() => runWave(cards), 500);
+        }
+      });
+    }, { threshold: 0.2 });
+    const grid = document.querySelector('.feature-showcase.grid-3');
+    if (grid) observer.observe(grid);
+  })();
+  </script>
 </section>
 
 <div class="section-divider"><hr></div>
