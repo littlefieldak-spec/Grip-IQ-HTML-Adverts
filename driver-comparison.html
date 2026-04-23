@@ -1733,27 +1733,47 @@ body {
     </div>
   </div>
 
-  <!-- Checklist check-off animation -->
+  <!-- Checklist check-off animation — cycles forever -->
   <script>
   (function() {
+    let running = false;
+
+    function runCycle(section) {
+      const zones = section.querySelectorAll('.rs-zone');
+      const allItems = [];
+      zones.forEach(zone => {
+        zone.querySelectorAll('.rs-item').forEach(item => allItems.push(item));
+      });
+
+      // Reset all
+      allItems.forEach(item => {
+        const num = item.querySelector('.rs-item-num');
+        if (num) num.classList.remove('checked');
+        item.classList.remove('checked-row');
+      });
+
+      // Check off one by one
+      let delay = 600;
+      allItems.forEach((item, i) => {
+        setTimeout(() => {
+          const num = item.querySelector('.rs-item-num');
+          if (num) num.classList.add('checked');
+          item.classList.add('checked-row');
+        }, delay);
+        delay += 700;
+      });
+
+      // After all checked, pause then reset and restart
+      const totalTime = delay + 1500;
+      setTimeout(() => runCycle(section), totalTime);
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const zones = entry.target.querySelectorAll('.rs-zone');
-        let delay = 600;
-        zones.forEach(zone => {
-          const items = zone.querySelectorAll('.rs-item');
-          items.forEach(item => {
-            const num = item.querySelector('.rs-item-num');
-            setTimeout(() => {
-              if (num) num.classList.add('checked');
-              item.classList.add('checked-row');
-            }, delay);
-            delay += 700;
-          });
-          delay += 300;
-        });
-        observer.unobserve(entry.target);
+        if (entry.isIntersecting && !running) {
+          running = true;
+          runCycle(entry.target);
+        }
       });
     }, { threshold: 0.3 });
     const section = document.querySelector('.rs-section-head + .rs-zone')?.parentElement;
