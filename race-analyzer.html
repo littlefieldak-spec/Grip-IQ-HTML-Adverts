@@ -201,6 +201,36 @@ body {
   font-weight: 600;
 }
 
+/* VS Badge (hero) */
+.vs-badge {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  animation: fadeInUp 0.8s ease-out 1s both;
+  margin-bottom: 2rem;
+}
+
+.vs-driver {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+}
+
+.vs-driver.a { background: rgba(0,240,255,0.12); border: 1px solid rgba(0,240,255,0.35); color: var(--cyan); }
+.vs-driver.b { background: rgba(255,51,85,0.12); border: 1px solid rgba(255,51,85,0.35); color: var(--red); }
+
+.vs-divider {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-dim);
+}
+
+@media(max-width:700px){ .vs-badge { flex-direction: column; gap: 0.75rem; } }
+
 .scroll-cue {
   position: absolute;
   bottom: 2.5rem;
@@ -839,7 +869,7 @@ body {
     <div class="streak"></div>
   </div>
 
-  <img class="hero-logo" id="heroLogo" src="" alt="GripIQ">
+  <svg width="200" height="50" viewBox="0 0 200 50"><text x="100" y="35" text-anchor="middle" font-family="Orbitron,sans-serif" font-size="28" font-weight="900" fill="#00f0ff">GripIQ</text></svg>
 
   <div class="hero-badge"><span>Feature Spotlight</span></div>
 
@@ -849,14 +879,55 @@ body {
   </h1>
 
   <p class="hero-tagline">
-    From checkered flag to coaching points in seconds.<br>
-    <strong>Your AI race engineer</strong> — know <em>why</em> you finished where you did.
+    Know why you finished where you did — not where your raw pace predicted.<br>
+    <strong>Every stint, every pit stop, every position swap — quantified.</strong>
   </p>
 
-  <div class="scroll-cue">
-    <span>Explore</span>
-    <div class="scroll-cue-arrow"></div>
+  <p style="font-family:var(--font-body); font-size:1.15rem; color:var(--text-secondary); max-width:700px; margin:1rem auto 0; line-height:1.6; text-align:center; font-style:italic;">
+    The post-race breakdown most tools skip.
+  </p>
+
+  <div class="vs-badge">
+    <div class="vs-driver a" id="vs-left" style="width:220px; text-align:center;">PACE</div>
+    <div class="vs-divider">VS</div>
+    <div class="vs-driver b" id="vs-right" style="width:220px; text-align:center;">RESULT</div>
   </div>
+
+  <script>
+  (function() {
+    const pairs = [
+      ["PACE", "RESULT"],
+      ["HOT LAP", "FULL RACE"],
+      ["LAP TIMES", "RACE CRAFT"],
+      ["LUCK", "SKILL"],
+      ["P10 PACE", "P3 FINISH"],
+      ["STARTED P18", "FINISHED P3"],
+      ["RAW SPEED", "RACECRAFT"],
+      ["BEFORE GRIPIQ", "AFTER GRIPIQ"],
+    ];
+    let idx = 0;
+    const left = document.getElementById("vs-left");
+    const right = document.getElementById("vs-right");
+    left.style.transition = "opacity 0.3s, transform 0.3s";
+    right.style.transition = "opacity 0.3s, transform 0.3s";
+    function cycle() {
+      idx = (idx + 1) % pairs.length;
+      left.style.opacity = "0";
+      right.style.opacity = "0";
+      left.style.transform = "translateY(10px)";
+      right.style.transform = "translateY(10px)";
+      setTimeout(() => {
+        left.textContent = pairs[idx][0];
+        right.textContent = pairs[idx][1];
+        left.style.opacity = "1";
+        right.style.opacity = "1";
+        left.style.transform = "translateY(0)";
+        right.style.transform = "translateY(0)";
+      }, 300);
+    }
+    setInterval(cycle, 3200);
+  })();
+  </script>
 </section>
 
 <!-- ===================== SPLASH 1: PACE OVERLAY ===================== -->
@@ -908,17 +979,17 @@ body {
 
 <div class="section-divider"><hr></div>
 
-<!-- ===================== AI RACE ENGINEER ===================== -->
+<!-- ===================== STINT BREAKDOWN ===================== -->
 <section class="section reveal">
-  <div class="section-label">AI-Powered Analysis</div>
-  <h2>Your AI race engineer.<br>Available instantly.</h2>
-  <p class="section-desc">Click any stint dot and get a 10-section engineering report — executive summary, run profile, segment breakdowns, tire story, grip events, and prioritized coaching.</p>
+  <div class="section-label">Stint-Level Breakdown</div>
+  <h2>Every stint,<br><span style="color: var(--cyan);">fully decomposed.</span></h2>
+  <p class="section-desc">Click any stint dot and get a full breakdown — run profile, segment-by-segment timing, tire heat analysis, grip events, and prioritized coaching.</p>
 
   <div class="flow-steps">
     <div class="flow-step" data-step="1">
       <div class="flow-step-content">
         <h3>Executive Summary &amp; Run Profile</h3>
-        <p>Natural language analysis — handling balance, grip events, consistency. Written like a crew chief debrief, backed by the numbers.</p>
+        <p>Handling balance, grip events, and consistency summarized from your actual data — crew-chief-style debrief, every sentence backed by the numbers.</p>
       </div>
       <div class="flow-step-visual">
         <div style="text-align: left; width: 100%;">
@@ -1086,7 +1157,7 @@ body {
 
 <!-- ===================== FOOTER ===================== -->
 <footer style="text-align: center; padding: 3rem 2rem; border-top: 1px solid var(--border-subtle);">
-  <img id="footerLogo" src="" alt="GripIQ" style="width: 150px; margin-bottom: 0.75rem; filter: drop-shadow(0 0 20px rgba(0,240,255,0.1));">
+  <svg width="150" height="38" viewBox="0 0 200 50" style="margin-bottom: 0.75rem; filter: drop-shadow(0 0 20px rgba(0,240,255,0.1));"><text x="100" y="35" text-anchor="middle" font-family="Orbitron,sans-serif" font-size="28" font-weight="900" fill="#00f0ff">GripIQ</text></svg>
   <div style="font-size: 0.8rem; color: var(--text-dim);">Racing intelligence, quantified.</div>
 </footer>
 
@@ -1105,8 +1176,6 @@ const IMAGES = {
 };
 
 // Set all image sources
-document.getElementById('heroLogo').src = IMAGES.logo;
-document.getElementById('footerLogo').src = IMAGES.logo;
 
 // Scroll reveal
 const reveals = document.querySelectorAll('.reveal');
