@@ -867,7 +867,7 @@ body {
       <h2>See where the<br><span style="color: var(--green);">gaps open.</span></h2>
       <p class="splash-desc">Your pace traced against the top 5 — or isolate any rival. See a gap? Click any lap — you're in your telemetry via <strong style="color: var(--cyan);">Click-through Telemetry Access™</strong>.</p>
     </div>
-    <img class="splash-screenshot" id="imgPaceOverlay" src="" alt="Pace vs Field overlay chart">
+    <div class="live-component" id="imgPaceOverlay"></div>
   </div>
 </div>
 
@@ -879,17 +879,7 @@ body {
       <h2>Race<span style="color: var(--cyan);">Craft</span> Score</h2>
       <p class="splash-desc">Timing sheets measure speed. RaceCraft measures <em>racing</em>. Did you drive smarter than your car was fast? Now there's a number for it.</p>
     </div>
-    <div class="splash-stat-overlay" style="width: 100%;">
-      <img class="splash-screenshot" id="imgRacecraft" src="" alt="RaceCraft analysis overview">
-      <div class="floating-stat" style="top: 8%; left: 3%; animation-delay: 0.5s;">
-        <div class="stat-value" style="color: var(--cyan);">77<span style="font-size: 0.7rem; color: var(--text-dim);">/100</span></div>
-        <div class="stat-label">RaceCraft Score</div>
-      </div>
-      <div class="floating-stat" style="top: 8%; right: 3%; animation-delay: 0.8s;">
-        <div class="stat-value" style="color: var(--green);">+3 pos</div>
-        <div class="stat-label">Outperformed Pace</div>
-      </div>
-    </div>
+    <div class="live-component" id="imgRacecraft"></div>
   </div>
 </div>
 
@@ -1032,17 +1022,7 @@ body {
   <h2>Pit Strategy<br><span style="color: var(--red);">Breakdown.</span></h2>
   <p class="section-desc">Your 3-lap pit sequence — pit-in, pit-out, first clean lap — compared against every driver who pitted under green. See exactly where you're losing time, ranked against the entire field.</p>
 
-  <div class="splash-stat-overlay" style="width: 100%;">
-    <img class="splash-screenshot" id="imgPitStrat" src="" alt="Pit Strategy analysis">
-    <div class="floating-stat" style="top: 8%; right: 3%; animation-delay: 0.5s;">
-      <div class="stat-value" style="color: var(--red);">+1.67s</div>
-      <div class="stat-label">Lost to Field Median</div>
-    </div>
-    <div class="floating-stat" style="bottom: 12%; left: 3%; animation-delay: 0.8s;">
-      <div class="stat-value" style="color: var(--orange);">P15 <span style="font-size: 0.7rem; color: var(--text-dim);">of 21</span></div>
-      <div class="stat-label">Pit Stop Ranking</div>
-    </div>
-  </div>
+  <div class="live-component" id="imgPitStrat"></div>
 
   <div class="feature-showcase grid-3" style="margin-top: 2rem;">
     <div class="feature-card">
@@ -1138,10 +1118,7 @@ const IMAGES = {
 document.getElementById('heroLogo').src = IMAGES.logo;
 document.getElementById('footerLogo').src = IMAGES.logo;
 document.getElementById('imgScatter').src = IMAGES.scatter;
-document.getElementById('imgPaceOverlay').src = IMAGES.paceoverlay;
-document.getElementById('imgRacecraft').src = IMAGES.racecraft;
 document.getElementById('imgH2H').src = IMAGES.headtohead;
-document.getElementById('imgPitStrat').src = IMAGES.pitstrat;
 document.getElementById('imgStint').src = IMAGES.stint;
 document.getElementById('imgCoaching').src = IMAGES.coaching;
 
@@ -1156,6 +1133,401 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
 reveals.forEach(el => observer.observe(el));
+</script>
+
+<!-- ===================== LIVE COMPONENTS ===================== -->
+<script>
+// ── BASE STYLES ──
+(function(){
+const s = document.createElement('style');
+s.textContent = `
+.live-component { width:100%; border-radius:16px; border:1px solid var(--border-subtle); background:linear-gradient(180deg,#0d1020 0%,#0a0c18 100%); box-shadow:0 20px 80px rgba(0,0,0,0.5),0 0 60px rgba(0,240,255,0.06); padding:1.75rem 2rem; overflow:hidden; transition:all 0.5s ease; position:relative; }
+.live-component:hover { box-shadow:0 30px 100px rgba(0,0,0,0.6),0 0 80px rgba(0,240,255,0.12); transform:translateY(-4px); }
+.lc-label { font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:0.5rem; }
+.lc-sublabel { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim); }
+.lc-divider { border-top:1px solid var(--border-subtle); margin:1.25rem 0; }
+@media(max-width:860px){ .lc-grid-2 { grid-template-columns:1fr !important; } }
+`;
+document.head.appendChild(s);
+})();
+
+// ── 1. RACECRAFT SCORE ──
+(function(){
+const el = document.getElementById('imgRacecraft');
+if(!el) return;
+
+const score = 77;
+const expectedPos = 18;
+const actualPos = 15;
+const field = [
+  {name:'Andrew Littlefield', score:77, delta:3, you:true},
+  {name:'Hunter Johnson', score:71, delta:1},
+  {name:'Mike Sinopoli', score:68, delta:2},
+  {name:'Tyler Hallman', score:54, delta:-1},
+  {name:'Justin Bondurant', score:48, delta:-2},
+];
+
+// Gauge: 270° arc, radius 80, center (100,100)
+// Start angle 225°, end angle 315° (math convention), going CCW through top = visual CW
+// Start: (100 + 80·cos(225°), 100 - 80·sin(225°)) = (43.4, 156.6)
+// End:   (100 + 80·cos(315°), 100 - 80·sin(315°)) = (156.6, 156.6)
+// Arc length = 2π·80·0.75 ≈ 377
+const arcLen = 377;
+const fillOffset = arcLen * (1 - score/100);
+
+el.innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+    <div class="lc-label">Race Summary · Daytona 500</div>
+    <div class="lc-sublabel">21 drivers · 200 laps</div>
+  </div>
+
+  <div class="lc-grid-2" style="display:grid;grid-template-columns:0.9fr 1.1fr;gap:2rem;align-items:center;">
+
+    <!-- LEFT: Gauge -->
+    <div style="text-align:center;">
+      <svg viewBox="0 0 200 200" style="width:100%;max-width:280px;">
+        <defs>
+          <linearGradient id="rcGaugeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00f0ff"/>
+            <stop offset="100%" stop-color="#00ff88"/>
+          </linearGradient>
+          <filter id="rcGlow"><feGaussianBlur stdDeviation="3"/></filter>
+        </defs>
+        <!-- bg arc -->
+        <path d="M 43.4 156.6 A 80 80 0 1 1 156.6 156.6"
+              fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="14" stroke-linecap="round"/>
+        <!-- fg arc (animated) -->
+        <path d="M 43.4 156.6 A 80 80 0 1 1 156.6 156.6"
+              fill="none" stroke="url(#rcGaugeGrad)" stroke-width="14" stroke-linecap="round"
+              stroke-dasharray="${arcLen}"
+              stroke-dashoffset="${arcLen}"
+              style="transition:stroke-dashoffset 2.2s cubic-bezier(0.4,0,0.2,1);filter:drop-shadow(0 0 8px rgba(0,240,255,0.4));"
+              data-rc-fill="${fillOffset}"/>
+        <!-- tick marks at 25/50/75 -->
+        ${[0.25, 0.5, 0.75].map(t => {
+          const ang = 225 - 270*t; // math deg (225→-45)
+          const rad = ang * Math.PI/180;
+          const x1 = 100 + 68*Math.cos(rad), y1 = 100 - 68*Math.sin(rad);
+          const x2 = 100 + 76*Math.cos(rad), y2 = 100 - 76*Math.sin(rad);
+          return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>`;
+        }).join('')}
+        <!-- center text -->
+        <text x="100" y="108" text-anchor="middle" fill="#00ff88"
+              style="font-family:'Orbitron',sans-serif;font-size:56px;font-weight:900;filter:drop-shadow(0 0 12px rgba(0,255,136,0.5));">${score}</text>
+        <text x="100" y="134" text-anchor="middle" fill="rgba(255,255,255,0.45)"
+              style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.05em;">/ 100</text>
+        <!-- scale labels -->
+        <text x="40" y="182" text-anchor="middle" fill="rgba(255,255,255,0.25)" style="font-family:'Space Mono',monospace;font-size:10px;">0</text>
+        <text x="160" y="182" text-anchor="middle" fill="rgba(255,255,255,0.25)" style="font-family:'Space Mono',monospace;font-size:10px;">100</text>
+      </svg>
+      <div style="margin-top:0.25rem;">
+        <div style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1rem;border-radius:6px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);">
+          <span style="color:var(--green);font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:800;letter-spacing:0.02em;">+3 POS</span>
+          <span style="color:var(--text-dim);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">outperformed pace</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Expected vs Actual + explanation -->
+    <div>
+      <div class="lc-sublabel" style="margin-bottom:0.9rem;">Expected vs Actual Finish</div>
+
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;padding:0.5rem 0;margin-bottom:1rem;">
+        <div style="text-align:center;">
+          <div style="font-size:0.6rem;color:var(--text-dim);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.3rem;font-family:'Space Mono',monospace;">Expected</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:2.3rem;font-weight:900;color:rgba(255,255,255,0.35);line-height:1;">P${expectedPos}</div>
+          <div style="font-size:0.68rem;color:var(--text-dim);font-family:'Space Mono',monospace;margin-top:0.25rem;">based on pace</div>
+        </div>
+        <svg width="56" height="32" viewBox="0 0 56 32">
+          <defs>
+            <linearGradient id="rcArrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(0,255,136,0.15)"/>
+              <stop offset="100%" stop-color="#00ff88"/>
+            </linearGradient>
+          </defs>
+          <path d="M 4 16 L 46 16 M 38 9 L 46 16 L 38 23"
+                stroke="url(#rcArrowGrad)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div style="text-align:center;">
+          <div style="font-size:0.6rem;color:var(--green);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.3rem;font-family:'Space Mono',monospace;">Actual</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:2.3rem;font-weight:900;color:var(--green);line-height:1;filter:drop-shadow(0 0 10px rgba(0,255,136,0.4));">P${actualPos}</div>
+          <div style="font-size:0.68rem;color:var(--green);font-family:'Space Mono',monospace;margin-top:0.25rem;">+${expectedPos-actualPos} gained</div>
+        </div>
+      </div>
+
+      <div style="padding:0.75rem 1rem;background:rgba(0,240,255,0.05);border-left:3px solid var(--cyan);border-radius:0 6px 6px 0;">
+        <div style="font-size:0.88rem;color:var(--text-primary);line-height:1.55;font-style:italic;">
+          "You drove smarter than your car was fast — finishing <strong style="color:var(--green);font-style:normal;">3 positions ahead</strong> of where your raw pace predicted."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lc-divider"></div>
+
+  <!-- LEADERBOARD -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem;">
+    <div class="lc-sublabel" style="color:var(--cyan);">Field Leaderboard · RaceCraft Score</div>
+    <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--text-dim);">Top 5 of 21</div>
+  </div>
+  ${field.map((f,i) => `
+    <div style="display:grid;grid-template-columns:1.6rem 1fr auto auto;gap:0.85rem;align-items:center;padding:0.45rem 0.7rem;margin-bottom:0.2rem;background:${f.you?'rgba(0,240,255,0.06)':'transparent'};border-radius:6px;${f.you?'border-left:2px solid var(--cyan);':''}">
+      <div style="font-family:'Orbitron',sans-serif;font-size:0.82rem;font-weight:700;color:${f.you?'var(--cyan)':'var(--text-dim)'};">${i+1}</div>
+      <div style="font-family:var(--font-body);font-size:0.92rem;color:${f.you?'var(--text-primary)':'var(--text-secondary)'};font-weight:${f.you?'600':'400'};">${f.name}${f.you?' <span style="font-size:0.6rem;color:var(--cyan);letter-spacing:0.1em;margin-left:0.4rem;font-family:\\'Space Mono\\',monospace;">YOU</span>':''}</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.88rem;color:${f.you?'var(--cyan)':'var(--text-secondary)'};width:2.2rem;text-align:right;font-weight:700;">${f.score}</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.76rem;color:${f.delta>0?'var(--green)':f.delta<0?'var(--red)':'var(--text-dim)'};width:3.2rem;text-align:right;">${f.delta>0?'+':''}${f.delta} pos</div>
+    </div>
+  `).join('')}
+`;
+
+// Trigger gauge fill animation after mount
+requestAnimationFrame(() => {
+  const fg = el.querySelector('[data-rc-fill]');
+  if (fg) fg.style.strokeDashoffset = fg.getAttribute('data-rc-fill');
+});
+})();
+
+// ── 2. PIT STRATEGY ──
+(function(){
+const el = document.getElementById('imgPitStrat');
+if(!el) return;
+
+const drivers = [
+  {rank:1,  name:'T. Hallman',     pIn:23.8, pOut:26.7, clean:28.7},
+  {rank:2,  name:'M. Sinopoli',    pIn:23.9, pOut:27.0, clean:28.9},
+  {rank:3,  name:'H. Johnson',     pIn:24.1, pOut:27.4, clean:29.1},
+  {rank:4,  name:'K. Harvick',     pIn:24.3, pOut:28.2, clean:29.4},
+  {rank:5,  name:'D. Hamlin',      pIn:24.4, pOut:28.6, clean:29.5},
+  {rank:15, name:'A. Littlefield', pIn:24.6, pOut:29.9, clean:29.9, you:true},
+  {rank:21, name:'J. Bondurant',   pIn:25.1, pOut:31.8, clean:31.2},
+];
+
+const fieldMedian = 82.8;
+const myLoss = {pIn:0.32, pOut:0.98, clean:0.37};
+const myTotal = myLoss.pIn + myLoss.pOut + myLoss.clean;
+
+const W = 760, H = 260;
+const PL = 160, PR = 70, PT = 30, PB = 40;
+const cW = W - PL - PR, cH = H - PT - PB;
+const xMax = 90;
+const xs = t => PL + (t/xMax) * cW;
+const rowH = cH / drivers.length;
+const barH = 14;
+
+const cIn = '#ff3355', cOut = '#ff8800', cClean = '#00ff88';
+
+let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;overflow:visible;">`;
+svg += `<rect x="${PL}" y="${PT}" width="${cW}" height="${cH}" fill="rgba(255,255,255,0.02)" rx="4"/>`;
+
+for (let t = 0; t <= xMax; t += 15) {
+  const x = xs(t);
+  svg += `<line x1="${x}" x2="${x}" y1="${PT}" y2="${PT+cH}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`;
+  svg += `<text x="${x}" y="${PT+cH+16}" text-anchor="middle" fill="rgba(255,255,255,0.35)" style="font-family:'Space Mono',monospace;font-size:9px;">${t}s</text>`;
+}
+
+drivers.forEach((d, i) => {
+  const y = PT + i*rowH + rowH/2;
+  const barY = y - barH/2;
+
+  if (d.you) {
+    svg += `<rect x="8" y="${barY - 7}" width="${W - 16}" height="${barH + 14}" fill="rgba(0,240,255,0.08)" stroke="rgba(0,240,255,0.4)" stroke-width="1" rx="6"/>`;
+  }
+
+  svg += `<text x="18" y="${y+3.5}" fill="${d.you?'#00f0ff':'rgba(255,255,255,0.5)'}" style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;">P${d.rank}</text>`;
+  svg += `<text x="50" y="${y+3.5}" fill="${d.you?'#e8eaf0':'rgba(255,255,255,0.65)'}" style="font-family:'Rajdhani',sans-serif;font-size:12.5px;font-weight:${d.you?'600':'400'};">${d.name}</text>`;
+
+  const x0 = xs(0);
+  const x1 = xs(d.pIn);
+  const x2 = xs(d.pIn + d.pOut);
+  const x3 = xs(d.pIn + d.pOut + d.clean);
+
+  svg += `<rect x="${x0}" y="${barY}" width="${x1-x0}" height="${barH}" fill="${cIn}" opacity="0.78" rx="2"/>`;
+  svg += `<rect x="${x1}" y="${barY}" width="${x2-x1}" height="${barH}" fill="${cOut}" opacity="0.78"/>`;
+  svg += `<rect x="${x2}" y="${barY}" width="${x3-x2}" height="${barH}" fill="${cClean}" opacity="0.78" rx="2"/>`;
+
+  const total = d.pIn + d.pOut + d.clean;
+  svg += `<text x="${x3+6}" y="${y+3.5}" fill="${d.you?'#00f0ff':'rgba(255,255,255,0.7)'}" style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;">${total.toFixed(1)}s</text>`;
+});
+
+const mX = xs(fieldMedian);
+svg += `<line x1="${mX}" x2="${mX}" y1="${PT-8}" y2="${PT+cH+6}" stroke="#ffdd00" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.75"/>`;
+svg += `<text x="${mX}" y="${PT-12}" text-anchor="middle" fill="#ffdd00" style="font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;">MEDIAN ${fieldMedian}s</text>`;
+svg += '</svg>';
+
+el.innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.75rem;">
+    <div class="lc-label">Pit Stop Analysis · Lap 52</div>
+    <div style="display:flex;gap:0.5rem;">
+      <div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.9rem;border-radius:6px;background:rgba(255,51,85,0.1);border:1px solid rgba(255,51,85,0.3);">
+        <span style="color:var(--red);font-family:'Orbitron',sans-serif;font-size:0.95rem;font-weight:800;">+1.67s</span>
+        <span style="color:var(--text-dim);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">lost to field</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.9rem;border-radius:6px;background:rgba(255,136,0,0.1);border:1px solid rgba(255,136,0,0.3);">
+        <span style="color:var(--orange);font-family:'Orbitron',sans-serif;font-size:0.95rem;font-weight:800;">P15</span>
+        <span style="color:var(--text-dim);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">of 21</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="lc-sublabel" style="margin-bottom:0.5rem;">3-Lap Pit Sequence · Field Comparison</div>
+  ${svg}
+
+  <div style="display:flex;gap:1.2rem;font-size:0.7rem;margin-top:0.5rem;margin-bottom:1.3rem;font-family:'Space Mono',monospace;justify-content:center;">
+    <span><span style="display:inline-block;width:10px;height:10px;background:${cIn};opacity:0.78;border-radius:2px;margin-right:0.4rem;vertical-align:middle;"></span><span style="color:var(--text-secondary);">Pit-In</span></span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:${cOut};opacity:0.78;border-radius:2px;margin-right:0.4rem;vertical-align:middle;"></span><span style="color:var(--text-secondary);">Pit-Out</span></span>
+    <span><span style="display:inline-block;width:10px;height:10px;background:${cClean};opacity:0.78;border-radius:2px;margin-right:0.4rem;vertical-align:middle;"></span><span style="color:var(--text-secondary);">First Clean</span></span>
+  </div>
+
+  <div class="lc-divider"></div>
+
+  <div class="lc-sublabel" style="color:var(--cyan);margin-bottom:0.9rem;">Where the time was lost · vs field median</div>
+
+  ${[
+    {phase:'Pit-In',      loss:myLoss.pIn,   color:cIn,    note:''},
+    {phase:'Pit-Out',     loss:myLoss.pOut,  color:cOut,   note:'biggest loss'},
+    {phase:'First Clean', loss:myLoss.clean, color:cClean, note:''},
+  ].map(p => {
+    const pct = (p.loss / myTotal) * 100;
+    return `
+    <div style="display:grid;grid-template-columns:5.5rem 1fr 3.8rem 7rem;gap:0.8rem;align-items:center;padding:0.45rem 0;">
+      <div style="font-family:'Rajdhani',sans-serif;font-size:0.92rem;color:var(--text-secondary);font-weight:600;">${p.phase}</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:3px;height:13px;position:relative;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${p.color};opacity:0.75;border-radius:3px;box-shadow:0 0 12px ${p.color}44;"></div>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.9rem;color:${p.color};text-align:right;font-weight:700;">+${p.loss.toFixed(2)}s</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.66rem;color:${p.note?p.color:'var(--text-dim)'};text-transform:uppercase;letter-spacing:0.1em;opacity:${p.note?0.85:0};">${p.note||'·'}</div>
+    </div>
+  `;}).join('')}
+`;
+})();
+
+// ── 3. PACE OVERLAY ──
+(function(){
+const el = document.getElementById('imgPaceOverlay');
+if(!el) return;
+
+const drivers = [
+  {name:'T. Hallman',     color:'#ffdd00', baseline:45.5, deg:0.010, phase:0.3},
+  {name:'M. Sinopoli',    color:'#aa44ff', baseline:45.6, deg:0.012, phase:0.7},
+  {name:'H. Johnson',     color:'#ff8800', baseline:45.7, deg:0.014, phase:1.1},
+  {name:'K. Harvick',     color:'#ff3355', baseline:45.8, deg:0.015, phase:1.5},
+  {name:'D. Hamlin',      color:'#00ff88', baseline:45.9, deg:0.016, phase:2.0},
+  {name:'A. Littlefield', color:'#00f0ff', baseline:46.0, deg:0.035, phase:2.4, you:true},
+];
+
+const nLaps = 40;
+const times = drivers.map(d => {
+  const lap = [];
+  for (let l = 1; l <= nLaps; l++) {
+    const warmup = l === 1 ? 2.8 : l === 2 ? 0.6 : 0;
+    const deg = d.deg * Math.max(0, l - 3);
+    const noise = 0.12 * Math.sin(l * 1.3 + d.phase) + 0.08 * Math.cos(l * 0.7 + d.phase * 2);
+    lap.push(d.baseline + warmup + deg + noise);
+  }
+  return lap;
+});
+
+const yourIdx = drivers.findIndex(d => d.you);
+const yourTimes = times[yourIdx];
+const yourBest = Math.min(...yourTimes);
+const yourBestLap = yourTimes.indexOf(yourBest) + 1;
+const leaderTimes = times[0];
+let worstGap = 0, worstGapLap = 1;
+for (let i = 0; i < nLaps; i++) {
+  const gap = yourTimes[i] - leaderTimes[i];
+  if (gap > worstGap) { worstGap = gap; worstGapLap = i + 1; }
+}
+const fieldMedian = times[0].map((_, i) => {
+  const col = times.map(t => t[i]).sort((a,b) => a-b);
+  return (col[Math.floor(col.length/2)] + col[Math.ceil((col.length-1)/2)]) / 2;
+});
+const midIdx = Math.floor(nLaps/2);
+const yourMedianGap = yourTimes[midIdx] - fieldMedian[midIdx];
+
+const W = 780, H = 340;
+const PL = 55, PR = 20, PT = 24, PB = 50;
+const cW = W - PL - PR, cH = H - PT - PB;
+const yMin = 45.0, yMax = 49.5;
+const xMin = 1, xMax = nLaps;
+const xs = l => PL + ((l - xMin) / (xMax - xMin)) * cW;
+const ys = t => PT + ((yMax - t) / (yMax - yMin)) * cH;
+
+let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;">`;
+svg += `<rect x="${PL}" y="${PT}" width="${cW}" height="${cH}" fill="rgba(255,255,255,0.015)" rx="4"/>`;
+
+for (let t = Math.ceil(yMin); t <= Math.floor(yMax); t++) {
+  const y = ys(t);
+  svg += `<line x1="${PL}" x2="${PL+cW}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`;
+  svg += `<text x="${PL-8}" y="${y+3.5}" text-anchor="end" fill="rgba(255,255,255,0.4)" style="font-family:'Space Mono',monospace;font-size:9px;">${t}.0s</text>`;
+}
+
+for (let l = 5; l <= nLaps; l += 5) {
+  const x = xs(l);
+  svg += `<line x1="${x}" x2="${x}" y1="${PT}" y2="${PT+cH}" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>`;
+  svg += `<text x="${x}" y="${PT+cH+16}" text-anchor="middle" fill="rgba(255,255,255,0.4)" style="font-family:'Space Mono',monospace;font-size:9px;">L${l}</text>`;
+}
+
+const medPath = fieldMedian.map((t, i) => `${i===0?'M':'L'}${xs(i+1).toFixed(1)},${ys(t).toFixed(1)}`).join(' ');
+svg += `<path d="${medPath}" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-dasharray="3,3"/>`;
+
+drivers.forEach((d, i) => {
+  if (d.you) return;
+  const path = times[i].map((t, j) => `${j===0?'M':'L'}${xs(j+1).toFixed(1)},${ys(t).toFixed(1)}`).join(' ');
+  svg += `<path d="${path}" fill="none" stroke="${d.color}" stroke-width="1.5" opacity="0.55" stroke-linecap="round" stroke-linejoin="round"/>`;
+});
+
+const yourPath = yourTimes.map((t, j) => `${j===0?'M':'L'}${xs(j+1).toFixed(1)},${ys(t).toFixed(1)}`).join(' ');
+svg += `<path d="${yourPath}" fill="none" stroke="${drivers[yourIdx].color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px rgba(0,240,255,0.5))"/>`;
+
+yourTimes.forEach((t, j) => {
+  svg += `<circle cx="${xs(j+1).toFixed(1)}" cy="${ys(t).toFixed(1)}" r="2.8" fill="${drivers[yourIdx].color}" opacity="0.95"/>`;
+});
+
+const gY_you = ys(yourTimes[worstGapLap-1]);
+const gY_leader = ys(leaderTimes[worstGapLap-1]);
+svg += `<line x1="${xs(worstGapLap)}" x2="${xs(worstGapLap)}" y1="${gY_leader}" y2="${gY_you}" stroke="#ff8800" stroke-width="2" stroke-dasharray="2,2" opacity="0.85"/>`;
+svg += `<text x="${xs(worstGapLap)+8}" y="${(gY_leader+gY_you)/2+4}" fill="#ff8800" style="font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;">+${worstGap.toFixed(2)}s</text>`;
+
+svg += '</svg>';
+
+el.innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.75rem;">
+    <div class="lc-label">Lap-by-Lap Pace · Stint 1 (laps 1&ndash;${nLaps})</div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+      <div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.3rem 0.8rem;border-radius:6px;background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.3);">
+        <span style="color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.9rem;font-weight:800;">${yourBest.toFixed(2)}s</span>
+        <span style="color:var(--text-dim);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">your best &middot; L${yourBestLap}</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.3rem 0.8rem;border-radius:6px;background:rgba(255,136,0,0.1);border:1px solid rgba(255,136,0,0.3);">
+        <span style="color:var(--orange);font-family:'Orbitron',sans-serif;font-size:0.9rem;font-weight:800;">+${yourMedianGap.toFixed(2)}s</span>
+        <span style="color:var(--text-dim);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">mid-stint vs median</span>
+      </div>
+    </div>
+  </div>
+
+  ${svg}
+
+  <div style="display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center;margin-top:0.8rem;font-family:'Space Mono',monospace;font-size:0.72rem;">
+    ${drivers.slice().reverse().map(d => `
+      <span style="display:inline-flex;align-items:center;gap:0.4rem;${d.you?'padding:0.2rem 0.55rem;background:rgba(0,240,255,0.08);border-radius:4px;':''}">
+        <span style="display:inline-block;width:${d.you?'14px':'10px'};height:${d.you?'3px':'2px'};background:${d.color};border-radius:1px;${d.you?'box-shadow:0 0 6px '+d.color+'90;':''}"></span>
+        <span style="color:${d.you?'var(--text-primary)':'var(--text-secondary)'};font-weight:${d.you?'700':'400'};">${d.name}${d.you?' (you)':''}</span>
+      </span>
+    `).join('')}
+    <span style="display:inline-flex;align-items:center;gap:0.4rem;">
+      <span style="display:inline-block;width:14px;height:0;border-top:1.5px dashed rgba(255,255,255,0.35);"></span>
+      <span style="color:var(--text-secondary);">Field Median</span>
+    </span>
+  </div>
+
+  <div class="lc-divider"></div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-secondary);flex-wrap:wrap;gap:0.5rem;">
+    <span>Biggest gap: <span style="color:var(--orange);font-weight:700;">+${worstGap.toFixed(2)}s on lap ${worstGapLap}</span></span>
+    <span style="color:var(--cyan);">Click any lap &rarr; telemetry &rarr;</span>
+  </div>
+`;
+})();
 </script>
 
 </body>
