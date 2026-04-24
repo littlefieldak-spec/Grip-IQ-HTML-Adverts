@@ -2714,12 +2714,12 @@ body {
         if (i < cards.length) {
           cards[i].classList.add('wave-active');
           i++;
-          setTimeout(step, 400);
+          setTimeout(step, 2000);
         } else {
           setTimeout(() => {
             cards.forEach(c => c.classList.remove('wave-active'));
-            setTimeout(() => runWave(cards), 600);
-          }, 400);
+            setTimeout(() => runWave(cards), 2000);
+          }, 2000);
         }
       }
       step();
@@ -2782,7 +2782,7 @@ setInterval(() => {
   tabs[currentTab].classList.remove('active');
   currentTab = (currentTab + 1) % tabs.length;
   tabs[currentTab].classList.add('active');
-}, 25000);
+}, 3000);
 </script>
 
 <script>
