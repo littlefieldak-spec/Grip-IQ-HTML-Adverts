@@ -891,17 +891,7 @@ body {
       <h2>Fast. Consistent.<br><span style="color: var(--cyan);">Or both?</span></h2>
       <p class="splash-desc">Every driver in your race, plotted by pace and consistency. Find your quadrant. See who's fast but wild, who's slow but steady — and who's in the zone.</p>
     </div>
-    <div class="splash-stat-overlay" style="width: 100%;">
-      <img class="splash-screenshot" id="imgScatter" src="" alt="Pace vs Consistency scatter plot">
-      <div class="floating-stat" style="top: 12%; right: 5%; animation-delay: 0.6s;">
-        <div class="stat-value" style="color: var(--green);">Fast &amp; Consistent</div>
-        <div class="stat-label">The Goal</div>
-      </div>
-      <div class="floating-stat" style="bottom: 15%; left: 5%; animation-delay: 0.9s;">
-        <div class="stat-value" style="color: var(--red);">Slow &amp; Inconsistent</div>
-        <div class="stat-label">The Problem</div>
-      </div>
-    </div>
+    <div class="live-component" id="imgScatter"></div>
   </div>
 </div>
 
@@ -913,7 +903,7 @@ body {
   <h2>Stint-level precision.</h2>
   <p class="section-desc">Every stint broken down — pace curves, fade rates, lap-by-lap timing, and segment breakdowns. Access your telemetry for any lap using Click-through Telemetry Access™.</p>
 
-  <img class="splash-screenshot" id="imgStint" src="" alt="Stint analysis with clickable dots" style="width: 100%;">
+  <div class="live-component" id="imgStint"></div>
 </section>
 
 <div class="section-divider"><hr></div>
@@ -998,7 +988,7 @@ body {
   <h2>Head-to-Head.<br><span style="color: var(--orange);">Pick your rival.</span></h2>
   <p class="section-desc">Select any driver from the field. Get a stat comparison, lap-by-lap delta chart, and zone-by-zone segment analysis — see exactly where and why you're faster or slower.</p>
 
-  <img class="splash-screenshot" id="imgH2H" src="" alt="Head to head comparison" style="width: 100%; margin-bottom: 2rem;">
+  <div class="live-component" id="imgH2H" style="margin-bottom: 2rem;"></div>
 
   <div class="feature-showcase grid-2">
     <div class="feature-card">
@@ -1080,7 +1070,7 @@ body {
       <h2>Your homework.<br><span style="color: var(--green);">Done for you.</span></h2>
       <p class="splash-desc">Data-backed coaching points ranked by estimated positions at stake. Not generic advice — specific to your race, your data, your car. Every recommendation comes with receipts and telemetry links.</p>
     </div>
-    <img class="splash-screenshot" id="imgCoaching" src="" alt="Coaching recommendations with positions at stake">
+    <div class="live-component" id="imgCoaching"></div>
   </div>
 </div>
 
@@ -1117,10 +1107,6 @@ const IMAGES = {
 // Set all image sources
 document.getElementById('heroLogo').src = IMAGES.logo;
 document.getElementById('footerLogo').src = IMAGES.logo;
-document.getElementById('imgScatter').src = IMAGES.scatter;
-document.getElementById('imgH2H').src = IMAGES.headtohead;
-document.getElementById('imgStint').src = IMAGES.stint;
-document.getElementById('imgCoaching').src = IMAGES.coaching;
 
 // Scroll reveal
 const reveals = document.querySelectorAll('.reveal');
@@ -1525,6 +1511,466 @@ el.innerHTML = `
   <div style="display:flex;justify-content:space-between;align-items:center;font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-secondary);flex-wrap:wrap;gap:0.5rem;">
     <span>Biggest gap: <span style="color:var(--orange);font-weight:700;">+${worstGap.toFixed(2)}s on lap ${worstGapLap}</span></span>
     <span style="color:var(--cyan);">Click any lap &rarr; telemetry &rarr;</span>
+  </div>
+`;
+})();
+
+// ── 4. DRIVER QUADRANT ──
+(function(){
+const el = document.getElementById('imgScatter');
+if(!el) return;
+
+const drivers = [
+  {name:'T. Hallman',     c:88, p:95},
+  {name:'M. Sinopoli',    c:85, p:90},
+  {name:'H. Johnson',     c:82, p:88},
+  {name:'K. Harvick',     c:76, p:85},
+  {name:'D. Hamlin',      c:72, p:82},
+  {name:'K. Busch',       c:68, p:70},
+  {name:'C. Bell',        c:72, p:72},
+  {name:'C. Elliott',     c:65, p:65},
+  {name:'R. Blaney',      c:70, p:68},
+  {name:'J. Logano',      c:42, p:75},
+  {name:'R. Stenhouse',   c:48, p:70},
+  {name:'A. Littlefield', c:45, p:62, you:true},
+  {name:'A. Bowman',      c:78, p:48},
+  {name:'D. Suarez',      c:72, p:42},
+  {name:'T. Dillon',      c:35, p:30},
+  {name:'J. Bondurant',   c:22, p:18},
+];
+
+const W=780, H=440, PL=50, PR=20, PT=50, PB=60;
+const cW=W-PL-PR, cH=H-PT-PB;
+const mid = 50;
+const xs = v => PL + (v/100)*cW;
+const ys = v => PT + ((100-v)/100)*cH;
+
+let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;">`;
+
+svg += `<rect x="${xs(mid)}" y="${PT}" width="${xs(100)-xs(mid)}" height="${ys(mid)-PT}" fill="#00ff88" opacity="0.06"/>`;
+svg += `<rect x="${PL}" y="${PT}" width="${xs(mid)-PL}" height="${ys(mid)-PT}" fill="#ff8800" opacity="0.06"/>`;
+svg += `<rect x="${xs(mid)}" y="${ys(mid)}" width="${xs(100)-xs(mid)}" height="${PT+cH-ys(mid)}" fill="#60a5fa" opacity="0.06"/>`;
+svg += `<rect x="${PL}" y="${ys(mid)}" width="${xs(mid)-PL}" height="${PT+cH-ys(mid)}" fill="#ff3355" opacity="0.06"/>`;
+
+svg += `<line x1="${xs(mid)}" x2="${xs(mid)}" y1="${PT}" y2="${PT+cH}" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="3,3"/>`;
+svg += `<line x1="${PL}" x2="${PL+cW}" y1="${ys(mid)}" y2="${ys(mid)}" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="3,3"/>`;
+
+svg += `<text x="${xs(100)-12}" y="${PT+18}" text-anchor="end" fill="#00ff88" style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.05em;opacity:0.9;">FAST &amp; CONSISTENT</text>`;
+svg += `<text x="${xs(100)-12}" y="${PT+34}" text-anchor="end" fill="rgba(0,255,136,0.65)" style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;">The Goal</text>`;
+svg += `<text x="${PL+12}" y="${PT+18}" text-anchor="start" fill="#ff8800" style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.05em;opacity:0.9;">FAST &amp; INCONSISTENT</text>`;
+svg += `<text x="${PL+12}" y="${PT+34}" text-anchor="start" fill="rgba(255,136,0,0.65)" style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;">Wild but quick</text>`;
+svg += `<text x="${xs(100)-12}" y="${PT+cH-24}" text-anchor="end" fill="#60a5fa" style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.05em;opacity:0.9;">SLOW &amp; CONSISTENT</text>`;
+svg += `<text x="${xs(100)-12}" y="${PT+cH-8}" text-anchor="end" fill="rgba(96,165,250,0.65)" style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;">Steady but slow</text>`;
+svg += `<text x="${PL+12}" y="${PT+cH-24}" text-anchor="start" fill="#ff3355" style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.05em;opacity:0.9;">SLOW &amp; INCONSISTENT</text>`;
+svg += `<text x="${PL+12}" y="${PT+cH-8}" text-anchor="start" fill="rgba(255,51,85,0.65)" style="font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;">The Problem</text>`;
+
+svg += `<text x="${PL+cW/2}" y="${H-14}" text-anchor="middle" fill="rgba(255,255,255,0.45)" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">&larr; Consistency &rarr;</text>`;
+svg += `<text x="${PL+cW/2}" y="${H-28}" text-anchor="middle" fill="rgba(255,255,255,0.3)" style="font-family:'Space Mono',monospace;font-size:8.5px;">lap-to-lap variation &middot; more consistent to the right</text>`;
+svg += `<text transform="translate(18,${PT+cH/2}) rotate(-90)" text-anchor="middle" fill="rgba(255,255,255,0.45)" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">&larr; Pace &rarr;</text>`;
+svg += `<text transform="translate(34,${PT+cH/2}) rotate(-90)" text-anchor="middle" fill="rgba(255,255,255,0.3)" style="font-family:'Space Mono',monospace;font-size:8.5px;">faster at top</text>`;
+
+drivers.forEach(d => {
+  if (d.you) return;
+  const x = xs(d.c), y = ys(d.p);
+  svg += `<circle cx="${x}" cy="${y}" r="4.5" fill="rgba(255,255,255,0.7)" opacity="0.8"/>`;
+});
+
+const named = {'T. Hallman':{dx:10,dy:4}, 'J. Bondurant':{dx:10,dy:4}, 'J. Logano':{dx:10,dy:-8}};
+drivers.forEach(d => {
+  if (d.you) return;
+  if (!named[d.name]) return;
+  const x = xs(d.c), y = ys(d.p);
+  const o = named[d.name];
+  svg += `<text x="${x+o.dx}" y="${y+o.dy}" fill="rgba(255,255,255,0.75)" style="font-family:'Space Mono',monospace;font-size:9.5px;">${d.name}</text>`;
+});
+
+const you = drivers.find(d => d.you);
+const ux = xs(you.c), uy = ys(you.p);
+svg += `<circle cx="${ux}" cy="${uy}" r="13" fill="rgba(0,240,255,0.15)"/>`;
+svg += `<circle cx="${ux}" cy="${uy}" r="8" fill="rgba(0,240,255,0.35)"/>`;
+svg += `<circle cx="${ux}" cy="${uy}" r="5" fill="#00f0ff" style="filter:drop-shadow(0 0 8px rgba(0,240,255,0.9));"/>`;
+svg += `<line x1="${ux+8}" x2="${ux+30}" y1="${uy-4}" y2="${uy-22}" stroke="rgba(0,240,255,0.55)" stroke-width="1"/>`;
+svg += `<rect x="${ux+28}" y="${uy-38}" width="150" height="32" rx="5" fill="rgba(0,240,255,0.1)" stroke="rgba(0,240,255,0.55)" stroke-width="1"/>`;
+svg += `<text x="${ux+36}" y="${uy-24}" fill="#00f0ff" style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;">YOU &middot; A. Littlefield</text>`;
+svg += `<text x="${ux+36}" y="${uy-11}" fill="rgba(0,240,255,0.8)" style="font-family:'Space Mono',monospace;font-size:9px;">P15 &middot; consistency 45/100</text>`;
+
+svg += '</svg>';
+
+el.innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.75rem;">
+    <div class="lc-label">Driver Positioning &middot; All 21 Drivers</div>
+    <div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.3rem 0.8rem;border-radius:6px;background:rgba(255,136,0,0.1);border:1px solid rgba(255,136,0,0.3);">
+      <span style="color:var(--orange);font-family:'Orbitron',sans-serif;font-size:0.88rem;font-weight:800;">Fast &amp; Inconsistent</span>
+      <span style="color:var(--text-dim);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">your quadrant</span>
+    </div>
+  </div>
+
+  ${svg}
+
+  <div class="lc-divider"></div>
+
+  <div style="font-size:0.88rem;color:var(--text-secondary);line-height:1.55;font-style:italic;padding:0.75rem 1rem;background:rgba(255,136,0,0.05);border-left:3px solid var(--orange);border-radius:0 6px 6px 0;">
+    You have the pace &mdash; above-median <strong style="color:var(--text-primary);font-style:normal;">P15 finish pace</strong> &mdash; but your lap-to-lap variation puts you in the <strong style="color:var(--orange);font-style:normal;">inconsistent</strong> half. Close the consistency gap and you move up into the fast &amp; consistent quadrant with Hallman, Sinopoli, and Johnson.
+  </div>
+`;
+})();
+
+// ── 5. STINT ANALYSIS ──
+(function(){
+const el = document.getElementById('imgStint');
+if(!el) return;
+
+const stint = {
+  number: 2,
+  firstLap: 47,
+  lastLap: 97,
+  totalFade: 1.399,
+  segments: [
+    {name:'Sector 1', deltas:[0.000, -0.002, -0.001, -0.001], note:'Tire-resistant &middot; pace holds'},
+    {name:'Sector 2', deltas:[0.000, +0.150, +0.320, +0.522], note:'Moderate fade'},
+    {name:'Sector 3', deltas:[0.000, +0.175, +0.380, +0.597], note:'Highest fade &middot; tire deg zone'},
+  ]
+};
+
+const nLaps = stint.lastLap - stint.firstLap + 1;
+const pace = [];
+for (let i = 0; i < nLaps; i++) {
+  const t = i / (nLaps - 1);
+  const noise = 0.08 * Math.sin(i * 1.7) + 0.06 * Math.cos(i * 0.9);
+  pace.push(46.0 + stint.totalFade * t + noise);
+}
+
+function heatColor(delta) {
+  if (delta <= -0.05) return {bg:'rgba(0,255,136,0.14)', text:'#00ff88'};
+  if (delta <= 0.01)  return {bg:'rgba(0,255,136,0.08)', text:'rgba(0,255,136,0.8)'};
+  if (delta <= 0.15)  return {bg:'rgba(255,255,255,0.04)', text:'rgba(255,255,255,0.75)'};
+  if (delta <= 0.35)  return {bg:'rgba(255,136,0,0.18)', text:'#ff8800'};
+  return {bg:'rgba(255,51,85,0.22)', text:'#ff3355'};
+}
+
+const spW=760, spH=72, spPL=34, spPR=10, spPT=6, spPB=22;
+const spcW=spW-spPL-spPR, spcH=spH-spPT-spPB;
+const pMin=Math.min(...pace)-0.15, pMax=Math.max(...pace)+0.15;
+const pRange=pMax-pMin;
+const spXs=i=>spPL+(i/(nLaps-1))*spcW;
+const spYs=v=>spPT+((pMax-v)/pRange)*spcH;
+
+let sp=`<svg viewBox="0 0 ${spW} ${spH}" style="width:100%;">`;
+sp+=`<rect x="${spPL}" y="${spPT}" width="${spcW}" height="${spcH}" fill="rgba(255,255,255,0.015)" rx="3"/>`;
+const linePath=pace.map((v,i)=>`${i===0?'M':'L'}${spXs(i).toFixed(1)},${spYs(v).toFixed(1)}`).join(' ');
+const areaPath=linePath+` L${spXs(nLaps-1).toFixed(1)},${spYs(pMin).toFixed(1)} L${spXs(0).toFixed(1)},${spYs(pMin).toFixed(1)} Z`;
+sp+=`<path d="${areaPath}" fill="#00f0ff" opacity="0.08"/>`;
+sp+=`<path d="${linePath}" fill="none" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" style="filter:drop-shadow(0 0 5px rgba(0,240,255,0.4))"/>`;
+for (let i=0; i<nLaps; i+=5) {
+  sp+=`<circle cx="${spXs(i).toFixed(1)}" cy="${spYs(pace[i]).toFixed(1)}" r="2.5" fill="#00f0ff" opacity="0.75"/>`;
+}
+const ticks=[0, Math.floor(nLaps/4), Math.floor(nLaps/2), Math.floor(3*nLaps/4), nLaps-1];
+ticks.forEach(i=>{
+  const lap=stint.firstLap+i;
+  sp+=`<text x="${spXs(i)}" y="${spH-8}" text-anchor="middle" fill="rgba(255,255,255,0.45)" style="font-family:'Space Mono',monospace;font-size:9px;">L${lap}</text>`;
+});
+sp+=`<text x="${spPL-5}" y="${spYs(pMin)+4}" text-anchor="end" fill="rgba(255,255,255,0.4)" style="font-family:'Space Mono',monospace;font-size:8.5px;">${pMin.toFixed(1)}s</text>`;
+sp+=`<text x="${spPL-5}" y="${spYs(pMax)+4}" text-anchor="end" fill="rgba(255,255,255,0.4)" style="font-family:'Space Mono',monospace;font-size:8.5px;">${pMax.toFixed(1)}s</text>`;
+sp+='</svg>';
+
+let heatmap='';
+heatmap+=`<div style="display:grid;grid-template-columns:5.5rem repeat(4,1fr);gap:0.3rem;margin-bottom:0.35rem;">`;
+heatmap+=`<div></div>`;
+['Q1','Q2','Q3','Q4'].forEach(q=>{
+  heatmap+=`<div style="text-align:center;font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:0.14em;color:var(--text-dim);padding-bottom:0.1rem;">${q}</div>`;
+});
+heatmap+=`</div>`;
+stint.segments.forEach(seg=>{
+  heatmap+=`<div style="display:grid;grid-template-columns:5.5rem repeat(4,1fr);gap:0.3rem;margin-bottom:0.3rem;">`;
+  heatmap+=`<div style="font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;">${seg.name}</div>`;
+  seg.deltas.forEach(d=>{
+    const c=heatColor(d);
+    const sign=d>0?'+':'';
+    heatmap+=`<div style="background:${c.bg};border-radius:4px;padding:0.55rem 0.4rem;text-align:center;font-family:'Space Mono',monospace;font-size:0.84rem;font-weight:700;color:${c.text};">${sign}${d.toFixed(3)}s</div>`;
+  });
+  heatmap+=`</div>`;
+});
+
+const maxAbs=Math.max(...stint.segments.map(s=>Math.abs(s.deltas[3])));
+let bars='';
+stint.segments.forEach(seg=>{
+  const d=seg.deltas[3];
+  const c=heatColor(d);
+  const pct=(Math.abs(d)/maxAbs)*100;
+  bars+=`<div style="display:grid;grid-template-columns:5.5rem 1fr 4rem 12rem;gap:0.8rem;align-items:center;padding:0.5rem 0;">
+    <div style="font-family:'Rajdhani',sans-serif;font-size:0.92rem;color:var(--text-secondary);font-weight:600;">${seg.name}</div>
+    <div style="background:rgba(255,255,255,0.05);border-radius:3px;height:12px;position:relative;overflow:hidden;">
+      <div style="width:${pct}%;height:100%;background:${c.text};opacity:0.75;border-radius:3px;box-shadow:0 0 10px ${c.text}55;"></div>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:0.9rem;color:${c.text};text-align:right;font-weight:700;">${d>0?'+':''}${d.toFixed(3)}s</div>
+    <div style="font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;">${seg.note}</div>
+  </div>`;
+});
+
+el.innerHTML=`
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;flex-wrap:wrap;gap:0.75rem;">
+    <div class="lc-label">Stint ${stint.number} &middot; Laps ${stint.firstLap}&ndash;${stint.lastLap} (${nLaps} laps)</div>
+    <div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.3rem 0.8rem;border-radius:6px;background:rgba(255,51,85,0.1);border:1px solid rgba(255,51,85,0.3);">
+      <span style="color:var(--red);font-family:'Orbitron',sans-serif;font-size:0.92rem;font-weight:800;">+${stint.totalFade.toFixed(3)}s</span>
+      <span style="color:var(--text-dim);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">cumulative fade</span>
+    </div>
+  </div>
+
+  <div class="lc-sublabel" style="margin-bottom:0.4rem;">Pace Curve Across Stint</div>
+  ${sp}
+
+  <div class="lc-divider"></div>
+
+  <div class="lc-sublabel" style="color:var(--cyan);margin-bottom:0.7rem;">Quarter-by-Quarter Fade &middot; vs Q1 baseline</div>
+  ${heatmap}
+
+  <div class="lc-divider"></div>
+
+  <div class="lc-sublabel" style="color:var(--cyan);margin-bottom:0.5rem;">Where fade hits &middot; Q1 &rarr; Q4</div>
+  ${bars}
+
+  <div style="margin-top:1rem;padding:0.75rem 1rem;background:rgba(0,240,255,0.05);border-left:3px solid var(--cyan);border-radius:0 6px 6px 0;font-size:0.88rem;color:var(--text-secondary);line-height:1.55;font-style:italic;">
+    Sectors 2 and 3 carry <strong style="color:var(--text-primary);font-style:normal;">&plus;1.119s of the total &plus;1.399s fade</strong> &mdash; this is the tire degradation story. Click any lap dot to jump straight to telemetry for that lap.
+  </div>
+`;
+})();
+
+// ── 6. HEAD-TO-HEAD ──
+(function(){
+const el = document.getElementById('imgH2H');
+if(!el) return;
+
+const you = {name:'A. Littlefield', color:'#00f0ff'};
+const rival = {name:'H. Johnson', color:'#ff8800'};
+
+const stats = [
+  {metric:'Best Lap',    you:'45.92s', rival:'45.68s', delta:'+0.24s', youWorse:true},
+  {metric:'Avg Lap',     you:'46.41s', rival:'45.83s', delta:'+0.58s', youWorse:true},
+  {metric:'Consistency', you:'45',     rival:'82',     delta:'-37',    youWorse:true},
+  {metric:'Laps Led',    you:'0',      rival:'12',     delta:'-12',    youWorse:true},
+  {metric:'Pit Time',    you:'84.5s',  rival:'80.6s',  delta:'+3.9s',  youWorse:true},
+  {metric:'Finish',      you:'P15',    rival:'P3',     delta:'+12 pos',youWorse:true},
+];
+
+const nLaps = 50;
+const lapDeltas = [];
+for (let l = 1; l <= nLaps; l++) {
+  const t = (l - 1) / (nLaps - 1);
+  const baseline = 0.5 + 0.15 * t;
+  const noise = 0.3 * Math.sin(l * 0.8) + 0.18 * Math.cos(l * 1.4);
+  lapDeltas.push(baseline + noise);
+}
+
+const segments = [
+  {name:'S1', delta:+0.02, note:'Near-parity'},
+  {name:'S2', delta:+0.18, note:'Moderate loss'},
+  {name:'S3', delta:+0.38, note:'Biggest loss &middot; tire deg'},
+];
+
+const W=760, H=160, PL=40, PR=12, PT=16, PB=28;
+const cW=W-PL-PR, cH=H-PT-PB;
+const yMin=-0.5, yMax=1.8;
+const yRange=yMax-yMin;
+const lxs=l=>PL+((l-1)/(nLaps-1))*cW;
+const lys=v=>PT+((yMax-v)/yRange)*cH;
+const zeroY=lys(0);
+const barW=Math.max(2,(cW/nLaps)*0.72);
+
+let lapSvg=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;">`;
+lapSvg+=`<rect x="${PL}" y="${PT}" width="${cW}" height="${cH}" fill="rgba(255,255,255,0.015)" rx="3"/>`;
+[-0.3, 0.3, 0.6, 1.2].forEach(v=>{
+  if (v < yMin || v > yMax) return;
+  const y=lys(v);
+  lapSvg+=`<line x1="${PL}" x2="${PL+cW}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`;
+  lapSvg+=`<text x="${PL-5}" y="${y+3}" text-anchor="end" fill="rgba(255,255,255,0.35)" style="font-family:'Space Mono',monospace;font-size:8.5px;">${v>0?'+':''}${v.toFixed(1)}s</text>`;
+});
+lapSvg+=`<line x1="${PL}" x2="${PL+cW}" y1="${zeroY}" y2="${zeroY}" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>`;
+lapSvg+=`<text x="${PL-5}" y="${zeroY+3}" text-anchor="end" fill="rgba(255,255,255,0.5)" style="font-family:'Space Mono',monospace;font-size:9px;">0.0s</text>`;
+
+lapDeltas.forEach((d,i)=>{
+  const x=lxs(i+1)-barW/2;
+  const y=d>=0?zeroY:lys(d);
+  const h=Math.abs(lys(d)-zeroY);
+  const color=d>=0?'#ff3355':'#00ff88';
+  lapSvg+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" fill="${color}" opacity="0.75" rx="1"/>`;
+});
+
+[1, 10, 20, 30, 40, 50].forEach(l=>{
+  const x=lxs(l);
+  lapSvg+=`<text x="${x}" y="${H-8}" text-anchor="middle" fill="rgba(255,255,255,0.42)" style="font-family:'Space Mono',monospace;font-size:8.5px;">L${l}</text>`;
+});
+
+lapSvg+=`<text x="${W-14}" y="${PT+14}" text-anchor="end" fill="#ff3355" style="font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;opacity:0.85;">YOU slower &uarr;</text>`;
+lapSvg+=`<text x="${W-14}" y="${H-32}" text-anchor="end" fill="#00ff88" style="font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;opacity:0.85;">YOU faster &darr;</text>`;
+lapSvg+='</svg>';
+
+let statTable='';
+statTable+=`<div style="display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:0.5rem;padding:0.35rem 0 0.4rem;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:0.25rem;">
+  <div style="font-family:'Space Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;">Metric</div>
+  <div style="font-family:'Space Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;color:${you.color};text-transform:uppercase;text-align:right;">You</div>
+  <div style="font-family:'Space Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;color:${rival.color};text-transform:uppercase;text-align:right;">${rival.name}</div>
+  <div style="font-family:'Space Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;text-align:right;">&Delta;</div>
+</div>`;
+
+stats.forEach(s=>{
+  const deltaColor = s.youWorse ? '#ff3355' : '#00ff88';
+  statTable+=`<div style="display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:0.5rem;padding:0.42rem 0;border-bottom:1px solid rgba(255,255,255,0.04);align-items:center;">
+    <div style="font-family:'Rajdhani',sans-serif;font-size:0.92rem;color:var(--text-secondary);font-weight:600;">${s.metric}</div>
+    <div style="font-family:'Space Mono',monospace;font-size:0.9rem;color:${you.color};text-align:right;font-weight:700;">${s.you}</div>
+    <div style="font-family:'Space Mono',monospace;font-size:0.9rem;color:${rival.color};text-align:right;font-weight:700;">${s.rival}</div>
+    <div style="font-family:'Space Mono',monospace;font-size:0.85rem;color:${deltaColor};text-align:right;font-weight:700;">${s.delta}</div>
+  </div>`;
+});
+
+const segMaxAbs = Math.max(...segments.map(s=>Math.abs(s.delta)));
+let segBars='';
+segments.forEach(seg=>{
+  const pct = (Math.abs(seg.delta) / segMaxAbs) * 100;
+  const color = seg.delta > 0 ? '#ff3355' : '#00ff88';
+  segBars+=`<div style="display:grid;grid-template-columns:3rem 1fr 4.2rem 12rem;gap:0.8rem;align-items:center;padding:0.45rem 0;">
+    <div style="font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--text-secondary);font-weight:800;letter-spacing:0.02em;">${seg.name}</div>
+    <div style="background:rgba(255,255,255,0.05);border-radius:3px;height:12px;position:relative;overflow:hidden;">
+      <div style="width:${pct}%;height:100%;background:${color};opacity:0.75;border-radius:3px;box-shadow:0 0 10px ${color}55;"></div>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:0.9rem;color:${color};text-align:right;font-weight:700;">${seg.delta>0?'+':''}${seg.delta.toFixed(2)}s</div>
+    <div style="font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;">${seg.note}</div>
+  </div>`;
+});
+
+el.innerHTML=`
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;flex-wrap:wrap;gap:0.75rem;">
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <span style="font-family:'Orbitron',sans-serif;font-size:1.05rem;color:${you.color};font-weight:800;letter-spacing:0.02em;filter:drop-shadow(0 0 6px rgba(0,240,255,0.5));">YOU</span>
+      <span style="font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;">vs</span>
+      <span style="font-family:'Orbitron',sans-serif;font-size:1.05rem;color:${rival.color};font-weight:800;letter-spacing:0.02em;">${rival.name.toUpperCase()}</span>
+    </div>
+    <div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.3rem 0.8rem;border-radius:6px;background:rgba(255,51,85,0.1);border:1px solid rgba(255,51,85,0.3);">
+      <span style="color:var(--red);font-family:'Orbitron',sans-serif;font-size:0.92rem;font-weight:800;">+0.58s</span>
+      <span style="color:var(--text-dim);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">avg lap behind</span>
+    </div>
+  </div>
+
+  <div class="lc-sublabel" style="color:var(--cyan);margin-bottom:0.3rem;">Statistical Comparison</div>
+  ${statTable}
+
+  <div class="lc-divider"></div>
+
+  <div class="lc-sublabel" style="color:var(--cyan);margin-bottom:0.4rem;">Lap-by-Lap Delta &middot; Laps 1&ndash;50</div>
+  ${lapSvg}
+
+  <div class="lc-divider"></div>
+
+  <div class="lc-sublabel" style="color:var(--cyan);margin-bottom:0.5rem;">Segment-by-Segment &middot; avg per-lap delta</div>
+  ${segBars}
+
+  <div style="margin-top:1rem;padding:0.75rem 1rem;background:rgba(255,136,0,0.05);border-left:3px solid var(--orange);border-radius:0 6px 6px 0;font-size:0.88rem;color:var(--text-secondary);line-height:1.55;font-style:italic;">
+    <strong style="color:var(--text-primary);font-style:normal;">Sector 3 is the story</strong> &mdash; you lose 0.38s per lap there alone, accounting for 65% of the gap to Johnson. Click any lap to see exactly what you did differently.
+  </div>
+`;
+})();
+
+// ── 7. COACHING POINTS ──
+(function(){
+const el = document.getElementById('imgCoaching');
+if(!el) return;
+
+const points = [
+  {
+    sev:'major', color:'#ff3355',
+    title:'Sector 3 Tire Management',
+    posAtStake:3,
+    current:'Q4 fade +0.597s',
+    target:'Target +0.20s',
+    note:'Reduce wheel aggression and throttle snap through T3-T4 exit to slow late-run tire degradation.',
+    dataCitation:'Stint 2 &middot; +0.597s Q4 vs Q1 &middot; 43% of total run fade',
+    lap:89
+  },
+  {
+    sev:'major', color:'#ff3355',
+    title:'Pit Stop Execution',
+    posAtStake:2,
+    current:'Pit-out 29.9s',
+    target:'Target 28.9s (field median)',
+    note:'Pit-out is your biggest pit-phase loss. Commit to throttle earlier exiting pit lane.',
+    dataCitation:'Pit stop 1 &middot; +0.98s vs field median &middot; P15 of 21 in pit ranking',
+    lap:52
+  },
+  {
+    sev:'moderate', color:'#ff8800',
+    title:'Stint Consistency',
+    posAtStake:1.5,
+    current:'Lap &sigma; 0.42s',
+    target:'Target &sigma; 0.25s',
+    note:"Cut lap-to-lap variation to match top 5. Your pace is there on best laps &mdash; string it together.",
+    dataCitation:'Consistency 45/100 &middot; top-left quadrant (fast but inconsistent)',
+    lap:null
+  },
+  {
+    sev:'moderate', color:'#ff8800',
+    title:'Sector 2 Throttle Re-Application',
+    posAtStake:1,
+    current:'Rate 0.8%/s',
+    target:'Target 1.9%/s',
+    note:"You're slower getting back to throttle after apex. Johnson commits 25% earlier.",
+    dataCitation:'vs Johnson &middot; +0.18s per lap in S2 &middot; centre-exit phase',
+    lap:31
+  },
+  {
+    sev:'minor', color:'#60a5fa',
+    title:'Lap 11 Restart Line',
+    posAtStake:0.5,
+    current:'Outside line',
+    target:'Inside preferred',
+    note:'Outside line on the L11 restart cost 3 positions. Inside works better at this track.',
+    dataCitation:'Position change L11 &middot; &minus;3 positions on restart',
+    lap:11
+  },
+];
+
+const totalPos = points.reduce((s,p) => s + p.posAtStake, 0);
+
+let cards = '';
+points.forEach((p, i) => {
+  cards += `<div style="background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.06);border-left:3px solid ${p.color};border-radius:6px;padding:1rem 1.2rem;margin-bottom:0.75rem;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.75rem;margin-bottom:0.55rem;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;min-width:1.6rem;height:1.6rem;padding:0 0.4rem;border-radius:4px;background:${p.color}22;color:${p.color};font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:800;">${i+1}</span>
+        <span style="padding:0.2rem 0.6rem;border-radius:4px;background:${p.color}22;border:1px solid ${p.color}66;color:${p.color};font-family:'Space Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;">${p.sev}</span>
+        <span style="font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:800;color:var(--text-primary);letter-spacing:0.01em;">${p.title}</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:0.3rem;padding:0.22rem 0.65rem;border-radius:5px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);">
+        <span style="color:var(--green);font-family:'Orbitron',sans-serif;font-size:0.85rem;font-weight:800;">+${p.posAtStake} pos</span>
+        <span style="color:var(--text-dim);font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">at stake</span>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:1.5rem;margin-bottom:0.55rem;flex-wrap:wrap;font-family:'Space Mono',monospace;font-size:0.82rem;">
+      <div><span style="color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;font-size:0.66rem;">Current &middot; </span><span style="color:${p.color};font-weight:700;">${p.current}</span></div>
+      <div><span style="color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;font-size:0.66rem;">Target &middot; </span><span style="color:var(--green);font-weight:700;">${p.target}</span></div>
+    </div>
+
+    <div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.55;margin-bottom:0.55rem;">${p.note}</div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;font-family:'Space Mono',monospace;font-size:0.68rem;">
+      <span style="color:var(--text-dim);letter-spacing:0.06em;"><span style="color:${p.color};">&#9632;</span> ${p.dataCitation}</span>
+      ${p.lap ? `<span style="color:var(--cyan);font-weight:700;">&rarr; Telemetry L${p.lap}</span>` : `<span style="color:var(--cyan);font-weight:700;">&rarr; View breakdown</span>`}
+    </div>
+  </div>`;
+});
+
+el.innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.75rem;">
+    <div class="lc-label">Coaching Points &middot; Ranked by Positions at Stake</div>
+    <div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.3rem 0.8rem;border-radius:6px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.4);">
+      <span style="color:var(--green);font-family:'Orbitron',sans-serif;font-size:0.92rem;font-weight:800;">+${totalPos.toFixed(1)} pos</span>
+      <span style="color:var(--text-dim);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;font-family:'Space Mono',monospace;">total upside</span>
+    </div>
+  </div>
+
+  ${cards}
+
+  <div style="margin-top:0.75rem;padding:0.75rem 1rem;background:rgba(0,240,255,0.05);border-left:3px solid var(--cyan);border-radius:0 6px 6px 0;font-size:0.85rem;color:var(--text-secondary);line-height:1.55;font-style:italic;">
+    Every recommendation above is sourced from your actual race data. Click any telemetry link to see the exact laps and inputs behind the coaching.
   </div>
 `;
 })();
