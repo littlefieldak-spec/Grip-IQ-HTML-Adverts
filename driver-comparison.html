@@ -1555,6 +1555,280 @@ body {
   </div>
 </section>
 
+<!-- ===================== COMPARISON MODES ===================== -->
+<section class="section reveal" style="padding:4rem 2rem 5rem;">
+  <div style="text-align:center; margin-bottom:2.5rem;">
+    <div style="font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan); margin-bottom:0.8rem;">Comparison Modes</div>
+    <h2 style="font-family:var(--font-display); font-size:2.2rem; font-weight:900; color:#e2e8f0;">Pick the comparison<br><span style="color:var(--cyan);">that fits the question.</span></h2>
+    <p style="font-size:1.05rem; color:var(--text-secondary); max-width:680px; margin:1.2rem auto 0; line-height:1.6;">
+      Three ways to find your gap &mdash; toggled from the same panel. No menu hunting, no separate views.
+    </p>
+  </div>
+
+  <style>
+    .cm-panel {
+      max-width: 1080px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid rgba(0,240,255,0.12);
+      border-radius: 14px;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+    .cm-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid rgba(0,240,255,0.08);
+      align-items: center;
+    }
+    .cm-tabs-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-right: 10px;
+    }
+    .cm-tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      color: #94a3b8;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cm-tab:hover { color:#e2e8f0; border-color:rgba(0,240,255,0.25); background:rgba(0,240,255,0.04); }
+    .cm-tab.active {
+      background: rgba(0,240,255,0.12);
+      border-color: rgba(0,240,255,0.5);
+      color: var(--cyan);
+      box-shadow: 0 0 18px rgba(0,240,255,0.18);
+    }
+    .cm-tab .ultra-pill {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 2px 7px;
+      border-radius: 100px;
+      background: rgba(170,68,255,0.15);
+      color: #c084fc;
+      border: 1px solid rgba(170,68,255,0.35);
+      text-transform: uppercase;
+    }
+    .cm-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+    }
+    .cm-card {
+      padding: 28px 26px;
+      border-right: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cm-card:last-child { border-right: none; }
+    .cm-card .cm-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .cm-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #e2e8f0;
+      letter-spacing: 0.01em;
+    }
+    .cm-card .cm-sub {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 2px;
+    }
+    .cm-card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .cm-card .cm-uses {
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .cm-card .cm-uses-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 6px;
+    }
+    .cm-card ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cm-card li {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .cm-card li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .cm-bracket-row {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 10px;
+      background: rgba(170,68,255,0.04);
+      border: 1px solid rgba(170,68,255,0.18);
+      border-radius: 6px;
+    }
+    .cm-bracket-chip {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      color: #94a3b8;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .cm-bracket-chip.locked {
+      background: rgba(170,68,255,0.12);
+      color: #c084fc;
+      border-color: rgba(170,68,255,0.4);
+    }
+    @media (max-width: 880px) {
+      .cm-grid { grid-template-columns: 1fr; }
+      .cm-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.04); }
+      .cm-card:last-child { border-bottom: none; }
+      .cm-tabs { flex-wrap: wrap; }
+    }
+  </style>
+
+  <div class="cm-panel">
+    <!-- Mock tab row mirroring the real Session B header in-app -->
+    <div class="cm-tabs">
+      <span class="cm-tabs-label">Session B</span>
+      <button class="cm-tab active" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M12 3v18M3 12h18"/></svg>
+        Self Compare
+      </button>
+      <button class="cm-tab" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 7l8 5 8-5-8-5z"/><path d="M4 12l8 5 8-5"/><path d="M4 17l8 5 8-5"/></svg>
+        Benchmark +500 iR
+      </button>
+      <button class="cm-tab" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Team
+      </button>
+    </div>
+
+    <div class="cm-grid">
+
+      <!-- SELF COMPARE -->
+      <div class="cm-card">
+        <div class="cm-icon" style="background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.25);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M12 3v18M3 12h18"/></svg>
+        </div>
+        <div class="cm-sub">You vs You</div>
+        <h3>Self Compare</h3>
+        <p>Stack two of your own runs side by side. Same driver, different sessions &mdash; isolate exactly what changed between them.</p>
+        <div class="cm-uses">
+          <div class="cm-uses-label">Use it for</div>
+          <ul>
+            <li>Setup A vs setup B</li>
+            <li>Before/after a coaching note</li>
+            <li>Practice run vs race stint</li>
+            <li>Yesterday's run vs today's</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- BENCHMARK -->
+      <div class="cm-card">
+        <div class="cm-icon" style="background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.25);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 7l8 5 8-5-8-5z"/><path d="M4 12l8 5 8-5"/><path d="M4 17l8 5 8-5"/></svg>
+        </div>
+        <div class="cm-sub">You vs The Field</div>
+        <h3>Anonymous Benchmark</h3>
+        <p>We pick a median run from the iRating bracket roughly <strong style="color:#c084fc;">+500 iR above yours</strong> &mdash; same track, same car, similar conditions. The driver stays anonymous; the lap data is real.</p>
+        <p style="font-size:0.82rem; color:#64748b; font-style:italic; margin-top:4px;">If you're already faster than that bracket's median, we auto-escalate up to the next one until the comparison is meaningful.</p>
+
+        <!-- Ultra bracket picker hint -->
+        <div class="cm-bracket-row">
+          <span style="width:100%; font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:#c084fc; margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+            <span class="ultra-pill">Ultra</span> Pick any bracket
+          </span>
+          <span class="cm-bracket-chip">1500</span>
+          <span class="cm-bracket-chip">2000</span>
+          <span class="cm-bracket-chip locked">2500</span>
+          <span class="cm-bracket-chip">3000</span>
+          <span class="cm-bracket-chip">3500</span>
+          <span class="cm-bracket-chip">4000</span>
+          <span class="cm-bracket-chip">4500</span>
+          <span class="cm-bracket-chip">5000</span>
+          <span class="cm-bracket-chip">5500</span>
+          <span class="cm-bracket-chip">6000</span>
+          <span class="cm-bracket-chip">6500</span>
+          <span class="cm-bracket-chip">7000+</span>
+        </div>
+      </div>
+
+      <!-- TEAM -->
+      <div class="cm-card">
+        <div class="cm-icon" style="background:rgba(0,255,136,0.08); border:1px solid rgba(0,255,136,0.25);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="cm-sub">You vs Teammate</div>
+        <h3>Team Compare</h3>
+        <p>Pull any teammate's run on the same track and car. See exactly where their inputs diverge from yours &mdash; corner by corner, lap by lap.</p>
+        <div class="cm-uses">
+          <div class="cm-uses-label">Use it for</div>
+          <ul>
+            <li>Learning from your fastest teammate</li>
+            <li>Aligning a multi-driver setup</li>
+            <li>Coaching a teammate with data, not vibes</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <p style="text-align:center; max-width:760px; margin:2rem auto 0; font-size:0.95rem; color:var(--text-secondary); line-height:1.6;">
+    Same analysis engine across all three. Same coaching summary. Same <strong style="color:var(--cyan);">Click-through Telemetry Access™</strong>. Only the opponent on the right changes.
+  </p>
+</section>
+
 <!-- ===================== SPLASH 1: ACCUMULATED GAP ===================== -->
 <div class="splash reveal">
   <div class="splash-inner">
