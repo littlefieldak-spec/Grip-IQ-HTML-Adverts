@@ -1,0 +1,2037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GripIQ Pace Trace — Find Out Why They're Faster</title>
+  <meta name="description" content="GripIQ Pace Trace compares full iRacing runs and turns teammate, setup, and benchmark gaps into specific coaching targets." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --panel: #ffffff;
+      --panel-soft: #f0f5ff;
+      --ink: #111827;
+      --muted: #5f6b7a;
+      --muted-2: #8a96a8;
+      --line: #dfe7f3;
+      --blue: #0a63ff;
+      --blue-dark: #0749bd;
+      --cyan: #03b8d9;
+      --red: #ef315a;
+      --green: #16a96a;
+      --orange: #f47b20;
+      --purple: #7c3aed;
+      --shadow: 0 24px 70px rgba(22, 38, 66, .12);
+      --shadow-soft: 0 14px 36px rgba(22, 38, 66, .08);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 16% 8%, rgba(10, 99, 255, .16), transparent 34rem),
+        radial-gradient(circle at 84% 18%, rgba(239, 49, 90, .12), transparent 30rem),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 34%, #ffffff 100%);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    /* Global text-wrap: prevent orphan/widow words on headings and
+       paragraphs.  `balance` redistributes words across lines for headings
+       (small N of lines); `pretty` keeps the last line from being one
+       hanging word in body copy.  Browser support: Chrome 114+, FF 121+,
+       Safari 17.5+ — older browsers fall back gracefully to normal wrap. */
+    h1, h2, h3, h4 { text-wrap: balance; }
+    p, li { text-wrap: pretty; }
+
+    .page { overflow: hidden; }
+    .container { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(255,255,255,.78);
+      border-bottom: 1px solid rgba(223,231,243,.75);
+    }
+
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      font-size: 1.35rem;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      box-shadow: 0 12px 24px rgba(10, 99, 255, .25);
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: .9rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: .92rem;
+    }
+
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--blue); }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+      white-space: nowrap;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+    .button.primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      box-shadow: 0 16px 32px rgba(10, 99, 255, .26);
+    }
+    .button.secondary {
+      color: var(--blue-dark);
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+    }
+    .button.ghost {
+      background: rgba(10, 99, 255, .08);
+      color: var(--blue-dark);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      padding: 88px 0 64px;
+      overflow: hidden;
+    }
+
+    /* Animated streaks behind the hero (restyled from the original Pace Trace
+       spotlight — soft blue/red/cyan lines instead of glowing cyan-on-black) */
+    .streak-container {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .streak {
+      position: absolute;
+      height: 2px;
+      opacity: 0;
+      border-radius: 2px;
+      animation: streak 3.4s ease-in-out infinite;
+    }
+    .streak:nth-child(1) { top: 22%; width: 38%; left: -38%; animation-delay: 0s;   background: linear-gradient(90deg, transparent, rgba(10,99,255,.55), transparent); }
+    .streak:nth-child(2) { top: 38%; width: 46%; right: -46%; left: auto; animation-delay: 0.7s; background: linear-gradient(90deg, transparent, rgba(239,49,90,.45), transparent); animation-name: streakRight; }
+    .streak:nth-child(3) { top: 56%; width: 34%; left: -34%; animation-delay: 1.3s; background: linear-gradient(90deg, transparent, rgba(3,184,217,.5), transparent); }
+    .streak:nth-child(4) { top: 72%; width: 42%; right: -42%; left: auto; animation-delay: 2.0s; background: linear-gradient(90deg, transparent, rgba(10,99,255,.4), transparent); animation-name: streakRight; }
+    .streak:nth-child(5) { top: 14%; width: 52%; left: -52%; animation-delay: 2.7s; background: linear-gradient(90deg, transparent, rgba(124,58,237,.32), transparent); }
+
+    @keyframes streak  { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: .9; } 92% { opacity: .9; } 100% { transform: translateX(calc(100vw + 100%)); opacity: 0; } }
+    @keyframes streakRight { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: .9; } 92% { opacity: .9; } 100% { transform: translateX(calc(-100vw - 100%)); opacity: 0; } }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.03fr .97fr;
+      gap: 48px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Single-column hero (demo card removed) — content centers, h1 grows,
+       proof chips span full width.  Keeps the streak animations + clean
+       wording without faking any data in the hero itself. */
+    .hero-single {
+      position: relative;
+      z-index: 1;
+      max-width: 880px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero-single .hero-copy { margin-left: auto; margin-right: auto; }
+    .hero-single .cta-row { justify-content: center; }
+    .hero-single .microcopy { text-align: center; }
+    .hero-single .proof-strip { margin-left: auto; margin-right: auto; max-width: 880px; }
+    .hero-single .proof-chip { text-align: left; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      color: var(--blue-dark);
+      background: rgba(10, 99, 255, .09);
+      border: 1px solid rgba(10, 99, 255, .14);
+      font-family: var(--mono);
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(22, 169, 106, .14);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.85); opacity: .6; } }
+
+    h1 {
+      margin: 22px 0 20px;
+      font-size: clamp(3.25rem, 7vw, 6.7rem);
+      line-height: .92;
+      letter-spacing: -.08em;
+      font-weight: 950;
+    }
+
+    .blue-text { color: var(--blue); }
+    .red-text { color: var(--red); }
+    .hero-copy {
+      max-width: 680px;
+      font-size: clamp(1.12rem, 2vw, 1.36rem);
+      line-height: 1.62;
+      color: var(--muted);
+      margin: 0 0 26px;
+    }
+
+    .hero-copy strong { color: var(--ink); }
+    .hero-emotional {
+      max-width: 720px;
+      margin: 12px auto 18px;
+      font-size: clamp(1.15rem, 2.1vw, 1.45rem);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      line-height: 1.35;
+      color: var(--ink);
+      text-align: center;
+      text-wrap: balance;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin: 28px 0 18px; }
+    .microcopy { color: var(--muted-2); font-size: .92rem; line-height: 1.5; }
+
+    .proof-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 32px;
+      max-width: 760px;
+    }
+
+    .proof-chip {
+      background: rgba(255,255,255,.76);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+    }
+    .proof-chip b { display: block; font-size: .95rem; margin-bottom: 4px; }
+    .proof-chip span { color: var(--muted); font-size: .88rem; line-height: 1.45; }
+
+    /* ===== DEMO CARD with rotating VS pair (from original spotlight) ===== */
+    .demo-card {
+      position: relative;
+      background: rgba(255,255,255,.84);
+      border: 1px solid rgba(223,231,243,.95);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .demo-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(10, 99, 255, .42), rgba(239,49,90,.24), rgba(3,184,217,.2));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .demo-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .demo-title { font-weight: 900; letter-spacing: -.02em; font-size: 1.05rem; }
+    .live-pill {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--green);
+      background: rgba(22,169,106,.09);
+      border: 1px solid rgba(22,169,106,.18);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-weight: 700;
+    }
+    .live-pill::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-right: 6px;
+      vertical-align: middle;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .driver-pill {
+      border-radius: 16px;
+      padding: 18px 14px;
+      text-align: center;
+      font-weight: 950;
+      letter-spacing: -.02em;
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .driver-pill small { display: block; margin-top: 5px; color: var(--muted); font-family: var(--mono); font-size: .67rem; letter-spacing: .03em; font-weight: 700; }
+    .driver-pill.a { color: var(--red); background: rgba(239,49,90,.07); border-color: rgba(239,49,90,.18); }
+    .driver-pill.b { color: var(--blue); background: rgba(10,99,255,.07); border-color: rgba(10,99,255,.18); }
+    .vs { color: var(--muted-2); font-family: var(--mono); font-weight: 700; }
+
+    .trace {
+      height: 180px;
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(10,99,255,.07), transparent),
+        repeating-linear-gradient(90deg, rgba(17,24,39,.06) 0 1px, transparent 1px 48px),
+        repeating-linear-gradient(0deg, rgba(17,24,39,.045) 0 1px, transparent 1px 42px),
+        #fbfdff;
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .trace svg { width: 100%; height: 100%; display: block; }
+    .callout {
+      background: #111827;
+      color: #fff;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 18px 44px rgba(17,24,39,.18);
+    }
+    .callout .label { font-family: var(--mono); color: #92d4ff; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+    .callout b { color: #fff; }
+    .callout p { margin: 0; color: #dbeafe; line-height: 1.55; }
+    .demo-foot {
+      margin-top: 14px;
+      padding: 0 4px;
+      font-size: .84rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .demo-foot strong { color: var(--ink); font-weight: 700; }
+
+    /* ===== SCROLL CUE (from original spotlight) ===== */
+    .scroll-cue {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .scroll-cue span {
+      font-family: var(--mono);
+      font-size: .58rem;
+      text-transform: uppercase;
+      letter-spacing: .25em;
+      color: var(--muted-2);
+    }
+    .scroll-cue-arrow {
+      width: 14px;
+      height: 14px;
+      border-right: 2px solid var(--blue);
+      border-bottom: 2px solid var(--blue);
+      transform: rotate(45deg);
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateY(0) rotate(45deg); opacity: 1; }
+      50%      { transform: translateY(8px) rotate(45deg); opacity: .3; }
+    }
+
+    section { padding: 78px 0; }
+    .section-head { max-width: 760px; margin-bottom: 32px; }
+    .section-head.center { text-align: center; margin-left: auto; margin-right: auto; }
+    .section-kicker { color: var(--blue); font-family: var(--mono); font-size: .77rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; }
+    h2 { margin: 0 0 16px; font-size: clamp(2.2rem, 4vw, 4.1rem); line-height: 1.02; letter-spacing: -.06em; font-weight: 950; }
+    .section-head p { margin: 0; font-size: 1.12rem; color: var(--muted); line-height: 1.65; }
+
+    .example-output {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 26px;
+    }
+    .output-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+    .output-card .num {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(10,99,255,.1);
+      color: var(--blue-dark);
+      font-family: var(--mono);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .output-card h3 { margin: 0 0 10px; font-size: 1.18rem; letter-spacing: -.03em; }
+    .output-card p { margin: 0; color: var(--muted); line-height: 1.62; }
+    .output-card strong { color: var(--ink); }
+
+    .questions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .question {
+      padding: 22px 22px 22px 58px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      color: var(--ink);
+      font-size: 1.1rem;
+      font-weight: 750;
+      line-height: 1.45;
+    }
+    .question::before {
+      content: "?";
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(10,99,255,.1);
+      color: var(--blue);
+      font-family: var(--mono);
+      font-weight: 700;
+    }
+
+    /* ===== CORNER ZOOM (from original spotlight, light-theme restyle) ===== */
+    .cz-section { padding: 78px 0 60px; }
+    .cz-frame {
+      position: relative;
+      max-width: 1100px;
+      margin: 24px auto 0;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background:
+        radial-gradient(circle at 30% 50%, rgba(10,99,255,.05), transparent 50%),
+        radial-gradient(circle at 70% 50%, rgba(239,49,90,.05), transparent 50%),
+        linear-gradient(180deg, #f6f9ff 0%, #e9f1ff 100%);
+    }
+    .cz-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.75;
+      mix-blend-mode: multiply;
+    }
+    .cz-fade-left  { position: absolute; top: 0; bottom: 0; left: 0;  width: 10%; background: linear-gradient(90deg, rgba(255,255,255,.9), transparent); pointer-events: none; z-index: 2; }
+    .cz-fade-right { position: absolute; top: 0; bottom: 0; right: 0; width: 10%; background: linear-gradient(270deg, rgba(255,255,255,.9), transparent); pointer-events: none; z-index: 2; }
+
+    .phase-box {
+      position: absolute;
+      z-index: 3;
+      opacity: 0;
+      transform: translateY(10px) scale(0.97);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    .phase-box.active { opacity: 1; transform: translateY(0) scale(1); transition: opacity 0.6s ease, transform 0.6s ease; pointer-events: auto; }
+    .phase-box.fading { opacity: 0; transform: translateY(-8px) scale(0.97); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .phase-box .phase-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 2px; }
+    .phase-box .phase-slower { font-size: 11px; margin-bottom: 8px; font-weight: 600; }
+    .phase-box .phase-delta { font-family: var(--mono); font-size: 22px; font-weight: 800; position: absolute; top: 14px; right: 16px; letter-spacing: -.02em; }
+    .phase-box .phase-item { font-size: 12px; color: var(--ink); margin-bottom: 6px; line-height: 1.45; }
+    .phase-box .phase-item:last-child { margin-bottom: 0; }
+    .phase-box.entry  { border: 1px solid rgba(22,169,106,.30); box-shadow: 0 18px 40px rgba(22,169,106,.10), var(--shadow-soft); }
+    .phase-box.centre { border: 1px solid rgba(244,123,32,.30); box-shadow: 0 18px 40px rgba(244,123,32,.10), var(--shadow-soft); }
+    .phase-box.exit   { border: 1px solid rgba(239,49,90,.30); box-shadow: 0 18px 40px rgba(239,49,90,.10), var(--shadow-soft); }
+    .phase-box.entry  .phase-label, .phase-box.entry  .phase-delta, .phase-box.entry  .phase-slower { color: var(--green); }
+    .phase-box.centre .phase-label, .phase-box.centre .phase-delta, .phase-box.centre .phase-slower { color: var(--orange); }
+    .phase-box.exit   .phase-label, .phase-box.exit   .phase-delta, .phase-box.exit   .phase-slower { color: var(--red); }
+
+    /* ===== CAUSAL CHAIN (from original spotlight, light theme) ===== */
+    .cc-section { padding: 60px 0 78px; }
+    .cc-wrap {
+      max-width: 1000px;
+      margin: 24px auto 0;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      box-shadow: var(--shadow);
+    }
+    .cc-eyebrow { font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--purple); margin-bottom: 14px; }
+    .cc-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: .85rem; line-height: 1.4; }
+    .cc-pill { padding: 6px 12px; border-radius: 8px; font-weight: 700; white-space: nowrap; opacity: 0.4; transition: opacity 0.4s, transform 0.4s, box-shadow 0.4s; }
+    .cc-pill.green  { background: rgba(22,169,106,.10); border: 1px solid rgba(22,169,106,.30); color: var(--green); }
+    .cc-pill.amber  { background: rgba(244,123,32,.10); border: 1px solid rgba(244,123,32,.30); color: var(--orange); }
+    .cc-pill.red    { background: rgba(239,49,90,.10);  border: 1px solid rgba(239,49,90,.30);  color: var(--red); }
+    .cc-pill.fire   { background: linear-gradient(135deg, rgba(239,49,90,.18), rgba(244,123,32,.18)); border: 1px solid rgba(244,123,32,.45); color: var(--red); font-weight: 800; padding: 8px 14px; font-size: .88rem; }
+    .cc-sep { color: var(--muted-2); font-weight: 700; opacity: 0.4; transition: opacity 0.4s, color 0.4s, font-size 0.4s; }
+    .cc-row .active { opacity: 1; }
+    .cc-row .cc-pill.active { transform: scale(1.06); box-shadow: 0 6px 18px rgba(10,99,255,.12); }
+    .cc-row .cc-sep.active  { color: var(--blue); font-size: 1rem; }
+
+    .cc-caption {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.55;
+    }
+
+    .compare-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 220px 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+    .compare-row:last-child { border-bottom: 0; }
+    .compare-row.header { background: #f8fbff; font-family: var(--mono); text-transform: uppercase; font-size: .72rem; letter-spacing: .08em; font-weight: 700; color: var(--muted); }
+    .compare-cell { padding: 22px; line-height: 1.55; display: flex; align-items: center; }
+    .compare-cell.category { font-weight: 900; color: var(--ink); }
+    .compare-cell.old { color: var(--muted); border-left: 1px solid var(--line); }
+    .compare-cell.new { color: var(--ink); font-weight: 800; border-left: 1px solid var(--line); background: rgba(10,99,255,.035); }
+    .check, .x { font-weight: 900; margin-right: 8px; }
+    .check { color: var(--green); }
+    .x { color: var(--red); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .step {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 26px;
+      box-shadow: var(--shadow-soft);
+    }
+    .step-number { color: var(--blue); font-family: var(--mono); font-size: .78rem; font-weight: 700; margin-bottom: 14px; }
+    .step h3 { margin: 0 0 10px; font-size: 1.35rem; letter-spacing: -.04em; }
+    .step p { color: var(--muted); line-height: 1.65; margin: 0; }
+
+    .use-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .use-card {
+      min-height: 216px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      box-shadow: var(--shadow-soft);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .use-card.wave-active {
+      border-color: rgba(10,99,255,.45);
+      box-shadow: 0 14px 36px rgba(10,99,255,.18);
+      transform: translateY(-2px);
+    }
+    .use-card.wave-active .use-icon { transform: scale(1.1); }
+    .use-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: white; font-weight: 900; margin-bottom: 18px; transition: transform 0.3s; }
+    .use-card h3 { margin: 0 0 8px; font-size: 1.08rem; letter-spacing: -.035em; }
+    .use-card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: .95rem; }
+
+    .buckets {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .bucket {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: var(--shadow-soft);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .bucket.wave-active {
+      border-color: rgba(10,99,255,.45);
+      box-shadow: 0 16px 40px rgba(10,99,255,.18);
+      transform: translateY(-3px);
+    }
+    .bucket h3 { margin: 0 0 10px; font-size: 1.4rem; letter-spacing: -.045em; }
+    .bucket p { margin: 0 0 18px; color: var(--muted); line-height: 1.58; }
+    .bucket ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .bucket li { padding: 12px 13px; border-radius: 12px; background: #f8fbff; border: 1px solid var(--line); font-weight: 750; color: #253147; }
+
+    .fit {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .fit-card {
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+    }
+    .fit-card.good { background: linear-gradient(180deg, #ffffff, rgba(22,169,106,.06)); }
+    .fit-card.bad { background: linear-gradient(180deg, #ffffff, rgba(239,49,90,.045)); }
+    .fit-card h3 { margin: 0 0 16px; font-size: 1.5rem; letter-spacing: -.045em; }
+    .fit-card ul { margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.8; }
+    .fit-card li::marker { color: var(--blue); }
+
+    /* ===== CLICK-THROUGH TELEMETRY ACCESS DEMO (from original spotlight) ===== */
+    .cta-demo-wrap {
+      max-width: 1100px;
+      margin: 24px auto 0;
+      padding: 28px 32px 32px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+    .cta-demo-eyebrow {
+      font-family: var(--mono);
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .cta-demo-stage {
+      position: relative;
+      overflow: hidden;
+      line-height: 0;
+      aspect-ratio: 2005/1119;
+      border-radius: var(--radius-md);
+      background: #fbfdff;
+      border: 1px solid var(--line);
+    }
+    .cta-demo-img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: contain;
+      display: block;
+      transition: opacity 0.8s ease;
+    }
+    .cta-demo-img.fade-out { opacity: 0; }
+    .cta-demo-cursor {
+      position: absolute;
+      top: 63%;
+      left: 69%;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      font-size: 32px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.25));
+    }
+    .cta-demo-label {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(17,24,39,.92);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-family: var(--mono);
+      letter-spacing: .04em;
+      transition: opacity 0.5s;
+      white-space: nowrap;
+      color: #fbbf24;
+    }
+    .cta-demo-label.after  { color: #7dd3fc; bottom: 50px; opacity: 0; }
+    .cta-demo-label.fade-out { opacity: 0; }
+    .cta-demo-label.fade-in  { opacity: 1; }
+
+    /* ===== TOUR SECTION — single carousel of all product animations ===== */
+    .tour {
+      max-width: 1100px;
+      margin: 32px auto 0;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .tour-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: #f8fbff;
+      border-bottom: 1px solid var(--line);
+    }
+    .tour-tab {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 22px;
+      background: transparent;
+      border: 0;
+      border-right: 1px solid var(--line);
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font);
+      color: var(--muted);
+      transition: background .25s ease, color .25s ease;
+      position: relative;
+    }
+    .tour-tab:last-child { border-right: none; }
+    .tour-tab:hover { background: rgba(10,99,255,.04); color: var(--ink); }
+    .tour-tab.active {
+      background: rgba(10,99,255,.06);
+      color: var(--blue-dark);
+    }
+    .tour-tab.active::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: -1px;
+      height: 3px;
+      background: var(--blue);
+    }
+    .tour-tab-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: rgba(10,99,255,.10);
+      color: var(--blue-dark);
+      font-family: var(--mono);
+      font-size: .88rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: background .25s ease, color .25s ease;
+    }
+    .tour-tab.active .tour-tab-num { background: var(--blue); color: #fff; }
+    .tour-tab-text { display: flex; flex-direction: column; gap: 2px; }
+    .tour-tab-title { font-size: 1rem; font-weight: 800; letter-spacing: -.02em; }
+    .tour-tab-sub { font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted-2); }
+    .tour-stage {
+      position: relative;
+      min-height: 720px;
+      overflow: hidden;
+    }
+    @media (max-width: 980px) { .tour-stage { min-height: 0; } }
+    .tour-slide {
+      position: absolute;
+      inset: 0;
+      padding: 28px 32px 32px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .6s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .tour-slide.active { opacity: 1; pointer-events: auto; }
+    .tour-slide-head { max-width: 760px; }
+    .tour-slide-eyebrow {
+      font-family: var(--mono); font-size: .68rem; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--blue); font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .tour-slide-title { margin: 0 0 8px; font-size: 1.5rem; font-weight: 900; letter-spacing: -.03em; }
+    .tour-slide-desc { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.55; }
+
+    .tour-progress {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 0 18px;
+      border-top: 1px solid var(--line);
+      background: #f8fbff;
+    }
+    .tour-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: rgba(10,99,255,.18);
+      cursor: pointer;
+      transition: background .3s ease, transform .3s ease;
+    }
+    .tour-dot:hover { background: rgba(10,99,255,.4); }
+    .tour-dot.active { background: var(--blue); transform: scale(1.15); }
+
+    /* Tour-internal slide content — override sizes for the carousel stage */
+    /* Dark "screen" bezel around the GripIQ track image / app screenshots
+       so the dark image transitions gracefully into the light page.  The
+       bezel reads as deliberate framing (white page → dark monitor →
+       dark image) instead of an abrupt color flip. */
+    .tour-slide .cz-frame {
+      margin-top: 0;
+      flex: 1 1 auto;
+      min-height: 480px;
+      aspect-ratio: auto;
+      background: #0a0e1a;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 22px;
+      padding: 10px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 24px 64px rgba(17,24,39,0.18);
+      overflow: hidden;
+      position: relative;
+    }
+    .tour-slide .cz-frame .cz-img {
+      border-radius: 14px;
+      opacity: 1;
+      mix-blend-mode: normal;
+    }
+    .tour-slide .cz-frame .cz-fade-left  { background: linear-gradient(90deg,  rgba(10,14,26,0.95), transparent); width: 7%; }
+    .tour-slide .cz-frame .cz-fade-right { background: linear-gradient(270deg, rgba(10,14,26,0.95), transparent); width: 7%; }
+
+    /* Phase boxes restyled for dark bezel — dark glass + bright colored
+       accents so the cycling boxes are properly readable on top of the
+       dark track image. */
+    .tour-slide .phase-box {
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.94);
+    }
+    .tour-slide .phase-box .phase-item { color: #cbd5e1; }
+    .tour-slide .phase-box.entry  { border-color: rgba(74,222,128,0.55); }
+    .tour-slide .phase-box.centre { border-color: rgba(251,191,36,0.55); }
+    .tour-slide .phase-box.exit   { border-color: rgba(248,113,113,0.55); }
+    .tour-slide .phase-box.entry  .phase-label,
+    .tour-slide .phase-box.entry  .phase-delta,
+    .tour-slide .phase-box.entry  .phase-slower { color: #4ade80; }
+    .tour-slide .phase-box.centre .phase-label,
+    .tour-slide .phase-box.centre .phase-delta,
+    .tour-slide .phase-box.centre .phase-slower { color: #fbbf24; }
+    .tour-slide .phase-box.exit   .phase-label,
+    .tour-slide .phase-box.exit   .phase-delta,
+    .tour-slide .phase-box.exit   .phase-slower { color: #f87171; }
+
+    .tour-slide .cc-wrap {
+      max-width: none; margin: 0;
+      background: linear-gradient(180deg, #fbfdff, #f3f7ff);
+      border: 1px solid var(--line);
+      flex: 0 0 auto;
+    }
+
+    /* Same dark screen bezel for the click-through Telemetry Access demo.
+       cta-demo-img is absolutely positioned, so padding doesn't visually
+       inset it — we inset it explicitly via top/left/right/bottom: 10px
+       so the dark bezel border shows through around the screenshot. */
+    .tour-slide .cta-demo-stage {
+      width: 100%;
+      flex: 1 1 auto;
+      min-height: 480px;
+      aspect-ratio: 2005/1119;
+      max-height: 560px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.05);
+      background: #0a0e1a;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 24px 64px rgba(17,24,39,0.18);
+      overflow: hidden;
+      position: relative;
+      line-height: 0;
+    }
+    .tour-slide .cta-demo-stage .cta-demo-img {
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      width: auto;
+      height: auto;
+      border-radius: 14px;
+    }
+    @media (max-width: 980px) {
+      .tour-slide .cz-frame { min-height: 360px; }
+      .tour-slide .cta-demo-stage { min-height: 0; }
+      .tour-tab-sub { display: none; }
+      .tour-tab { padding: 14px 12px; }
+    }
+
+    /* ===== EXAMPLE OUTPUT — section dividers + big-picture profiles ===== */
+    .rs-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin: 36px 0 16px;
+    }
+    .rs-head:first-of-type { margin-top: 4px; }
+    .rs-num-bg {
+      font-family: var(--font);
+      font-weight: 950;
+      font-size: 2.6rem;
+      letter-spacing: -.05em;
+      color: rgba(10, 99, 255, .14);
+      line-height: 1;
+    }
+    .rs-title-bg {
+      font-family: var(--font);
+      font-weight: 900;
+      font-size: 1.3rem;
+      letter-spacing: -.025em;
+      color: var(--ink);
+    }
+    .bigpic-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: stretch;
+      margin-bottom: 8px;
+    }
+    .bigpic-profile {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-soft);
+    }
+    .bigpic-profile.hero-burner {
+      border-color: rgba(239, 49, 90, .25);
+      background: linear-gradient(180deg, #ffffff, rgba(239,49,90,.04));
+    }
+    .bigpic-profile.pro-preserver {
+      border-color: rgba(10, 99, 255, .25);
+      background: linear-gradient(180deg, #ffffff, rgba(10,99,255,.04));
+    }
+    .bigpic-name {
+      font-family: var(--mono);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .bigpic-profile.hero-burner   .bigpic-name { color: var(--red); }
+    .bigpic-profile.pro-preserver .bigpic-name { color: var(--blue); }
+    .bigpic-type {
+      font-family: var(--font);
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: -.035em;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .bigpic-desc {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    .bigpic-vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--muted-2);
+      padding: 0 6px;
+    }
+    @media (max-width: 720px) {
+      .bigpic-grid { grid-template-columns: 1fr; }
+      .bigpic-vs { padding: 0; }
+    }
+
+    /* Lead-in paragraph that sits between an rs-head divider and the
+       content below it (e.g. above the Driver Checklist).  Frames what
+       the section is showing before the data lands. */
+    .rs-intro {
+      max-width: 760px;
+      margin: 0 0 20px;
+      font-size: 1.02rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    /* ===== DRIVER CHECKLIST (restored — the actual coaching output) ===== */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    .checklist-zone {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+    .checklist-zone-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 22px;
+      background: rgba(10,99,255,.05);
+      border-bottom: 1px solid var(--line);
+      font-family: var(--font);
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--ink);
+      letter-spacing: -.02em;
+    }
+    .checklist-zone-gap {
+      font-family: var(--mono);
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .checklist-zone-items { padding: 8px 22px 14px; }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(17,24,39,.04);
+      font-size: 1rem;
+      color: #253147;
+      line-height: 1.55;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-num {
+      font-family: var(--mono);
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+      background: rgba(10,99,255,.10);
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .progress-table {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+    .progress-table-head {
+      padding: 14px 22px;
+      background: rgba(124,58,237,.05);
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--purple);
+      font-weight: 700;
+    }
+    .progress-table table { width: 100%; border-collapse: collapse; font-size: .98rem; }
+    .progress-table th {
+      text-align: left;
+      padding: 12px 22px;
+      font-family: var(--mono);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: #f8fbff;
+    }
+    .progress-table th.hl  { color: var(--red); }
+    .progress-table th.pro { color: var(--blue); }
+    .progress-table th.gap-col, .progress-table td.num { text-align: right; font-family: var(--mono); }
+    .progress-table td { padding: 14px 22px; border-bottom: 1px solid rgba(17,24,39,.04); }
+    .progress-table tr:last-child td { border-bottom: none; }
+    .progress-table td.gap-warn { color: var(--orange); font-weight: 700; }
+    .progress-table td.gap-hot  { color: var(--red); font-weight: 700; }
+    .progress-table td.muted    { color: var(--muted-2); }
+
+    /* ===== MID-PAGE CTA — compact, sits between Example and Compare ===== */
+    .mid-cta-section { padding: 24px 0 48px; }
+    .mid-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+      padding: 28px 36px;
+      border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at 0% 50%, rgba(10,99,255,.10), transparent 40%),
+        radial-gradient(circle at 100% 50%, rgba(3,184,217,.10), transparent 40%),
+        linear-gradient(180deg, #ffffff, #f6f9ff);
+      border: 1px solid rgba(10,99,255,.18);
+      box-shadow: var(--shadow);
+    }
+    .mid-cta-text { flex: 1 1 auto; min-width: 280px; }
+    .mid-cta-eyebrow {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .mid-cta h3 {
+      margin: 0 0 6px;
+      font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+      letter-spacing: -.035em;
+      font-weight: 900;
+    }
+    .mid-cta p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+    @media (max-width: 720px) {
+      .mid-cta { padding: 22px 24px; }
+      .mid-cta .button { width: 100%; }
+    }
+
+    /* ===== FAQ — practical questions before the early-access form ===== */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 22px 26px;
+      box-shadow: var(--shadow-soft);
+    }
+    .faq-item h3 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+      letter-spacing: -.025em;
+      font-weight: 800;
+      color: var(--ink);
+      padding-left: 24px;
+      position: relative;
+    }
+    .faq-item h3::before {
+      content: "Q.";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-family: var(--mono);
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--blue);
+    }
+    .faq-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.6;
+      padding-left: 24px;
+      position: relative;
+    }
+    .faq-item p::before {
+      content: "A.";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-family: var(--mono);
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--muted-2);
+    }
+    .faq-item p strong { color: var(--ink); font-weight: 700; }
+    @media (max-width: 720px) {
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== EARLY ACCESS CTA PANEL ===== */
+    .cta-panel {
+      background:
+        radial-gradient(circle at 18% 16%, rgba(3,184,217,.28), transparent 28rem),
+        radial-gradient(circle at 82% 20%, rgba(239,49,90,.18), transparent 26rem),
+        #111827;
+      color: white;
+      border-radius: 36px;
+      padding: 56px;
+      box-shadow: 0 34px 90px rgba(17,24,39,.28);
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 34px;
+      align-items: center;
+    }
+    .cta-panel h2 { color: white; }
+    .cta-panel p { color: #d6e3f5; font-size: 1.14rem; line-height: 1.65; margin: 0 0 24px; }
+    .cta-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .cta-list li { display: flex; gap: 12px; align-items: flex-start; color: #e9f3ff; line-height: 1.5; }
+    .cta-list li::before { content: "✓"; color: #6ee7b7; font-weight: 900; }
+    .form-card {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 26px;
+      padding: 22px;
+      backdrop-filter: blur(18px);
+    }
+    .field { display: grid; gap: 8px; margin-bottom: 12px; }
+    .field label { color: #cbd5e1; font-weight: 700; font-size: .84rem; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.09);
+      color: #fff;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font: inherit;
+      outline: none;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,.54); }
+    .field select option { color: #111827; }
+    .form-card .button { width: 100%; margin-top: 8px; }
+    .fine-print { color: #94a3b8; font-size: .82rem; line-height: 1.5; margin-top: 12px; }
+
+    footer { padding: 42px 0 54px; color: var(--muted); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; border-top: 1px solid var(--line); padding-top: 26px; }
+    .footer-meta { max-width: 760px; }
+    .footer-meta .footer-title { display: block; color: var(--ink); font-weight: 900; margin-bottom: 8px; }
+    .footer-disclaimer { display: block; margin-top: 12px; color: var(--muted-2); font-size: .8rem; line-height: 1.55; }
+    .footer-links { display: flex; gap: 18px; font-weight: 700; }
+    .footer-links a { text-decoration: none; }
+
+    /* ===== REVEAL ON SCROLL (from original spotlight) ===== */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 980px) {
+      .hero-grid, .cta-panel { grid-template-columns: 1fr; }
+      .use-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .buckets, .steps, .example-output { grid-template-columns: 1fr; }
+      .compare-row { grid-template-columns: 1fr; }
+      .compare-cell.old, .compare-cell.new { border-left: 0; border-top: 1px solid var(--line); }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .hero { padding-top: 54px; }
+      .proof-strip, .questions, .fit, .use-grid { grid-template-columns: 1fr; }
+      .comparison { grid-template-columns: 1fr; }
+      .vs { text-align: center; }
+      .cta-panel { padding: 32px 22px; border-radius: 26px; }
+      h1 { font-size: clamp(3.1rem, 16vw, 4.5rem); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="#top" aria-label="GripIQ home">
+          <span class="brand-mark">IQ</span>
+          <span>GripIQ</span>
+        </a>
+        <div class="nav-links">
+          <a href="#example">Example</a>
+          <a href="#tour">See it in action</a>
+          <a href="#compare">Why different</a>
+          <a href="#faq">FAQ</a>
+          <a href="#early-access" class="button ghost">Join early access</a>
+        </div>
+      </div>
+    </nav>
+
+    <header id="top" class="hero">
+      <!-- Animated streaks behind the hero (from original Pace Trace spotlight,
+           restyled blue/red/cyan on light bg) -->
+      <div class="streak-container" aria-hidden="true">
+        <div class="streak"></div>
+        <div class="streak"></div>
+        <div class="streak"></div>
+        <div class="streak"></div>
+        <div class="streak"></div>
+      </div>
+
+      <!-- Hero is now single-column centered.  The Sample Run Comparison
+           demo card (rotating VS pills + lap-time chart + callout) was
+           removed: it tried to be both "look how cool the product is" and
+           "here's one real analysis," and the rotator's BEFORE/AFTER pills
+           cycling over a fixed Hot Lap Hero/Benchmark Driver chart read as fake.  All the
+           real-analysis depth is in the Tour and Driver Checklist sections
+           below — the hero just sets up the value prop now. -->
+      <div class="container hero-single">
+        <div class="eyebrow">Pace Trace for iRacing</div>
+        <h1>Find out <span class="blue-text">why</span> they're faster.</h1>
+        <p class="hero-emotional">Stop guessing. Stop blaming setup. See the pattern across the run.</p>
+        <p class="hero-copy">
+          Pace Trace compares full iRacing runs — not cherry-picked laps — and shows which driving habits explain the gap. See whether you're losing time from <strong>line choice, steering, throttle, braking, tire heat, or late-run fade</strong>.
+        </p>
+        <div class="cta-row">
+          <a href="#early-access" class="button primary">Request a sample analysis →</a>
+          <a href="#example" class="button secondary">See an example report</a>
+        </div>
+        <div class="microcopy">Built for drivers, teams, coaches, and setup testers who want answers before the next race.</div>
+
+        <div class="proof-strip" aria-label="GripIQ quick benefits">
+          <div class="proof-chip"><b>Full-run analysis</b><span>Every selected lap analyzed together, not one miracle lap.</span></div>
+          <div class="proof-chip"><b>Real differences</b><span>Gap patterns checked lap-by-lap so noise does not become advice.</span></div>
+          <div class="proof-chip"><b>Specific targets</b><span>Turn telemetry into lift, brake, line, steering, and throttle goals.</span></div>
+        </div>
+      </div>
+
+      <!-- Scroll cue from original spotlight -->
+      <div class="scroll-cue" aria-hidden="true">
+        <span>Explore</span>
+        <div class="scroll-cue-arrow"></div>
+      </div>
+    </header>
+
+    <!-- ===== QUESTIONS PACE TRACE ANSWERS — moved up directly under the
+         hero to create emotional relevance (driver self-identification)
+         BEFORE the example coaching plan lands.  H2 reworded to avoid
+         echoing the hero's new "Stop guessing..." line. ===== -->
+    <section id="questions">
+      <div class="container">
+        <div class="section-head center reveal">
+          <div class="section-kicker">Questions Pace Trace answers</div>
+          <h2 style="font-size: clamp(2rem, 4.6vw, 3.6rem); line-height: 1.08; letter-spacing: -.045em; max-width: 840px; margin-left: auto; margin-right: auto; text-wrap: balance;">The answers hiding<br>inside your telemetry.</h2>
+        </div>
+        <div class="questions">
+          <div class="question reveal">How is the other driver going this fast without hurting their tires?</div>
+          <div class="question reveal">What should I be doing differently when entering the corner?</div>
+          <div class="question reveal">Where in the corner am I bleeding the most lap time?</div>
+          <div class="question reveal">Which one input change would make the biggest difference?</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXAMPLE OUTPUT = the actual driver-checklist output from
+         the 25-lap Hot Lap Hero vs Benchmark Driver analysis (mirroring the spotlight's
+         "How to close the gap" three-step output: Big Picture → Driver
+         Checklist → How to Measure Progress).  Every number is from the
+         real run; no synthetic teaser cards. ===== -->
+    <section id="example">
+      <div class="container">
+        <div class="section-head center reveal">
+          <div class="section-kicker">Coaching plan</div>
+          <h2>One real run.<br>One clear plan.</h2>
+          <p>This is what Pace Trace produced when it compared Hot Lap Hero against the Benchmark Driver across 25 green-flag laps. Big-picture pattern, per-corner targets, and a progress benchmark — all from the same analysis.</p>
+        </div>
+
+        <!-- 01 — Big Picture Difference -->
+        <div class="rs-head reveal"><span class="rs-num-bg">01</span><span class="rs-title-bg">Big Picture Difference</span></div>
+        <div class="bigpic-grid reveal">
+          <div class="bigpic-profile hero-burner">
+            <div class="bigpic-name">Hot Lap Hero</div>
+            <div class="bigpic-type">Early Burner</div>
+            <div class="bigpic-desc">Fast early but fades — burns through the tires with aggressive inputs, building a lead that evaporates as the run progresses.</div>
+          </div>
+          <div class="bigpic-vs">vs</div>
+          <div class="bigpic-profile pro-preserver">
+            <div class="bigpic-name">Benchmark Driver</div>
+            <div class="bigpic-type">Tire Preserver</div>
+            <div class="bigpic-desc">Slower early but sustainable — preserves the tires and maintains pace late in the run when it matters most.</div>
+          </div>
+        </div>
+
+        <!-- 02 — Driver Checklist -->
+        <div class="rs-head reveal"><span class="rs-num-bg">02</span><span class="rs-title-bg">Driver Checklist</span></div>
+        <p class="rs-intro reveal">Match the benchmark driver where it matters most first. Pace Trace finds the repeatable input differences that explain the gap and turns them into measurable targets.</p>
+        <div class="checklist-grid reveal">
+          <div class="checklist-zone">
+            <div class="checklist-zone-head">
+              <span class="checklist-zone-name">Turns 1 &amp; 2</span>
+              <span class="checklist-zone-gap">&minus;0.015s/lap</span>
+            </div>
+            <div class="checklist-zone-items">
+              <div class="checklist-item"><span class="checklist-num">1</span><div>Lift earlier on entry (~106 ft) — 3.8% vs 5.9% of lap — and use less peak steering (35.0° vs 45.2°).</div></div>
+              <div class="checklist-item"><span class="checklist-num">2</span><div>Use brake on entry (target 17% vs 0% currently).</div></div>
+              <div class="checklist-item"><span class="checklist-num">3</span><div>Get back on throttle earlier through centre (~242 ft sooner) — 12.9% vs 17.6% of lap.</div></div>
+            </div>
+          </div>
+          <div class="checklist-zone">
+            <div class="checklist-zone-head">
+              <span class="checklist-zone-name">Turns 3 &amp; 4</span>
+              <span class="checklist-zone-gap">&minus;0.007s/lap</span>
+            </div>
+            <div class="checklist-zone-items">
+              <div class="checklist-item"><span class="checklist-num">1</span><div>Lift earlier on entry (~104 ft) — 53.3% vs 55.3% of lap — and use less peak steering (34.0° vs 42.6°).</div></div>
+              <div class="checklist-item"><span class="checklist-num">2</span><div>Get back on throttle earlier through centre (~269 ft sooner) — 60.1% vs 65.4% of lap.</div></div>
+              <div class="checklist-item"><span class="checklist-num">3</span><div>Run tighter at exit (~2 ft) — 13% vs 19% of track.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 — How to Measure Progress -->
+        <div class="rs-head reveal"><span class="rs-num-bg">03</span><span class="rs-title-bg">How to Measure Progress</span></div>
+        <div class="progress-table reveal">
+          <div class="progress-table-head">Benchmarks to track between runs</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th class="hl">Hot Lap Hero</th>
+                <th class="pro">Benchmark Driver</th>
+                <th class="gap-col">Gap</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Avg Lap Time</td><td class="num">23.843s</td><td class="num">23.798s</td><td class="num gap-warn">+0.044s</td></tr>
+              <tr><td>Avg RF Temp</td><td class="num">272°F</td><td class="num">207°F</td><td class="num gap-hot">+65°F</td></tr>
+              <tr><td>Avg RR Temp</td><td class="num">268°F</td><td class="num">241°F</td><td class="num gap-hot">+27°F</td></tr>
+              <tr><td>Late-Run Fade</td><td class="num">+1.139s</td><td class="num">+0.674s</td><td class="num gap-warn">+0.465s</td></tr>
+              <tr><td>Gap Q1 → Q4</td><td class="num">−0.249s → +0.227s</td><td class="num muted">—</td><td class="num gap-hot">+0.476s swing</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MID-PAGE CTA — catches readers at peak interest, right after
+         the actual coaching plan and before the comparison/explainer
+         content.  Compact panel, not the full early-access form. ===== -->
+    <section class="mid-cta-section">
+      <div class="container">
+        <div class="mid-cta reveal">
+          <div class="mid-cta-text">
+            <div class="mid-cta-eyebrow">Like what you see?</div>
+            <h3>Want this for your run?</h3>
+            <p>Join early access and get a comparison plan like the one above for one of your own iRacing runs.</p>
+          </div>
+          <a href="#early-access" class="button primary">Request a sample analysis →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="compare">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-kicker">Why it feels different</div>
+          <h2>Traditional telemetry shows traces. Pace Trace explains the gap.</h2>
+          <p>Most tools make you hunt through laps, overlays, and charts. Pace Trace starts with the driver question and works backward to the telemetry pattern.</p>
+        </div>
+
+        <div class="compare-wrap reveal">
+          <div class="compare-row header">
+            <div class="compare-cell">Question</div>
+            <div class="compare-cell old">Traditional telemetry</div>
+            <div class="compare-cell new">Pace Trace</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell category">Analysis</div>
+            <div class="compare-cell old"><span class="x">×</span> One lap vs. one lap</div>
+            <div class="compare-cell new"><span class="check">✓</span> Full run comparison across selected laps</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell category">What it finds</div>
+            <div class="compare-cell old"><span class="x">×</span> You manually guess what predicts speed</div>
+            <div class="compare-cell new"><span class="check">✓</span> Inputs ranked by how much they explain the gap</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell category">Coaching</div>
+            <div class="compare-cell old"><span class="x">×</span> "You're overdriving entry"</div>
+            <div class="compare-cell new"><span class="check">✓</span> "Lift 106 ft earlier, use 10° less wheel, reapply throttle 242 ft sooner"</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell category">Tires</div>
+            <div class="compare-cell old"><span class="x">×</span> Tire effects are separate or ignored</div>
+            <div class="compare-cell new"><span class="check">✓</span> Inputs connected to tire heat, grip loss, and lap time</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell category">Confidence</div>
+            <div class="compare-cell old"><span class="x">×</span> One-lap flukes can look meaningful</div>
+            <div class="compare-cell new"><span class="check">✓</span> Differences checked across laps before becoming advice</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TOUR SECTION — single showcase of all animations =====
+         All product animations live here in one tour panel.  Tabs let users
+         jump; auto-advances every ~8 seconds; loops forever.  Keeps the rest
+         of the page clean wording. -->
+    <section id="tour">
+      <div class="container">
+        <div class="section-head center reveal">
+          <div class="section-kicker">See it in action</div>
+          <h2>See how Pace Trace<br>turns a run into answers.</h2>
+          <p>Watch how one run becomes corner phases, causal chains, and click-through telemetry — without hunting through raw traces. Auto-cycles; tap a tab to jump.</p>
+        </div>
+
+        <div class="tour reveal" id="tour">
+          <div class="tour-tabs">
+            <button class="tour-tab active" data-tour="0">
+              <span class="tour-tab-num">1</span>
+              <span class="tour-tab-text">
+                <span class="tour-tab-title">Corner phases</span>
+                <span class="tour-tab-sub">Entry · Centre · Exit</span>
+              </span>
+            </button>
+            <button class="tour-tab" data-tour="1">
+              <span class="tour-tab-num">2</span>
+              <span class="tour-tab-text">
+                <span class="tour-tab-title">Causal chain</span>
+                <span class="tour-tab-sub">Inputs → cause → effect</span>
+              </span>
+            </button>
+            <button class="tour-tab" data-tour="2">
+              <span class="tour-tab-num">3</span>
+              <span class="tour-tab-text">
+                <span class="tour-tab-title">Click-through</span>
+                <span class="tour-tab-sub">Jump to any lap</span>
+              </span>
+            </button>
+          </div>
+
+          <div class="tour-stage">
+
+            <!-- SLIDE 1: Corner phases -->
+            <div class="tour-slide active" data-slide="0">
+              <div class="tour-slide-head">
+                <div class="tour-slide-eyebrow">T1&amp;T2 · 25-lap Hot Lap Hero vs Benchmark Driver</div>
+                <h3 class="tour-slide-title">Three phases. One corner. Real differences.</h3>
+                <p class="tour-slide-desc">Pace Trace splits every corner into Entry, Centre, and Exit, then ranks the inputs that separate the two drivers in each phase.</p>
+              </div>
+              <div class="cz-frame">
+                <img src="https://littlefieldak-spec.github.io/Grip-IQ-HTML-Adverts/trackclean.png" alt="Corner zoom — T1&amp;T2 clean track" class="cz-img" />
+                <div class="cz-fade-left"></div>
+                <div class="cz-fade-right"></div>
+
+                <div class="phase-box entry" id="czEntry" style="top:6%; left:5%; width:340px;">
+                  <div class="phase-label">Entry</div>
+                  <div class="phase-delta">−0.043s</div>
+                  <div class="phase-slower">Benchmark 0.043s slower here</div>
+                  <div class="phase-item">Benchmark uses more brake (19.9% vs 0.0%)</div>
+                  <div class="phase-item">Benchmark uses less wheel (33.5° vs 45.3°)</div>
+                  <div class="phase-item">Benchmark lifts more gradually (64.5%/s vs 82.2%/s)</div>
+                </div>
+
+                <div class="phase-box centre" id="czCentre" style="bottom:8%; left:50%; margin-left:-170px; width:340px;">
+                  <div class="phase-label">Centre</div>
+                  <div class="phase-delta">+0.018s</div>
+                  <div class="phase-slower">Hot Lap Hero 0.018s slower</div>
+                  <div class="phase-item">Hot Lap Hero uses more wheel (58.5° vs 43.9°)</div>
+                  <div class="phase-item">Hot Lap Hero runs wider ~3 ft (12% vs 0% of track)</div>
+                  <div class="phase-item">Hot Lap Hero gets on throttle quicker (6.7%/s vs 4.6%/s)</div>
+                </div>
+
+                <div class="phase-box exit" id="czExit" style="top:6%; right:3%; width:320px;">
+                  <div class="phase-label">Exit</div>
+                  <div class="phase-delta">+0.015s</div>
+                  <div class="phase-slower">Hot Lap Hero 0.015s slower</div>
+                  <div class="phase-item">Hot Lap Hero rolls onto throttle gradually (0.8%/s vs 1.9%/s)</div>
+                  <div class="phase-item">Hot Lap Hero runs wider ~1 ft (26% vs 21% of track)</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 2: Causal chain -->
+            <div class="tour-slide" data-slide="1">
+              <div class="tour-slide-head">
+                <div class="tour-slide-eyebrow">Hot Lap Hero · Lap 64 oversteer at T1&amp;T2 exit</div>
+                <h3 class="tour-slide-title">From input differences to the real cause.</h3>
+                <p class="tour-slide-desc">Pace Trace doesn't just say "you spun." It traces the entry choices that loaded the centre, the centre line that loaded the exit, and the exit throttle that finally broke grip — so the fix points at the right phase.</p>
+              </div>
+              <div class="cc-wrap" id="ccChain">
+                <div class="cc-eyebrow">Causal Chain</div>
+                <div class="cc-row">
+                  <span class="cc-pill green" data-cc="0">tighter entry line (~18 ft)</span>
+                  <span class="cc-sep" data-cc="0">+</span>
+                  <span class="cc-pill green" data-cc="0">lifted later (~245 ft)</span>
+                  <span class="cc-sep" data-cc="0">→</span>
+                  <span class="cc-pill amber" data-cc="1">tighter mid-corner (~25 ft)</span>
+                  <span class="cc-sep" data-cc="1">→</span>
+                  <span class="cc-pill red" data-cc="2">more throttle</span>
+                  <span class="cc-sep" data-cc="2">+</span>
+                  <span class="cc-pill red" data-cc="2">throttle–steering overlap</span>
+                  <span class="cc-sep" data-cc="2">→</span>
+                  <span class="cc-pill fire" data-cc="3">oversteer at exit</span>
+                </div>
+                <p class="cc-caption">The system does not just eyeball traces. It uses trained machine-learning models to identify repeatable driver patterns and connect them to tire-temperature behavior across the run.</p>
+              </div>
+            </div>
+
+            <!-- SLIDE 3: Click-through Telemetry Access -->
+            <div class="tour-slide" data-slide="2">
+              <div class="tour-slide-head">
+                <div class="tour-slide-eyebrow">Click-through Telemetry Access™</div>
+                <h3 class="tour-slide-title">From a chart point to both drivers' inputs.</h3>
+                <p class="tour-slide-desc">Click any lap, corner, or grip event in the analysis. The whole interface jumps to that exact moment on both drivers' telemetry — no menu hunting.</p>
+              </div>
+              <div class="cta-demo-stage">
+                <img src="https://littlefieldak-spec.github.io/Grip-IQ-HTML-Adverts/before.png" alt="Select any lap on the chart" class="cta-demo-img" id="demo-before">
+                <img src="https://littlefieldak-spec.github.io/Grip-IQ-HTML-Adverts/after.png" alt="Instantly see both drivers' telemetry" class="cta-demo-img fade-out" id="demo-after">
+                <div class="cta-demo-cursor" id="demo-cursor">👆</div>
+                <div class="cta-demo-label" id="demo-label-before">Click any lap to jump to telemetry →</div>
+                <div class="cta-demo-label after" id="demo-label-after">Both drivers' inputs — side by side, same lap</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Progress dots -->
+          <div class="tour-progress">
+            <span class="tour-dot active" data-tour="0"></span>
+            <span class="tour-dot" data-tour="1"></span>
+            <span class="tour-dot" data-tour="2"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- "How it works · Capture · Compare · Change" was here.  Removed:
+         step 1 (Capture) is already covered by the hero proof chips, step
+         2 (Choose the comparison) overlapped exactly with the Use Cases
+         section below, and step 3 (Get the coaching plan) is what the
+         Example Output section above literally is.  Three steps of pure
+         redundancy. -->
+
+    <section id="use-cases">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-kicker">Use cases</div>
+          <h2>Pick the comparison that matches the problem.</h2>
+          <p>Same analysis engine. The opponent changes. Pace Trace is built for the real questions drivers and teams ask after a run.</p>
+        </div>
+        <div class="use-grid">
+          <div class="use-card">
+            <div>
+              <div class="use-icon" style="background:linear-gradient(135deg,var(--blue),var(--cyan));">A</div>
+              <h3>You vs. teammate</h3>
+              <p>Find the repeatable driving habits that separate two drivers in the same conditions.</p>
+            </div>
+          </div>
+          <div class="use-card">
+            <div>
+              <div class="use-icon" style="background:linear-gradient(135deg,var(--purple),var(--blue));">S</div>
+              <h3>Old setup vs. new setup</h3>
+              <p>Separate real setup gains from driver variation, tire state, or one-lap noise.</p>
+            </div>
+          </div>
+          <div class="use-card">
+            <div>
+              <div class="use-icon" style="background:linear-gradient(135deg,var(--red),var(--orange));">B</div>
+              <h3>Before vs. after</h3>
+              <p>Check whether a coaching change actually altered the run, not just a single lap.</p>
+            </div>
+          </div>
+          <div class="use-card">
+            <div>
+              <div class="use-icon" style="background:linear-gradient(135deg,var(--green),var(--cyan));">R</div>
+              <h3>Race run diagnosis</h3>
+              <p>See why pace fades, which inputs hurt the tires, and where consistency breaks down.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head center reveal">
+          <div class="section-kicker">What you get</div>
+          <h2>Answers you normally have to hunt for manually.</h2>
+        </div>
+        <div class="buckets">
+          <div class="bucket">
+            <h3>Find the time</h3>
+            <p>See where the pace gap appears and which inputs explain it.</p>
+            <ul>
+              <li>Lap time analysis</li>
+              <li>Racing line comparison</li>
+              <li>Speed predictors</li>
+            </ul>
+          </div>
+          <div class="bucket">
+            <h3>Protect the tires</h3>
+            <p>Connect steering, brake, throttle, and line choices to tire heat and grip loss.</p>
+            <ul>
+              <li>Tire heat patterns</li>
+              <li>Grip limit events</li>
+              <li>Wheelspin and instability</li>
+            </ul>
+          </div>
+          <div class="bucket">
+            <h3>Turn it into coaching</h3>
+            <p>Leave with targets that can actually be practiced in the next session.</p>
+            <ul>
+              <li>Driver summary</li>
+              <li>Detailed report</li>
+              <li>Measurement targets</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head center reveal">
+          <div class="section-kicker">Good fit?</div>
+          <h2>Built for serious improvement, not dashboard clutter.</h2>
+        </div>
+        <div class="fit">
+          <div class="fit-card good reveal">
+            <h3>Pace Trace is for you if…</h3>
+            <ul>
+              <li>You want Pace Trace to <strong>automatically</strong> rank every input difference between two runs.</li>
+              <li>You want a <strong>measured approach</strong> to improvement: every claim checked across laps and tied to a specific input.</li>
+              <li>You care about <strong>race pace and tire life</strong> across a full stint, and you want to see exactly where each one breaks down.</li>
+              <li>You want <strong>coaching targets</strong> in feet, degrees, and percent of lap that you can take straight to the next practice session.</li>
+            </ul>
+          </div>
+          <div class="fit-card bad reveal">
+            <h3>Pace Trace may not be for you if…</h3>
+            <ul>
+              <li>You want a <strong>live in-cockpit overlay</strong> comparing your last lap to one reference lap.</li>
+              <li>You'd rather <strong>read raw traces by feel</strong> and trust instinct over a verification step that checks whether a difference is real or a one-lap fluke.</li>
+              <li>You only care about <strong>one-lap qualifying pace</strong> — race pace, tire fade, and stint-level patterns aren't your priority.</li>
+              <li>You want <strong>general feedback</strong> from a faster teammate &mdash; &ldquo;drive easier on entry&rdquo; &mdash; without specific guidance based on actual telemetry across a stint.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ — sits before the early-access form to reduce friction
+         by answering the practical "how does this actually work?" questions
+         a serious prospect will hit right before signing up. ===== -->
+    <section id="faq">
+      <div class="container">
+        <div class="section-head center reveal">
+          <div class="section-kicker">FAQ</div>
+          <h2>How it actually works.</h2>
+          <p>The practical answers to the questions a serious driver hits before signing up.</p>
+        </div>
+
+        <div class="faq-grid reveal">
+          <div class="faq-item">
+            <h3>How do I get the uploader?</h3>
+            <p>Once you're in, you download a small Windows uploader. Point it at your iRacing telemetry folder once and it runs in the background from there — you never have to open it again.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How does my data get captured?</h3>
+            <p><strong>Automatically.</strong> The uploader watches your iRacing telemetry folder while you drive and sends every test, practice, and race session up as soon as it's written — nothing to export, nothing to remember.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I receive my coaching reports?</h3>
+            <p>Your report appears in the <strong>GripIQ dashboard</strong> after the comparison is processed. It includes the big-picture pattern, per-corner targets, and progress benchmarks. A complete coaching narrative and additional details aimed at increasing long-run speed are also included.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Who can I compare to?</h3>
+            <p>Three options: <strong>yourself</strong> (old setup vs new, before vs after coaching, practice vs race), <strong>a teammate</strong> on the same car and track, or <strong>an anonymous benchmark driver</strong> from a higher iRating bracket. Same analysis engine regardless of who's on the other side — only the opponent changes.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Will you support more cars and series?</h3>
+            <p>Early access is focused on <strong>iRacing oval racing</strong>, starting with the most-used oval cars and tracks. <strong>We are expanding coverage based on beta-driver demand.</strong></p>
+          </div>
+          <div class="faq-item">
+            <h3>Is my data private?</h3>
+            <p><strong>Yes — private by default.</strong> Your runs are visible only to you. <strong>Your setups stay private too — commercial setups are never displayed.</strong> A teammate can only see runs you've explicitly shared with them, and benchmark drivers in the anonymous pool stay anonymous. You can pull your data out of either at any time.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Can I get more details beyond the automated report?</h3>
+            <p>Yes — advanced users have access to <strong>150+ engineered telemetry channels</strong> recorded across the run, with detailed information on car handling, and can request custom channels.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What does it cost?</h3>
+            <p><strong>Free during early access.</strong> Pricing tiers will be announced before public launch, and early-access members get first access at a discounted rate.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="early-access">
+      <div class="container">
+        <div class="cta-panel reveal">
+          <div>
+            <div class="section-kicker" style="color:#7dd3fc;">Early access</div>
+            <h2>Want to see what Pace Trace finds in your run?</h2>
+            <p>Join the early access list. We are looking for iRacing drivers and teams who want better answers from full-run telemetry.</p>
+            <ul class="cta-list">
+              <li>Get notified when the next beta wave opens.</li>
+              <li>Share your use case: teammate comparison, setup test, or race-run diagnosis.</li>
+              <li>Optionally request a sample comparison so the value is obvious before you commit.</li>
+            </ul>
+          </div>
+          <form class="form-card" action="mailto:andrew.littlefield@ttu.edu" method="post" enctype="text/plain">
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required>
+            </div>
+            <div class="field">
+              <label for="driver-type">What do you want to compare?</label>
+              <select id="driver-type" name="comparison_type">
+                <option>Me vs. teammate</option>
+                <option>Old setup vs. new setup</option>
+                <option>Before vs. after coaching</option>
+                <option>Race run diagnosis</option>
+                <option>Something else</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="message">Anything we should know?</label>
+              <textarea id="message" name="message" rows="4" placeholder="Car, track, series, team size, or what you're trying to improve"></textarea>
+            </div>
+            <button class="button primary" type="submit">Request my sample analysis</button>
+            <div class="fine-print">Opens an email draft so you can review before sending. We'll follow up to set up your run comparison.</div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container footer-inner">
+        <div class="footer-meta">
+          <strong class="footer-title">GripIQ Pace Trace</strong>
+          <span>Full-run telemetry comparison for iRacing.</span>
+          <span class="footer-disclaimer">GripIQ is an independent telemetry analysis tool and is not affiliated with, endorsed by, or sponsored by iRacing.com Motorsport Simulations, LLC. &ldquo;iRacing&rdquo; and related terms are used descriptively to identify the simulation platform whose telemetry GripIQ analyzes.</span>
+        </div>
+        <div class="footer-links">
+          <a href="#example">Example</a>
+          <a href="#corner">Track view</a>
+          <a href="#compare">Why different</a>
+          <a href="#early-access">Early access</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ===== ANIMATIONS SCRIPT (ported from original spotlight) ===== -->
+  <script>
+  // Reveal-on-scroll
+  (function() {
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+  })();
+
+  // (Rotating VS pair removed — it cycled "BEFORE/AFTER", "TEAMMATE A/B"
+  // etc. over a chart and callout fixed to Hot Lap Hero vs Benchmark Driver, which read as a
+  // contradiction.  Demo card pills now stay static at HL HERO / PRO to
+  // match the real data shown.  The "this also works for teammates, setups,
+  // before/after, benchmarks" message lives in the demo-foot caption.)
+
+  // Corner-zoom phase cycle (from original spotlight)
+  (function() {
+    const ids = ['czEntry','czCentre','czExit'];
+    const SHOW = 2500, FADE = 500, PAUSE = 300;
+    let current = -1, running = false;
+
+    function showNext() {
+      const prev = current >= 0 ? document.getElementById(ids[current]) : null;
+      if (prev) { prev.classList.remove('active'); prev.classList.add('fading'); }
+      current = (current + 1) % ids.length;
+      setTimeout(() => {
+        if (prev) prev.classList.remove('fading');
+        const el = document.getElementById(ids[current]);
+        if (el) el.classList.add('active');
+        setTimeout(showNext, SHOW);
+      }, FADE + PAUSE);
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !running) { running = true; setTimeout(showNext, 400); }
+      });
+    }, { threshold: 0.2 });
+    const frame = document.querySelector('.cz-frame');
+    if (frame) obs.observe(frame);
+  })();
+
+  // Causal-chain pill cycle (from original spotlight)
+  (function() {
+    const groups = [0,1,2,3];
+    let running = false, idx = -1;
+
+    function cycle() {
+      document.querySelectorAll('.cc-pill, .cc-sep').forEach(el => el.classList.remove('active'));
+      idx = (idx + 1) % groups.length;
+      setTimeout(() => {
+        document.querySelectorAll(`[data-cc="${idx}"]`).forEach(el => el.classList.add('active'));
+      }, 180);
+      setTimeout(cycle, 2200);
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !running) { running = true; setTimeout(cycle, 500); }
+      });
+    }, { threshold: 0.3 });
+    const el = document.getElementById('ccChain');
+    if (el) obs.observe(el);
+  })();
+
+  // Click-through Telemetry Access demo (before→after image swap)
+  (function() {
+    const before = document.getElementById('demo-before');
+    const after  = document.getElementById('demo-after');
+    const cursor = document.getElementById('demo-cursor');
+    const labB   = document.getElementById('demo-label-before');
+    const labA   = document.getElementById('demo-label-after');
+    if (!before || !after || !cursor || !labB || !labA) return;
+    let showing = 'before';
+    function cycle() {
+      if (showing === 'before') {
+        cursor.style.transform = 'scale(0.7)';
+        setTimeout(() => {
+          before.classList.add('fade-out');
+          after.classList.remove('fade-out');
+          cursor.style.opacity = '0';
+          labB.classList.add('fade-out');
+          labA.classList.add('fade-in');
+          showing = 'after';
+          setTimeout(cycle, 4000);
+        }, 380);
+      } else {
+        before.classList.remove('fade-out');
+        after.classList.add('fade-out');
+        cursor.style.opacity = '1';
+        cursor.style.transform = 'scale(1)';
+        labB.classList.remove('fade-out');
+        labA.classList.remove('fade-in');
+        showing = 'before';
+        setTimeout(cycle, 3000);
+      }
+    }
+    setTimeout(cycle, 2800);
+  })();
+
+  // (Hero lap-time chart removed — the entire Sample Run Comparison demo
+  // card was deleted from the hero.  The real chart-style visualization
+  // of this analysis still lives downstream in the Tour section's Corner
+  // Phases slide and in the Driver Checklist's progress table.)
+
+  // Tour carousel: auto-advance every 8 seconds, click a tab/dot to jump.
+  // Each slide's internal animation (phase-box cycle, causal-chain pills,
+  // click-through swap) runs continuously regardless of which slide is
+  // visible — the existing observers below take care of starting them.
+  (function() {
+    const tabs   = [...document.querySelectorAll('.tour-tab')];
+    const slides = [...document.querySelectorAll('.tour-slide')];
+    const dots   = [...document.querySelectorAll('.tour-dot')];
+    if (!tabs.length || !slides.length) return;
+    let current = 0;
+    let timer = null;
+    const ADVANCE_MS = 8000;
+
+    function show(idx) {
+      current = (idx + slides.length) % slides.length;
+      tabs.forEach((t, i)   => t.classList.toggle('active',  i === current));
+      slides.forEach((s, i) => s.classList.toggle('active',  i === current));
+      dots.forEach((d, i)   => d.classList.toggle('active',  i === current));
+    }
+    function next() { show(current + 1); }
+    function startTimer() { stopTimer(); timer = setInterval(next, ADVANCE_MS); }
+    function stopTimer()  { if (timer) { clearInterval(timer); timer = null; } }
+
+    tabs.forEach((t, i) => t.addEventListener('click', () => { show(i); startTimer(); }));
+    dots.forEach((d, i) => d.addEventListener('click', () => { show(i); startTimer(); }));
+
+    // Start auto-cycle when the tour scrolls into view; pause if user hovers
+    let started = false;
+    const tour = document.getElementById('tour');
+    if (tour) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !started) { started = true; startTimer(); }
+        });
+      }, { threshold: 0.25 });
+      obs.observe(tour);
+      tour.addEventListener('mouseenter', stopTimer);
+      tour.addEventListener('mouseleave', () => { if (started) startTimer(); });
+    }
+  })();
+  </script>
+</body>
+</html>
