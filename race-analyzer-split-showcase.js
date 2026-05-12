@@ -99,19 +99,26 @@
     var show=one('.ra-showcase#showcase'); if(!show||show.classList.contains('ra-split-showcase-ready'))return !!show;
     var c=one('.ra-container',show), tabsWrap=one('.ra-orbit-tabs',show), car=one('.ra-carousel',show); if(!c||!tabsWrap||!car)return false;
     var tabs=all('.ra-orbit-tab',tabsWrap), slides=all('.ra-slide',car); if(tabs.length<7||slides.length<7)return false;
-    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='0'}),'Race Summary','Start with the result: finish, starting position, race length, cautions, conditions, and the session context before diving into the evidence.');
-    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='3'}),'Long-Run Pace','Identify which laps and what part of the run separates you from the top runners.');
-    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='4'}),'Pace vs Consistency','See whether your speed comes with repeatability. Compare average pace against lap-to-lap consistency to spot drivers who are fast, stable, or leaving time through variation.');
-    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='2'}),'Pit Stop Performance','Break the stop into measurable phases and see where pit road gained or lost time against the field.');
+
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='0'}),'Race Summary','Understand the story of the race in seconds: where you started, where you finished, how the race unfolded, and what context matters before analyzing the details.');
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='3'}),'Long-Run Pace','Find the exact laps where top runners pulled away. Compare your green-flag pace to the best drivers and identify the parts of the run that cost time.');
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='4'}),'Pace vs Consistency','See whether you are slow, inconsistent, or both. Compare average pace against lap-to-lap variation so your next practice target is obvious.');
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='2'}),'Pit Stop Performance','Know whether pit road cost you positions. Break the stop into measurable phases and see where you gained or lost time against the field.');
     var craftSlide=slides.find(function(s){return s.getAttribute('data-slide')==='5'});
-    setSlideCopy(craftSlide,'Racecraft Leaderboard','Rank the racecraft moments that changed the finish: passes, defense, traffic management, and position gains.');
+    setSlideCopy(craftSlide,'Racecraft Leaderboard','Identify who gained positions through clean passes, smart defense, traffic management, and racecraft decisions that changed the finish.');
     moveRacecraftLeaderboardToTop(craftSlide);
-    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='6'}),'Final Report','End with the complete summary: what happened, why it mattered, and what to work on before the next race.');
-    var head=one('.ra-showcase-head p',show); if(head)head.textContent='Start with the race and pace story, then move into execution and the final report. The panels auto-cycle like a guided demo, but visitors can click any tab to take control.';
-    var top=box('See the race through the software','Review the race summary, long-run pace, and consistency together before moving into execution.','Race & Pace',['0','3','4'],tabs,slides);
-    var mid=document.createElement('div'); mid.className='ra-split-cta'; mid.innerHTML='<div><strong>Race pace tells part of the story. Execution explains the finish.</strong><p>After the race and pace review, GripIQ shows where pit stops, racecraft, and the final report changed the result.</p></div>';
-    var bot=box('Execution and final report','Review pit performance, racecraft leaderboard, and the final report in a separate software-output box.','Execution',['2','5','6'],tabs,slides);
-    tabsWrap.remove(); car.remove(); c.appendChild(top); c.appendChild(mid); c.appendChild(bot); show.classList.add('ra-split-showcase-ready'); return true;
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='6'}),'Final Report','Leave with a focused plan for the next race: what happened, why it mattered, and what to improve before your next run.');
+
+    var kicker=one('.ra-showcase-head .ra-kicker',show); if(kicker)kicker.textContent='Actual Race Analyzer output';
+    var heading=one('.ra-showcase-head h2',show); if(heading)heading.textContent='Stop guessing why you finished where you finished.';
+    var head=one('.ra-showcase-head p',show); if(head)head.textContent='GripIQ turns your race data into a clear breakdown of pace, consistency, pit execution, racecraft, and the next things to improve. The panels auto-cycle like a guided demo, but visitors can click any tab to take control.';
+
+    var top=box('Understand your race before you analyze your laps','Start with the race story, then see whether the gap came from long-run pace, consistency, or both.','Race & Pace',['0','3','4'],tabs,slides);
+    var mid=document.createElement('div'); mid.className='ra-split-cta'; mid.innerHTML='<div><strong>Race pace tells part of the story. Execution explains the finish.</strong><p>Once the pace picture is clear, GripIQ shows whether pit stops, traffic, passes, defense, and decision-making changed the result.</p></div>';
+    var bot=box('Find the moments that changed the finish','Review pit performance, racecraft, and the final report as a separate execution breakdown.','Execution',['2','5','6'],tabs,slides);
+    var final=document.createElement('div'); final.className='ra-split-cta ra-split-cta--final'; final.innerHTML='<div><strong>Ready to stop guessing what cost you positions?</strong><p>Upload a run and get a race breakdown built from your actual iRacing data.</p></div><a href="#pricing">Get Race Analyzer Early Access</a>';
+
+    tabsWrap.remove(); car.remove(); c.appendChild(top); c.appendChild(mid); c.appendChild(bot); c.appendChild(final); show.classList.add('ra-split-showcase-ready'); return true;
   }
   function boot(){var n=0,t=setInterval(function(){n++; if(run()||n>50)clearInterval(t)},150)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
