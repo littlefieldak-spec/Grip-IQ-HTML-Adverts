@@ -180,17 +180,9 @@
   grid-template-columns: minmax(190px, 230px) minmax(0, 1fr) !important;
 }
 
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy {
-  padding: 16px !important;
-}
-
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy h3 {
-  font-size: clamp(26px, 2.8vw, 38px) !important;
-}
-
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-product-window {
-  min-height: 520px !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy { padding: 16px !important; }
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy h3 { font-size: clamp(26px, 2.8vw, 38px) !important; }
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-product-window { min-height: 520px !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body,
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section,
@@ -212,7 +204,22 @@
   min-height: 390px !important;
 }
 
-/* Racecraft Leaderboard should start at the top of its own internal content. */
+/* Racecraft Leaderboard: reverse the internal content stack so the leaderboard that was at the bottom appears first. */
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body > div,
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body > div {
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  justify-content: flex-end !important;
+  scroll-behavior: auto !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body > div > div,
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body > div > div {
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  gap: 12px !important;
+}
+
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body,
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body {
   scroll-behavior: auto !important;
