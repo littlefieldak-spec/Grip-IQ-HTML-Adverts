@@ -1,7 +1,7 @@
-FILE LENGTH: 793043
+FILE LENGTH: 793177
 
 ===== Race Summary =====
---- occurrence 1 at 50936 ---
+--- occurrence 1 at 51004 ---
 <b>Passing and defense matter.</b><p>Race Analyzer scores clean passes, closing passes, defense rate, traffic penalties, and the quality of wheel-to-wheel moments.</p></div>
 <div class="ra-principle"><b>Pit road is performance.</b><p>It breaks stops into timed phases and shows whether you gained or lost positions in the pit cycle.</p></div>
 <div class="ra-principle"><b>Strategy changes the finish.</b><p>Position flow and luck influence show how cautions, lap-back events, field dynamics, and timing altered the final result.</p></div>
@@ -29,7 +29,7 @@ FILE LENGTH: 793043
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-bo
---- occurrence 2 at 51170 ---
+--- occurrence 2 at 51238 ---
 It breaks stops into timed phases and shows whether you gained or lost positions in the pit cycle.</p></div>
 <div class="ra-principle"><b>Strategy changes the finish.</b><p>Position flow and luck influence show how cautions, lap-back events, field dynamics, and timing altered the final result.</p></div>
 </div>
@@ -56,7 +56,7 @@ It breaks stops into timed phases and shows whether you gained or lost positions
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius
---- occurrence 3 at 51890 ---
+--- occurrence 3 at 51958 ---
 ard.</p>
 </div>
 <div aria-label="Race Analyzer product panels" class="ra-orbit-tabs" role="tablist"><button class="ra-orbit-tab active" data-slide="0" type="button"><span>01</span>Race Summary</button><button class="ra-orbit-tab" data-slide="1" type="button"><span>02</span>Position Flow</button><button class="ra-orbit-tab" data-slide="2" type="button"><span>03</span>Pit Stop Performance</button><button class="ra-orbit-tab" data-slide="3" type="button"><span>04</span>Long-Run Pace</button><button class="ra-orbit-tab" data-slide="4" type="button"><span>05</span>Pace vs Consistency</button><button class="ra-orbit-tab" data-slide="5" type="button"><span>06</span>Racecraft Leaderboard</button><button class="ra-orbit-tab" data-slide="6" type="button"><span>07</span>Final Report</button></div>
@@ -71,7 +71,7 @@ ard.</p>
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Race Result</div><div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"><div style="width: 64px; height: 64px; border-radius: 8px; background: rgb(226, 232, 240); display: flex; align-items: center; justify-content: center; color: rgb(30, 41, 59); font-weight: 800; font-size: 24px; flex-shrink: 0;">P6</div><div style="display: flex; flex-direction: column; gap: 3px; font-size: 12px;"><div><span style="color: var(--text-color);">Started: </span><span style="font-weight: 600;">P10</span><span style="color: var(--text-color); margin: 0px 6px;">→</s
---- occurrence 4 at 52000 ---
+--- occurrence 4 at 52068 ---
 ass="ra-orbit-tab active" data-slide="0" type="button"><span>01</span>Race Summary</button><button class="ra-orbit-tab" data-slide="1" type="button"><span>02</span>Position Flow</button><button class="ra-orbit-tab" data-slide="2" type="button"><span>03</span>Pit Stop Performance</button><button class="ra-orbit-tab" data-slide="3" type="button"><span>04</span>Long-Run Pace</button><button class="ra-orbit-tab" data-slide="4" type="button"><span>05</span>Pace vs Consistency</button><button class="ra-orbit-tab" data-slide="5" type="button"><span>06</span>Racecraft Leaderboard</button><button class="ra-orbit-tab" data-slide="6" type="button"><span>07</span>Final Report</button></div>
 <div class="ra-carousel" id="ra-carousel">
 
@@ -84,7 +84,7 @@ ass="ra-orbit-tab active" data-slide="0" type="button"><span>01</span>Race Summa
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Race Result</div><div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"><div style="width: 64px; height: 64px; border-radius: 8px; background: rgb(226, 232, 240); display: flex; align-items: center; justify-content: center; color: rgb(30, 41, 59); font-weight: 800; font-size: 24px; flex-shrink: 0;">P6</div><div style="display: flex; flex-direction: column; gap: 3px; font-size: 12px;"><div><span style="color: var(--text-color);">Started: </span><span style="font-weight: 600;">P10</span><span style="color: var(--text-color); margin: 0px 6px;">→</span><span style="color: var(--text-color);">Finished: </span><span style="font-weight: 600;">P6</span><span st
---- occurrence 5 at 52275 ---
+--- occurrence 5 at 52343 ---
 ance</button><button class="ra-orbit-tab" data-slide="3" type="button"><span>04</span>Long-Run Pace</button><button class="ra-orbit-tab" data-slide="4" type="button"><span>05</span>Pace vs Consistency</button><button class="ra-orbit-tab" data-slide="5" type="button"><span>06</span>Racecraft Leaderboard</button><button class="ra-orbit-tab" data-slide="6" type="button"><span>07</span>Final Report</button></div>
 <div class="ra-carousel" id="ra-carousel">
 
@@ -97,7 +97,7 @@ ance</button><button class="ra-orbit-tab" data-slide="3" type="button"><span>04<
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Race Result</div><div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"><div style="width: 64px; height: 64px; border-radius: 8px; background: rgb(226, 232, 240); display: flex; align-items: center; justify-content: center; color: rgb(30, 41, 59); font-weight: 800; font-size: 24px; flex-shrink: 0;">P6</div><div style="display: flex; flex-direction: column; gap: 3px; font-size: 12px;"><div><span style="color: var(--text-color);">Started: </span><span style="font-weight: 600;">P10</span><span style="color: var(--text-color); margin: 0px 6px;">→</span><span style="color: var(--text-color);">Finished: </span><span style="font-weight: 600;">P6</span><span style="margin-left: 8px; font-weight: 600; color: rgb(74, 222, 128);">(+4)</span></div><div style="color: var(--text-color);">120 laps completed<span style="margin: 0px 8px;">·</span>108 green laps<span style="margin: 0px 8px;">·</span>1h 12m 21s total</div></div></div></div><
---- occurrence 6 at 52370 ---
+--- occurrence 6 at 52438 ---
 Pace</button><button class="ra-orbit-tab" data-slide="4" type="button"><span>05</span>Pace vs Consistency</button><button class="ra-orbit-tab" data-slide="5" type="button"><span>06</span>Racecraft Leaderboard</button><button class="ra-orbit-tab" data-slide="6" type="button"><span>07</span>Final Report</button></div>
 <div class="ra-carousel" id="ra-carousel">
 
@@ -112,7 +112,7 @@ Pace</button><button class="ra-orbit-tab" data-slide="4" type="button"><span>05<
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Race Result</div><div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"><div style="width: 64px; height: 64px; border-radius: 8px; background: rgb(226, 232, 240); display: flex; align-items: center; justify-content: center; color: rgb(30, 41, 59); font-weight: 800; font-size: 24px; flex-shrink: 0;">P6</div><div style="display: flex; flex-direction: column; gap: 3px; font-size: 12px;"><div><span style="color: var(--text-color);">Started: </span><span style="font-weight: 600;">P10</span><span style="color: var(--text-color); margin: 0px 6px;">→</span><span style="color: var(--text-color);">Finished: </span><span style="font-weight: 600;">P6</span><span style="margin-left: 8px; font-weight: 600; color: rgb(74, 222, 128);">(+4)</span></div><div style="color: var(--text-color);">120 laps completed<span style="margin: 0px 8px;">·</span>108 green laps<span style="margin: 0px 8px;">·</span>1h 12m 21s total</div></div></div></div><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6p
 
 ===== Position Flow =====
---- occurrence 1 at 50443 ---
+--- occurrence 1 at 50511 ---
 
 </header>
 <section class="ra-principles" id="why">
@@ -148,7 +148,7 @@ Pace</button><button class="ra-orbit-tab" data-slide="4" type="button"><span>05<
 <div class="ra-slide-kicker">Actual Race Analyzer output</div>
 <h3>Race Summary</h3>
 <p>Start with the result:
---- occurrence 2 at 50898 ---
+--- occurrence 2 at 50966 ---
 ples-grid">
 <div class="ra-principle"><b>Passing and defense matter.</b><p>Race Analyzer scores clean passes, closing passes, defense rate, traffic penalties, and the quality of wheel-to-wheel moments.</p></div>
 <div class="ra-principle"><b>Pit road is performance.</b><p>It breaks stops into timed phases and shows whether you gained or lost positions in the pit cycle.</p></div>
@@ -177,7 +177,7 @@ ples-grid">
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></
---- occurrence 3 at 51264 ---
+--- occurrence 3 at 51332 ---
 cle.</p></div>
 <div class="ra-principle"><b>Strategy changes the finish.</b><p>Position flow and luck influence show how cautions, lap-back events, field dynamics, and timing altered the final result.</p></div>
 </div>
@@ -204,7 +204,7 @@ cle.</p></div>
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: upp
---- occurrence 4 at 167250 ---
+--- occurrence 4 at 167318 ---
 r</span></td><td style="padding: 5px 8px; text-align: center; color: var(--text-color);">P22<span style="margin-left: 4px; font-size: 12px; color: rgb(244, 67, 54);">(-2)</span></td><td style="padding: 5px 8px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; color: rgb(255, 152, 0);">-120L</td><td style="padding: 5px 8px; text-align: center; color: var(--text-color);">0</td><td style="padding: 5px 8px; text-align: center; color: var(--text-muted); font-weight: 400;">0</td><td style="padding: 5px 8px; text-align: center; color: var(--text-color);">—</td><td style="padding: 5px 8px; text-align: center; color: var(--text-muted);">0x</td><td style="padding: 5px 8px; text-align: center; font-size: 12px; color: rgb(255, 152, 0);">Disco</td></tr></tbody></table></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide" data-slide="1" data-tab="Position Flow">
@@ -216,7 +216,7 @@ r</span></td><td style="padding: 5px 8px; text-align: center; color: var(--text-
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Position Flow</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Position Flow"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Position Flow</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 20px 24px; max-width: 1400px;"><div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;"><div style="font-size: 16px; font-weight: 700; color: var(--text-color);">Position Flow — Race Craftsman — Charlotte Motor Speedway</div><div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 12px; color: var(--text-color); text-transform: uppercase; letter-spacing: 0.05em;">Show:</span><button style="font-size: 12px; padding: 2px 8px; border-radius: 3px; cursor: pointer; background: var(--button-bg); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 400;">Top 5</button><button style="font-size: 12px; padding: 2px 8px; border-radius: 3px; cursor: pointer; background: rgba(14, 165, 233, 0.133); border: 1px solid rgb(14, 165, 233); color: rgb(14, 165, 233); font-weight: 700;">Top 10</bu
---- occurrence 5 at 167361 ---
+--- occurrence 5 at 167429 ---
 -left: 4px; font-size: 12px; color: rgb(244, 67, 54);">(-2)</span></td><td style="padding: 5px 8px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; color: rgb(255, 152, 0);">-120L</td><td style="padding: 5px 8px; text-align: center; color: var(--text-color);">0</td><td style="padding: 5px 8px; text-align: center; color: var(--text-muted); font-weight: 400;">0</td><td style="padding: 5px 8px; text-align: center; color: var(--text-color);">—</td><td style="padding: 5px 8px; text-align: center; color: var(--text-muted);">0x</td><td style="padding: 5px 8px; text-align: center; font-size: 12px; color: rgb(255, 152, 0);">Disco</td></tr></tbody></table></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide" data-slide="1" data-tab="Position Flow">
@@ -228,7 +228,7 @@ r</span></td><td style="padding: 5px 8px; text-align: center; color: var(--text-
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Position Flow</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Position Flow"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Position Flow</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 20px 24px; max-width: 1400px;"><div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;"><div style="font-size: 16px; font-weight: 700; color: var(--text-color);">Position Flow — Race Craftsman — Charlotte Motor Speedway</div><div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 12px; color: var(--text-color); text-transform: uppercase; letter-spacing: 0.05em;">Show:</span><button style="font-size: 12px; padding: 2px 8px; border-radius: 3px; cursor: pointer; background: var(--button-bg); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 400;">Top 5</button><button style="font-size: 12px; padding: 2px 8px; border-radius: 3px; cursor: pointer; background: rgba(14, 165, 233, 0.133); border: 1px solid rgb(14, 165, 233); color: rgb(14, 165, 233); font-weight: 700;">Top 10</button><button style="font-size: 12px; padding: 2px 8px; border-radius: 3px; cursor: pointer; background: var(--b
---- occurrence 6 at 167620 ---
+--- occurrence 6 at 167688 ---
 color: var(--text-color);">0</td><td style="padding: 5px 8px; text-align: center; color: var(--text-muted); font-weight: 400;">0</td><td style="padding: 5px 8px; text-align: center; color: var(--text-color);">—</td><td style="padding: 5px 8px; text-align: center; color: var(--text-muted);">0x</td><td style="padding: 5px 8px; text-align: center; font-size: 12px; color: rgb(255, 152, 0);">Disco</td></tr></tbody></table></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide" data-slide="1" data-tab="Position Flow">
@@ -242,7 +242,7 @@ color: var(--text-color);">0</td><td style="padding: 5px 8px; text-align: center
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Position Flow"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Position Flow</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 20px 24px; max-width: 1400px;"><div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;"><div style="font-size: 16px; font-weight: 700; color: var(--text-color);">Position Flow — Race Craftsman — Charlotte Motor Speedway</div><div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 12px; color: var(--text-color); text-transform: uppercase; letter-spacing: 0.05em;">Show:</span><button style="font-size: 12px; padding: 2px 8px; border-radius: 3px; cursor: pointer; background: var(--button-bg); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 400;">Top 5</button><button style="font-size: 12px; padding: 2px 8px; border-radius: 3px; cursor: pointer; background: rgba(14, 165, 233, 0.133); border: 1px solid rgb(14, 165, 233); color: rgb(14, 165, 233); font-weight: 700;">Top 10</button><button style="font-size: 12px; padding: 2px 8px; border-radius: 3px; cursor: pointer; background: var(--button-bg); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 400;">Top 15</button><button style="font-size: 12px; padding: 2px 8px; border-radius: 3px; cursor: pointer; background: var(--button-bg); border: 1px solid var(--border-c
 
 ===== Pit Stop Time =====
---- occurrence 1 at 436208 ---
+--- occurrence 1 at 436276 ---
 xt-color); border-bottom: 1px solid var(--border-inner);">P12</td><td style="text-align: right; padding: 3px 8px; color: var(--text-color); border-bottom: 1px solid var(--border-inner);">P20</td><td style="text-align: right; padding: 3px 8px; color: rgb(248, 113, 113); font-weight: 600; border-bottom: 1px solid var(--border-inner);">-8</td></tr></tbody></table></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide ra-slide-pit-field" data-slide="2" data-tab="Pit Strategy">
@@ -316,7 +316,7 @@ xt-color); border-bottom: 1px solid var(--border-inner);">P12</td><td style="tex
 <style>
 /* === Focus slide treatment added for Pace vs Consistency === */
 .ra-slide.ra-slide-focus{grid-template-columns:1fr!important;}
---- occurrence 2 at 51359 ---
+--- occurrence 2 at 51427 ---
 d luck influence show how cautions, lap-back events, field dynamics, and timing altered the final result.</p></div>
 </div>
 </div>
@@ -342,7 +342,7 @@ d luck influence show how cautions, lap-back events, field dynamics, and timing 
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Race Result</div><div style="display: flex
---- occurrence 3 at 435920 ---
+--- occurrence 3 at 435988 ---
 ); font-weight: 600; border-bottom: 1px solid var(--border-inner);">+8</td></tr><tr><td style="padding: 3px 8px; color: var(--text-color); font-weight: 400; border-bottom: 1px solid var(--border-inner);">#12 Wyatt Hollis</td><td style="text-align: right; padding: 3px 8px; color: var(--text-color); border-bottom: 1px solid var(--border-inner);">P12</td><td style="text-align: right; padding: 3px 8px; color: var(--text-color); border-bottom: 1px solid var(--border-inner);">P20</td><td style="text-align: right; padding: 3px 8px; color: rgb(248, 113, 113); font-weight: 600; border-bottom: 1px solid var(--border-inner);">-8</td></tr></tbody></table></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide ra-slide-pit-field" data-slide="2" data-tab="Pit Strategy">
@@ -354,7 +354,7 @@ d luck influence show how cautions, lap-back events, field dynamics, and timing 
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>GREEN-FLAG PIT STOP TIME</b></div>
 <div class="ra-window-body ra-window-body--pit-field"><div class="ra-native-pit-panel"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-bottom: 10px;"><div style="font-size: 15px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-heading); margin-bottom: 10px;">Green-Flag Pit Stop Performance</div><div style="font-size: 13px; color: var(--text-color); margin-bottom: 12px;">3-lap pit sequence: pit-in lap → pit-out lap → first clean lap. Compared against other drivers who also pitted under green.</div><div style="font-size: 12px; color: var(--text-color); font-style: italic; margin-bottom: 8px; padding: 6px 10px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 4px;">Stop 2 (Lap 79) excluded from comparison — black flag during cycle.</div><div style="margin-bottom: 16px; padding: 12px; background: var(--bg-panel); border-radius: 6px; border: 1px solid var(--border-color);"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap;"><span style="font-size: 14px; font-weight: 700; color: var(--text-color);">Pit Stop 1</span><span style="font-size: 13px; font-weight: 700; padding: 2px
---- occurrence 4 at 436614 ---
+--- occurrence 4 at 436682 ---
 div>
 </article><article class="ra-slide ra-slide-pit-field" data-slide="2" data-tab="Pit Strategy">
 <div class="ra-slide-copy">
@@ -367,7 +367,7 @@ div>
 <div class="ra-window-body ra-window-body--pit-field"><div class="ra-native-pit-panel"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-bottom: 10px;"><div style="font-size: 15px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-heading); margin-bottom: 10px;">Green-Flag Pit Stop Performance</div><div style="font-size: 13px; color: var(--text-color); margin-bottom: 12px;">3-lap pit sequence: pit-in lap → pit-out lap → first clean lap. Compared against other drivers who also pitted under green.</div><div style="font-size: 12px; color: var(--text-color); font-style: italic; margin-bottom: 8px; padding: 6px 10px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 4px;">Stop 2 (Lap 79) excluded from comparison — black flag during cycle.</div><div style="margin-bottom: 16px; padding: 12px; background: var(--bg-panel); border-radius: 6px; border: 1px solid var(--border-color);"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap;"><span style="font-size: 14px; font-weight: 700; color: var(--text-color);">Pit Stop 1</span><span style="font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgb(26, 46, 5); color: rgb(250, 204, 21);">P11 of 21</span><span style="font-size: 12px; color: var(--text-color); font-style: italic;">You: 2 green stops · Field: 6 made 1 green stop, 12 made 2 green stops</span></div><div style="font-size: 12px; color: var(--text-color); margin-bottom: 8px; padding: 4px 8px; background: rgba(251, 191, 36, 0.06); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 4px;"><span style="color: rgb(250, 204, 21); font-weight: 600;">Alternate strategies: </span>1 stop: Diego Mendoza, Viktor Lindgren, Yann Marchetti, Caleb Foster +2 more</div><table style="width: 100%; max-width: 560px; border-collapse: collapse; f
 
 ===== Long-Run Pace =====
---- occurrence 1 at 51461 ---
+--- occurrence 1 at 51529 ---
 lt.</p></div>
 </div>
 </div>
@@ -393,7 +393,7 @@ lt.</p></div>
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Race Result</div><div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"><div style="width: 64px; height: 64px; border-radi
---- occurrence 2 at 467261 ---
+--- occurrence 2 at 467329 ---
  32px; font-size: 13px; color: var(--text-color); text-align: right; font-variant-numeric: tabular-nums;">L51</span><div style="flex: 1 1 0%; height: 12px; display: flex; border-radius: 3px; overflow: hidden; max-width: 100%; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial;"><div style="width: 38.0205%; background: rgb(245, 158, 11); min-width: 1px;" title="Pit-in: 57.6s"></div><div style="width: 41.3987%; background: rgb(239, 68, 68); min-width: 1px;" title="Pit-out: 62.7s"></div><div style="width: 20.5808%; background: rgb(34, 197, 94); min-width: 1px;" title="Clean: 31.2s"></div></div><span style="width: 52px; font-size: 14px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-color);">151.5s</span></div></div></div></div></div></div>
 </div>
 </article><article class="ra-slide" data-slide="3" data-tab="Long-Run Pace">
@@ -405,7 +405,7 @@ lt.</p></div>
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Long-Run Pace</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Long-Run Pace"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Long-Run Pace</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 20px 24px; max-width: 1400px;"><div style="font-size: 16px; font-weight: 700; color: var(--text-color); margin-bottom: 4px;">Long-Run Pace — Race Craftsman — Charlotte Motor Speedway</div><div style="font-size: 13px; color: var(--text-color); margin-bottom: 16px;">How your green-flag pace compares to every other driver in the race. Your avg pace ranked 10 of 22 on green-flag laps.</div><div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Lap-by-Lap Pace Overlay</div><div style="font-size: 12px; color: var(--text-color); margin-bottom: 8px; margin-top: -6px;">Green-flag laps only — Lap 1 (standing start) excluded; see Start Pace below. Your pace in cyan vs the top 5 
---- occurrence 3 at 467372 ---
+--- occurrence 3 at 467440 ---
 span><div style="flex: 1 1 0%; height: 12px; display: flex; border-radius: 3px; overflow: hidden; max-width: 100%; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial;"><div style="width: 38.0205%; background: rgb(245, 158, 11); min-width: 1px;" title="Pit-in: 57.6s"></div><div style="width: 41.3987%; background: rgb(239, 68, 68); min-width: 1px;" title="Pit-out: 62.7s"></div><div style="width: 20.5808%; background: rgb(34, 197, 94); min-width: 1px;" title="Clean: 31.2s"></div></div><span style="width: 52px; font-size: 14px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-color);">151.5s</span></div></div></div></div></div></div>
 </div>
 </article><article class="ra-slide" data-slide="3" data-tab="Long-Run Pace">
@@ -417,7 +417,7 @@ span><div style="flex: 1 1 0%; height: 12px; display: flex; border-radius: 3px; 
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Long-Run Pace</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Long-Run Pace"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Long-Run Pace</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 20px 24px; max-width: 1400px;"><div style="font-size: 16px; font-weight: 700; color: var(--text-color); margin-bottom: 4px;">Long-Run Pace — Race Craftsman — Charlotte Motor Speedway</div><div style="font-size: 13px; color: var(--text-color); margin-bottom: 16px;">How your green-flag pace compares to every other driver in the race. Your avg pace ranked 10 of 22 on green-flag laps.</div><div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Lap-by-Lap Pace Overlay</div><div style="font-size: 12px; color: var(--text-color); margin-bottom: 8px; margin-top: -6px;">Green-flag laps only — Lap 1 (standing start) excluded; see Start Pace below. Your pace in cyan vs the top 5 competitors.</div><svg style="width: 100%; height: auto; display: block;" viewbox="0 0 900 220"><line stroke="v
---- occurrence 4 at 467586 ---
+--- occurrence 4 at 467654 ---
 style="width: 38.0205%; background: rgb(245, 158, 11); min-width: 1px;" title="Pit-in: 57.6s"></div><div style="width: 41.3987%; background: rgb(239, 68, 68); min-width: 1px;" title="Pit-out: 62.7s"></div><div style="width: 20.5808%; background: rgb(34, 197, 94); min-width: 1px;" title="Clean: 31.2s"></div></div><span style="width: 52px; font-size: 14px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-color);">151.5s</span></div></div></div></div></div></div>
 </div>
 </article><article class="ra-slide" data-slide="3" data-tab="Long-Run Pace">
@@ -429,7 +429,7 @@ style="width: 38.0205%; background: rgb(245, 158, 11); min-width: 1px;" title="P
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Long-Run Pace</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Long-Run Pace"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Long-Run Pace</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 20px 24px; max-width: 1400px;"><div style="font-size: 16px; font-weight: 700; color: var(--text-color); margin-bottom: 4px;">Long-Run Pace — Race Craftsman — Charlotte Motor Speedway</div><div style="font-size: 13px; color: var(--text-color); margin-bottom: 16px;">How your green-flag pace compares to every other driver in the race. Your avg pace ranked 10 of 22 on green-flag laps.</div><div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Lap-by-Lap Pace Overlay</div><div style="font-size: 12px; color: var(--text-color); margin-bottom: 8px; margin-top: -6px;">Green-flag laps only — Lap 1 (standing start) excluded; see Start Pace below. Your pace in cyan vs the top 5 competitors.</div><svg style="width: 100%; height: auto; display: block;" viewbox="0 0 900 220"><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="192" y2="192"></line><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="147.99999999999997" y2="147.999999999999
---- occurrence 5 at 467682 ---
+--- occurrence 5 at 467750 ---
 div><div style="width: 41.3987%; background: rgb(239, 68, 68); min-width: 1px;" title="Pit-out: 62.7s"></div><div style="width: 20.5808%; background: rgb(34, 197, 94); min-width: 1px;" title="Clean: 31.2s"></div></div><span style="width: 52px; font-size: 14px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-color);">151.5s</span></div></div></div></div></div></div>
 </div>
 </article><article class="ra-slide" data-slide="3" data-tab="Long-Run Pace">
@@ -441,7 +441,7 @@ div><div style="width: 41.3987%; background: rgb(239, 68, 68); min-width: 1px;" 
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Long-Run Pace</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Long-Run Pace"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Long-Run Pace</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 20px 24px; max-width: 1400px;"><div style="font-size: 16px; font-weight: 700; color: var(--text-color); margin-bottom: 4px;">Long-Run Pace — Race Craftsman — Charlotte Motor Speedway</div><div style="font-size: 13px; color: var(--text-color); margin-bottom: 16px;">How your green-flag pace compares to every other driver in the race. Your avg pace ranked 10 of 22 on green-flag laps.</div><div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Lap-by-Lap Pace Overlay</div><div style="font-size: 12px; color: var(--text-color); margin-bottom: 8px; margin-top: -6px;">Green-flag laps only — Lap 1 (standing start) excluded; see Start Pace below. Your pace in cyan vs the top 5 competitors.</div><svg style="width: 100%; height: auto; display: block;" viewbox="0 0 900 220"><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="192" y2="192"></line><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="147.99999999999997" y2="147.99999999999997"></line><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="1
---- occurrence 6 at 467790 ---
+--- occurrence 6 at 467858 ---
 ><div style="width: 20.5808%; background: rgb(34, 197, 94); min-width: 1px;" title="Clean: 31.2s"></div></div><span style="width: 52px; font-size: 14px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-color);">151.5s</span></div></div></div></div></div></div>
 </div>
 </article><article class="ra-slide" data-slide="3" data-tab="Long-Run Pace">
@@ -497,6 +497,7 @@ ound:#040d18!important;
 .ra-slide.ra-slide-focus [style*="max-width: 1400px"]{max-width:none!important;}
 @media (max-width:1000px){.ra-slide.ra-slide-focus .ra-window-body{height:620px!important;}}
 </style>
+<link rel="stylesheet" href="race-analyzer-split-showcase.css?v=1">
 </head>
 <body>
 <div class="ra-page">
@@ -516,9 +517,8 @@ ound:#040d18!important;
 <div class="ra-eyebrow">Actual anonymized Race Analyzer HTML</div>
 <h1 class="ra-h1">Improve your <em>racecraft.</em><br/>Improve your results.</h1>
 <p class="ra-sub">Finishing position goes beyond car input technique. Race Analyzer shows the racecraft decisions that move you through the field: pit execution, restarts, traffic, defense, caution timing, and clean passing.</p>
-<div class="ra-proof-line"><strong>Raw pace tells part of the story.</strong> RaceCraft explains why one driver converts the race into positions while another leaves performance on the table.</div>
-<div c
---- occurrence 2 at 51556 ---
+<div class="ra-proof-line"><strong>Raw pace tells part of the story.</strong> RaceCraft explains why one driver converts the race into p
+--- occurrence 2 at 51624 ---
 ra-container">
 <div class="ra-showcase-head">
 <div>
@@ -539,7 +539,7 @@ ra-container">
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Race Result</div><div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"><div style="width: 64px; height: 64px; border-radius: 8px; background: rgb(226, 232, 240); display: flex; align-items: center; justify-content: c
---- occurrence 3 at 620668 ---
+--- occurrence 3 at 620736 ---
 8f0); font-family: var(--font-mono); font-size: 12px; text-align: right; font-weight: 700;">31.839</td><td style="padding: 4px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var(--text-color, #e2e8f0); font-family: var(--font-mono); font-size: 12px; text-align: right; font-weight: 700;">33.218</td><td style="padding: 4px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: rgb(74, 222, 128); font-family: var(--font-mono); font-size: 12px; text-align: right; font-weight: 700;">-1.379s</td></tr></tbody></table><div style="font-size: 13px; color: var(--text-color); line-height: 1.5; padding-left: 12px; border-left: 2px solid rgba(14, 165, 233, 0.267);">You were faster on 2 of 2 restarts. On average, you gained 1.379s per restart.</div></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide ra-slide-focus" data-slide="4" data-tab="Pace vs Consistency">
@@ -556,7 +556,7 @@ ra-container">
 <div class="snapshot-section-body">
 <div style="padding: 20px 24px; max-width: 1400px; margin: 0 auto;">
 <div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Pace vs Consistency</div><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; margin-top: -6px;"><span style="font-size: 12px; color: var(--text-color);">Each dot is a driver. Right = faster avg pace, top = more consistent. Click a driver to compare head-to-head.</span><button style="font-size: 12px; padding: 3px 10px; border-radius: 4px; cursor: pointer; background: rgba(148, 163, 184, 0.08); border: 1px solid var(--border-color); color: var(--text-tertiary); font-weight: 60
---- occurrence 4 at 620785 ---
+--- occurrence 4 at 620853 ---
 ding: 4px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var(--text-color, #e2e8f0); font-family: var(--font-mono); font-size: 12px; text-align: right; font-weight: 700;">33.218</td><td style="padding: 4px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: rgb(74, 222, 128); font-family: var(--font-mono); font-size: 12px; text-align: right; font-weight: 700;">-1.379s</td></tr></tbody></table><div style="font-size: 13px; color: var(--text-color); line-height: 1.5; padding-left: 12px; border-left: 2px solid rgba(14, 165, 233, 0.267);">You were faster on 2 of 2 restarts. On average, you gained 1.379s per restart.</div></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide ra-slide-focus" data-slide="4" data-tab="Pace vs Consistency">
@@ -573,7 +573,7 @@ ding: 4px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var
 <div class="snapshot-section-body">
 <div style="padding: 20px 24px; max-width: 1400px; margin: 0 auto;">
 <div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Pace vs Consistency</div><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; margin-top: -6px;"><span style="font-size: 12px; color: var(--text-color);">Each dot is a driver. Right = faster avg pace, top = more consistent. Click a driver to compare head-to-head.</span><button style="font-size: 12px; padding: 3px 10px; border-radius: 4px; cursor: pointer; background: rgba(148, 163, 184, 0.08); border: 1px solid var(--border-color); color: var(--text-tertiary); font-weight: 600;">All Drivers</button></div><svg style="width: 100%; max-width: 780px; height: auto; display: block;" viewbox="0 0 
---- occurrence 5 at 621077 ---
+--- occurrence 5 at 621145 ---
  rgb(74, 222, 128); font-family: var(--font-mono); font-size: 12px; text-align: right; font-weight: 700;">-1.379s</td></tr></tbody></table><div style="font-size: 13px; color: var(--text-color); line-height: 1.5; padding-left: 12px; border-left: 2px solid rgba(14, 165, 233, 0.267);">You were faster on 2 of 2 restarts. On average, you gained 1.379s per restart.</div></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide ra-slide-focus" data-slide="4" data-tab="Pace vs Consistency">
@@ -590,7 +590,7 @@ ding: 4px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var
 <div class="snapshot-section-body">
 <div style="padding: 20px 24px; max-width: 1400px; margin: 0 auto;">
 <div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Pace vs Consistency</div><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; margin-top: -6px;"><span style="font-size: 12px; color: var(--text-color);">Each dot is a driver. Right = faster avg pace, top = more consistent. Click a driver to compare head-to-head.</span><button style="font-size: 12px; padding: 3px 10px; border-radius: 4px; cursor: pointer; background: rgba(148, 163, 184, 0.08); border: 1px solid var(--border-color); color: var(--text-tertiary); font-weight: 600;">All Drivers</button></div><svg style="width: 100%; max-width: 780px; height: auto; display: block;" viewbox="0 0 780 350"><line opacity="0.4" stroke="var(--text-muted)" stroke-dasharray="4,3" stroke-width="0.7" x1="403.1190409140037" x2="403.1190409140037" y1="24" y2="314"></line><line opacity="0.4" stroke="var(--text-muted)" stroke-dasharray="4,3" stroke-width="0.7" x1="56" x2="756" y1="78.36454712534
---- occurrence 6 at 621180 ---
+--- occurrence 6 at 621248 ---
 ;">-1.379s</td></tr></tbody></table><div style="font-size: 13px; color: var(--text-color); line-height: 1.5; padding-left: 12px; border-left: 2px solid rgba(14, 165, 233, 0.267);">You were faster on 2 of 2 restarts. On average, you gained 1.379s per restart.</div></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide ra-slide-focus" data-slide="4" data-tab="Pace vs Consistency">
@@ -609,7 +609,7 @@ ding: 4px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var
 <div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Pace vs Consistency</div><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; margin-top: -6px;"><span style="font-size: 12px; color: var(--text-color);">Each dot is a driver. Right = faster avg pace, top = more consistent. Click a driver to compare head-to-head.</span><button style="font-size: 12px; padding: 3px 10px; border-radius: 4px; cursor: pointer; background: rgba(148, 163, 184, 0.08); border: 1px solid var(--border-color); color: var(--text-tertiary); font-weight: 600;">All Drivers</button></div><svg style="width: 100%; max-width: 780px; height: auto; display: block;" viewbox="0 0 780 350"><line opacity="0.4" stroke="var(--text-muted)" stroke-dasharray="4,3" stroke-width="0.7" x1="403.1190409140037" x2="403.1190409140037" y1="24" y2="314"></line><line opacity="0.4" stroke="var(--text-muted)" stroke-dasharray="4,3" stroke-width="0.7" x1="56" x2="756" y1="78.36454712534507" y2="78.36454712534507"></line><text fill="#ffffff" font-family="monospace" font-size="14" font-wei
 
 ===== Racecraft Leaderboard =====
---- occurrence 1 at 50972 ---
+--- occurrence 1 at 51040 ---
 >Race Analyzer scores clean passes, closing passes, defense rate, traffic penalties, and the quality of wheel-to-wheel moments.</p></div>
 <div class="ra-principle"><b>Pit road is performance.</b><p>It breaks stops into timed phases and shows whether you gained or lost positions in the pit cycle.</p></div>
 <div class="ra-principle"><b>Strategy changes the finish.</b><p>Position flow and luck influence show how cautions, lap-back events, field dynamics, and timing altered the final result.</p></div>
@@ -637,7 +637,7 @@ ding: 4px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overfl
---- occurrence 2 at 51657 ---
+--- occurrence 2 at 51725 ---
 t</div>
 <h2 class="ra-h2">See the race from every angle.</h2>
 </div>
@@ -655,7 +655,7 @@ t</div>
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Race Result</div><div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"><div style="width: 64px; height: 64px; border-radius: 8px; background: rgb(226, 232, 240); display: flex; align-items: center; justify-content: center; color: rgb(30, 41, 59); font-weight: 800; font-size: 24px; flex-shrink: 0;">P6</div><div style
---- occurrence 3 at 641620 ---
+--- occurrence 3 at 641688 ---
 b7185" r="4" stroke="none" stroke-width="0"></circle><text fill="var(--text-muted)" font-family="monospace" font-size="8" font-weight="400" x="622" y="284">Viktor Lindgren 🔧3</text></g><g cursor="pointer" opacity="1"><circle cx="612" cy="296" fill="#67e8f9" r="4" stroke="none" stroke-width="0"></circle><text fill="var(--text-muted)" font-family="monospace" font-size="8" font-weight="400" x="622" y="299">Elias Novak 🔧3</text></g><g cursor="pointer" opacity="1"><circle cx="612" cy="311" fill="#d946ef" r="4" stroke="none" stroke-width="0"></circle><text fill="var(--text-muted)" font-family="monospace" font-size="8" font-weight="400" x="622" y="314">Wyatt Hollis 🔧2</text></g></svg></div>
 </div>
 </div>
@@ -671,7 +671,7 @@ b7185" r="4" stroke="none" stroke-width="0"></circle><text fill="var(--text-mute
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>RaceCraft Leaderboard</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="RaceCraft"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · RaceCraft</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 16px 20px; max-width: 1400px; margin: 0px auto;"><div style="background: var(--card-bg, #1e293b); border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom-color: ; border-bottom-style: ; border-bottom-width: ; border-left: 3px solid rgb(248, 113, 113); border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 6px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;"><div style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; padding: 3px 10px; border-radius: 3px; color: rgb(248, 113, 113); background: rgba(248, 113, 113, 0.125); border: 1px solid rgba(248, 113, 113, 0.333);">CHAOS INDEX: CHAOTIC</div><div style="font-size: 14px; color: var(--text-color); flex: 1 1 0%; min-width: 220px;">Chaotic race with heavy cautions
---- occurrence 4 at 641926 ---
+--- occurrence 4 at 641994 ---
 ext fill="var(--text-muted)" font-family="monospace" font-size="8" font-weight="400" x="622" y="299">Elias Novak 🔧3</text></g><g cursor="pointer" opacity="1"><circle cx="612" cy="311" fill="#d946ef" r="4" stroke="none" stroke-width="0"></circle><text fill="var(--text-muted)" font-family="monospace" font-size="8" font-weight="400" x="622" y="314">Wyatt Hollis 🔧2</text></g></svg></div>
 </div>
 </div>
@@ -687,9 +687,9 @@ ext fill="var(--text-muted)" font-family="monospace" font-size="8" font-weight="
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>RaceCraft Leaderboard</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="RaceCraft"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · RaceCraft</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 16px 20px; max-width: 1400px; margin: 0px auto;"><div style="background: var(--card-bg, #1e293b); border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom-color: ; border-bottom-style: ; border-bottom-width: ; border-left: 3px solid rgb(248, 113, 113); border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 6px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;"><div style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; padding: 3px 10px; border-radius: 3px; color: rgb(248, 113, 113); background: rgba(248, 113, 113, 0.125); border: 1px solid rgba(248, 113, 113, 0.333);">CHAOS INDEX: CHAOTIC</div><div style="font-size: 14px; color: var(--text-color); flex: 1 1 0%; min-width: 220px;">Chaotic race with heavy cautions / incidents — racecraft scoring is less reliable; focus on pit execution and incident avoidance.</div><div style="font-size: 14px; color: var(--text-color); font-family: var(--font-mono, monospace); font-weight: 600; display: flex; gap: 14px; align-items: center; flex-wrap: wrap;"><span><span style="colo
---- occurrence 5 at 714019 ---
+--- occurrence 5 at 714087 ---
 0;">Cole Reeves, Nico Bianchi, Owen Brennan, Viktor Lindgren</span><span style="color: var(--text-color);"> (P10 → P6)</span><span style="margin-left: 6px; padding: 1px 5px; font-size: 11px; font-weight: 700; background: rgba(74, 222, 128, 0.12); color: rgb(74, 222, 128); border: 1px solid rgba(74, 222, 128, 0.3); border-radius: 3px;">QUALITY</span><span style="margin-left: 4px; padding: 1px 5px; font-size: 11px; font-weight: 700; background: rgba(245, 158, 11, 0.12); color: rgb(245, 158, 11); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 3px;">CLOSING</span></div></div></div><div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Racecraft Leaderboard</div><div style="font-size: 12px; color: var(--text-color); margin-bottom: 8px; margin-top: -6px;">Ranked by overall racecraft score. Click any row (or a scatter dot above) to highlight.</div><div style="overflow-x: auto;"><table style="width: 100%; border-collapse: collapse; font-size: 13px; font-family: var(--font-mono, monospace);"><thead><tr><th style="text-align: left; padding: 5px 8px; font-size: 11px; font-weight: 600; color: var(--text-color, #e2e8f0); border-bottom: 1px solid var(--border-color, #334155); text-transform: uppercase; letter-spacing: 0.05em;">Rank</th><th style="text-align: left; padding: 5px 8px; font-size: 11px; font-weight: 600; color: var(--text-color, #e2e8f0); border-bottom: 1px solid var(--border-color, #334155); text-transform: uppercase; letter-spacing: 0.05em;">Driver</th><th style="text-align: right; padding: 5px 8px; font-size: 11px; font-weight: 600; color: var(--text-color, #e2e8f0); border-bottom: 1px solid var(--border-color, #334155); text-transform: uppercase; letter-spacing: 0.05em;">Score</th><th style="text-align: right; padding: 5px 8px; font-size: 11px; font-weight: 600; color: var(--text-color, #e2e8f0); border-bottom: 1px solid var(--border-color, #334155); text-transform: uppercase; letter-spacing: 0.05em;">Expected</th><th style="text-align: right; padding: 5px 8px; font-size: 11px; font-weight: 600; color: var(--text-color, #e2e8f0); border-bottom: 1px solid var(--border-color, #334155); text-transform: uppercase; letter-spacing: 0.05em;">Actual</th><th style="text-align: right; padding: 5px 8px; font-
---- occurrence 6 at 791550 ---
+--- occurrence 6 at 791618 ---
  second half.</p><p style="font-size: 13px; color: var(--text-color); line-height: 1.75; margin-bottom: 6px; margin-top: 0px;">Stint 3 faded 1.064s over 26 green laps — pace dropped in the second half.</p></div></div></div></div></div></section></div>
 </div>
 </article></div>
@@ -739,11 +739,12 @@ ext fill="var(--text-muted)" font-family="monospace" font-size="8" font-weight="
   show(0); start();
 })();
 </script>
+<script defer src="race-analyzer-split-showcase.js?v=1"></script>
 </body>
 </html>
 
 ===== Final Report =====
---- occurrence 1 at 50950 ---
+--- occurrence 1 at 51018 ---
  defense matter.</b><p>Race Analyzer scores clean passes, closing passes, defense rate, traffic penalties, and the quality of wheel-to-wheel moments.</p></div>
 <div class="ra-principle"><b>Pit road is performance.</b><p>It breaks stops into timed phases and shows whether you gained or lost positions in the pit cycle.</p></div>
 <div class="ra-principle"><b>Strategy changes the finish.</b><p>Position flow and luck influence show how cautions, lap-back events, field dynamics, and timing altered the final result.</p></div>
@@ -771,7 +772,7 @@ ext fill="var(--text-muted)" font-family="monospace" font-size="8" font-weight="
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style
---- occurrence 2 at 51760 ---
+--- occurrence 2 at 51828 ---
 ace Analyzer panels: pit stop timing, position flow, pace versus the field, race summary, final report, and the racecraft leaderboard.</p>
 </div>
 <div aria-label="Race Analyzer product panels" class="ra-orbit-tabs" role="tablist"><button class="ra-orbit-tab active" data-slide="0" type="button"><span>01</span>Race Summary</button><button class="ra-orbit-tab" data-slide="1" type="button"><span>02</span>Position Flow</button><button class="ra-orbit-tab" data-slide="2" type="button"><span>03</span>Pit Stop Performance</button><button class="ra-orbit-tab" data-slide="3" type="button"><span>04</span>Long-Run Pace</button><button class="ra-orbit-tab" data-slide="4" type="button"><span>05</span>Pace vs Consistency</button><button class="ra-orbit-tab" data-slide="5" type="button"><span>06</span>Racecraft Leaderboard</button><button class="ra-orbit-tab" data-slide="6" type="button"><span>07</span>Final Report</button></div>
@@ -786,7 +787,7 @@ ace Analyzer panels: pit stop timing, position flow, pace versus the field, race
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Race Summary</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Race Summary"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Race Summary</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 14px; display: flex; flex-direction: column; gap: 12px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Race Result</div><div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"><div style="width: 64px; height: 64px; border-radius: 8px; background: rgb(226, 232, 240); display: flex; align-items: center; justify-content: center; color: rgb(30, 41, 59); font-weight: 800; font-size: 24px; flex-shrink: 0;">P6</div><div style="display: flex; flex-direction: column; gap: 3px; font-size: 12px;"><div><span style="color: var(--tex
---- occurrence 3 at 776510 ---
+--- occurrence 3 at 776578 ---
 >No qualifying driver</div></div><div style="background: var(--bg-deep, #0f172a); border-width: 1px 1px 1px 3px; border-style: solid; border-color: rgba(249, 115, 22, 0.333) rgba(249, 115, 22, 0.333) rgba(249, 115, 22, 0.333) rgb(249, 115, 22); border-image: initial; border-radius: 5px; padding: 10px 14px;"><div style="font-size: 11px; font-weight: 700; color: rgb(249, 115, 22); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">☢ Chaos Survivor</div><div style="font-size: 15px; font-weight: 700; color: var(--text-color);">Gavin Pearce</div><div style="font-size: 12px; color: var(--text-color); margin-top: 2px;">Finished P1 with 0 incidents</div></div></div></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide" data-slide="6" data-tab="Report">
@@ -798,7 +799,7 @@ ace Analyzer panels: pit stop timing, position flow, pace versus the field, race
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Final Report</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Report"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Report</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 0px 0px 20px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px 18px; margin-bottom: 14px; display: flex; align-items: center; gap: 16px;"><div style="width: 64px; height: 64px; border-radius: 8px; background: rgb(226, 232, 240); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; color: rgb(30, 41, 59);">P6</div><div><div style="font-size: 16px; font-weight: 700; color: var(--text-color);">Started <span style="font-weight: 700;">P10</span> → Finished <span style="font-weight: 700;">P6</span><span style="margin-left: 8px; font-weight: 700; color: rgb(74, 222, 128);">(+4)</span></div><div style="font-size: 13px; color: var(--text-color); margin-top: 4px;">120 laps completed · 108 green laps · 1h 12m 21s · 22 drivers · <span style="color: rgb(255, 215, 0); font-weight: 600;">Led 1 lap</span></div><div style="font-size: 12px; color: var(--text-color); margin-top: 2px;">Best lap: 30.278s on Lap 120</div></div></div><d
---- occurrence 4 at 776741 ---
+--- occurrence 4 at 776809 ---
 49, 115, 22); border-image: initial; border-radius: 5px; padding: 10px 14px;"><div style="font-size: 11px; font-weight: 700; color: rgb(249, 115, 22); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">☢ Chaos Survivor</div><div style="font-size: 15px; font-weight: 700; color: var(--text-color);">Gavin Pearce</div><div style="font-size: 12px; color: var(--text-color); margin-top: 2px;">Finished P1 with 0 incidents</div></div></div></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide" data-slide="6" data-tab="Report">
@@ -810,7 +811,7 @@ ace Analyzer panels: pit stop timing, position flow, pace versus the field, race
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Final Report</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Report"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Report</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 0px 0px 20px;"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px 18px; margin-bottom: 14px; display: flex; align-items: center; gap: 16px;"><div style="width: 64px; height: 64px; border-radius: 8px; background: rgb(226, 232, 240); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; color: rgb(30, 41, 59);">P6</div><div><div style="font-size: 16px; font-weight: 700; color: var(--text-color);">Started <span style="font-weight: 700;">P10</span> → Finished <span style="font-weight: 700;">P6</span><span style="margin-left: 8px; font-weight: 700; color: rgb(74, 222, 128);">(+4)</span></div><div style="font-size: 13px; color: var(--text-color); margin-top: 4px;">120 laps completed · 108 green laps · 1h 12m 21s · 22 drivers · <span style="color: rgb(255, 215, 0); font-weight: 600;">Led 1 lap</span></div><div style="font-size: 12px; color: var(--text-color); margin-top: 2px;">Best lap: 30.278s on Lap 120</div></div></div><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px 18px; margin-bottom: 14px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.
---- occurrence 5 at 791723 ---
+--- occurrence 5 at 791791 ---
  dropped in the second half.</p></div></div></div></div></div></section></div>
 </div>
 </article></div>
@@ -860,6 +861,7 @@ ace Analyzer panels: pit stop timing, position flow, pace versus the field, race
   show(0); start();
 })();
 </script>
+<script defer src="race-analyzer-split-showcase.js?v=1"></script>
 </body>
 </html>
 
