@@ -1,0 +1,1 @@
+Trigger GitHub Actions workflows to apply the generated advert updates.
