@@ -25,6 +25,30 @@
     },3000)
   }
   function renumber(root){all('.ra-orbit-tab',root).forEach(function(b,i){var s=b.querySelector('span'); if(s)s.textContent=String(i+1).padStart(2,'0')})}
+  function normalizeSlideLayout(slide){
+    if(!slide)return;
+    var copy=one(':scope > .ra-slide-copy',slide)||one('.ra-slide-copy',slide);
+    if(!copy)return;
+    if(copy.parentElement!==slide)slide.insertBefore(copy,slide.firstChild);
+    var product=one(':scope > .ra-product-window',slide);
+    if(!product){
+      var nested=one('.ra-product-window',slide);
+      if(nested&&nested.parentElement!==slide){product=nested; slide.appendChild(product)}
+    }
+    if(!product){
+      var rest=all(':scope > *',slide).filter(function(el){return el!==copy});
+      if(rest.length){
+        product=document.createElement('div');
+        product.className='ra-product-window ra-product-window--wrapped';
+        rest.forEach(function(el){product.appendChild(el)});
+        slide.appendChild(product);
+      }
+    }
+    if(product&&product.previousElementSibling!==copy){
+      slide.insertBefore(copy,slide.firstChild);
+      slide.insertBefore(product,copy.nextSibling);
+    }
+  }
   function setSlideCopy(slide,title,desc){
     if(!slide)return;
     var copy=one('.ra-slide-copy',slide);
@@ -35,6 +59,7 @@
     h.textContent=title;
     var p=one('p',copy); if(!p){p=document.createElement('p'); copy.appendChild(p)}
     p.textContent=desc;
+    normalizeSlideLayout(slide);
   }
   function box(title,desc,label,ids,tabs,slides){
     var b=document.createElement('div'); b.className='ra-split-box';
@@ -45,7 +70,7 @@
     ids.forEach(function(id){
       var t=tabs.find(function(x){return x.getAttribute('data-slide')===id});
       var s=slides.find(function(x){return x.getAttribute('data-slide')===id});
-      if(t)tr.appendChild(t); if(s)cr.appendChild(s);
+      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); cr.appendChild(s)}
     });
     renumber(tr); b.appendChild(h); b.appendChild(tr); b.appendChild(cr); activate(b,ids[0]); startAutoCycle(b,ids); return b;
   }
