@@ -1,0 +1,225 @@
+name: Group race analyzer tabs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-tabs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inject grouped tab behavior and copy updates
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('gripiq-race-analyzer-advert.html')
+          text = path.read_text(encoding='utf-8')
+          original = text
+
+          # Keep the requested copy corrections in the actual source where they are simple text replacements.
+          text = re.sub(r'Pace\s+vs\.?\s+Field', 'Long-Run Pace', text, flags=re.IGNORECASE)
+          text = text.replace('Pit Stop Time', 'Pit Stop Performance')
+          text = text.replace('Racecraft Leader Board', 'Racecraft Leaderboard')
+          text = re.sub(
+              r'\s*<a\b(?=[^>]*href=["\']#product["\'])(?=[^>]*>\s*Watch the panels circulate\s*↓\s*</a>)[^>]*>\s*Watch the panels circulate\s*↓\s*</a>',
+              '',
+              text,
+              flags=re.IGNORECASE,
+          )
+          text = re.sub(
+              r'\s*<a\b(?=[^>]*>\s*Watch the panels circulate\s*↓\s*</a>)[^>]*>\s*Watch the panels circulate\s*↓\s*</a>',
+              '',
+              text,
+              flags=re.IGNORECASE,
+          )
+          text = text.replace('Watch the panels circulate ↓', '')
+
+          marker = '<!-- GripIQ grouped race analyzer tabs -->'
+          injection = r'''<!-- GripIQ grouped race analyzer tabs -->
+<style id="gripiq-grouped-tabs-style">
+  .gripiq-tab-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: stretch;
+    margin: 0 0 18px;
+  }
+  .gripiq-tab-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid rgba(0, 212, 240, 0.28);
+    border-radius: 18px;
+    background: rgba(0, 30, 48, 0.38);
+    box-shadow: inset 0 0 0 1px rgba(0, 212, 240, 0.04);
+  }
+  .gripiq-tab-box::before {
+    width: 100%;
+    margin: 0 0 2px 4px;
+    color: rgba(220, 240, 255, 0.72);
+    font-family: Rajdhani, "Exo 2", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .gripiq-tab-box--analysis::before { content: "Race & Pace Analysis"; }
+  .gripiq-tab-box--execution::before { content: "Execution & Final Report"; }
+  .gripiq-tab-box > * { margin: 0 !important; }
+  @media (max-width: 820px) {
+    .gripiq-tab-groups { flex-direction: column; }
+    .gripiq-tab-box { width: 100%; }
+  }
+</style>
+<script id="gripiq-grouped-tabs-script">
+(function () {
+  function cleanLabel(text) {
+    return (text || '')
+      .replace(/^\s*\d+\s*/,'')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function buttonLikeElements() {
+    return Array.from(document.querySelectorAll('button, a, [role="button"], [data-tab], [data-slide], [tabindex]'));
+  }
+
+  function findControl(matchers) {
+    return buttonLikeElements().find(function (el) {
+      var label = cleanLabel(el.textContent).toLowerCase();
+      return matchers.some(function (m) { return label.includes(m); });
+    });
+  }
+
+  function setVisibleLabel(el, label) {
+    if (!el) return;
+    var textNodes = [];
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+    while (walker.nextNode()) {
+      var node = walker.currentNode;
+      if (node.nodeValue && node.nodeValue.trim() && !/^\s*\d+\s*$/.test(node.nodeValue)) {
+        textNodes.push(node);
+      }
+    }
+    if (textNodes.length) {
+      textNodes[textNodes.length - 1].nodeValue = ' ' + label;
+    } else {
+      var prefix = (el.textContent.match(/^\s*\d+/) || [''])[0];
+      el.textContent = prefix ? prefix + ' ' + label : label;
+    }
+    el.setAttribute('aria-label', label);
+  }
+
+  function commonParent(elements) {
+    var paths = elements.map(function (el) {
+      var path = [];
+      while (el) { path.push(el); el = el.parentElement; }
+      return path;
+    });
+    return paths[0].find(function (candidate) {
+      return paths.every(function (path) { return path.indexOf(candidate) !== -1; });
+    });
+  }
+
+  function hidePositionFlowPanels() {
+    Array.from(document.querySelectorAll('section, article, div')).forEach(function (el) {
+      var txt = cleanLabel(el.textContent).toLowerCase();
+      if (txt.startsWith('position flow') || txt.includes('position flow')) {
+        var isSmallControl = ['BUTTON', 'A'].includes(el.tagName);
+        if (!isSmallControl && el.offsetParent !== null && el.querySelector('canvas, img, svg, table, h2, h3')) {
+          el.style.display = 'none';
+        }
+      }
+    });
+  }
+
+  function groupTabs() {
+    if (document.querySelector('.gripiq-tab-groups')) return true;
+
+    var raceSummary = findControl(['race summary']);
+    var positionFlow = findControl(['position flow']);
+    var pitStop = findControl(['pit stop time', 'pit stop performance']);
+    var longRun = findControl(['compare long-run pace', 'long-run pace', 'long run pace']);
+    var consistency = findControl(['pace vs consistency']);
+    var racecraft = findControl(['racecraft leaderboard', 'racecraft leader board']);
+    var finalReport = findControl(['final report']);
+
+    var controls = [raceSummary, positionFlow, pitStop, longRun, consistency, racecraft, finalReport].filter(Boolean);
+    if (controls.length < 5) return false;
+
+    setVisibleLabel(longRun, 'Long-Run Pace');
+    setVisibleLabel(pitStop, 'Pit Stop Performance');
+    setVisibleLabel(racecraft, 'Racecraft Leaderboard');
+
+    if (positionFlow) {
+      positionFlow.remove();
+    }
+    hidePositionFlowPanels();
+
+    var groupsParent = commonParent([raceSummary, pitStop, longRun, consistency, racecraft, finalReport].filter(Boolean));
+    if (!groupsParent || groupsParent === document.body || groupsParent === document.documentElement) return false;
+
+    var holder = document.createElement('div');
+    holder.className = 'gripiq-tab-groups';
+
+    var analysis = document.createElement('div');
+    analysis.className = 'gripiq-tab-box gripiq-tab-box--analysis';
+    var execution = document.createElement('div');
+    execution.className = 'gripiq-tab-box gripiq-tab-box--execution';
+
+    [raceSummary, longRun, consistency].forEach(function (el) { if (el) analysis.appendChild(el); });
+    [pitStop, racecraft, finalReport].forEach(function (el) { if (el) execution.appendChild(el); });
+
+    holder.appendChild(analysis);
+    holder.appendChild(execution);
+    groupsParent.insertBefore(holder, groupsParent.firstChild);
+    return true;
+  }
+
+  function boot() {
+    var tries = 0;
+    var timer = setInterval(function () {
+      tries += 1;
+      if (groupTabs() || tries > 30) clearInterval(timer);
+    }, 150);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+'''
+
+          if marker not in text:
+              if '</body>' in text:
+                  text = text.replace('</body>', injection + '\n</body>', 1)
+              else:
+                  text += '\n' + injection
+
+          text = re.sub(r'\n{3,}', '\n\n', text)
+          if text != original:
+              path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit grouped tab update
+        run: |
+          if git diff --quiet -- gripiq-race-analyzer-advert.html; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add gripiq-race-analyzer-advert.html
+          git commit -m "Group race analyzer tabs into analysis and execution boxes"
+          git push
