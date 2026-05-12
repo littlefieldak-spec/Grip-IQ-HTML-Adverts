@@ -114,7 +114,7 @@
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active {
   display: grid !important;
-  grid-template-columns: minmax(260px, 310px) minmax(0, 1fr) !important;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr) !important;
   grid-template-rows: auto !important;
   gap: 18px !important;
   align-items: stretch !important;
@@ -139,21 +139,21 @@
   width: auto !important;
   max-width: none !important;
   min-height: 100% !important;
-  padding: 24px 22px !important;
+  padding: 18px 18px !important;
   border: 1px solid rgba(0, 212, 240, .12) !important;
   border-radius: 22px !important;
   background: rgba(2, 12, 24, .58) !important;
 }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide-copy h3 {
-  font-size: clamp(34px, 4vw, 54px) !important;
-  line-height: .95 !important;
-  margin-bottom: 14px !important;
+  font-size: clamp(28px, 3.2vw, 42px) !important;
+  line-height: .98 !important;
+  margin-bottom: 12px !important;
 }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide-copy p {
-  font-size: 17px !important;
-  line-height: 1.6 !important;
+  font-size: 16px !important;
+  line-height: 1.55 !important;
   color: rgba(220, 240, 255, .78) !important;
 }
 
@@ -165,8 +165,42 @@
   margin: 0 !important;
 }
 
+.ra-showcase.ra-split-showcase-ready .ra-product-window * {
+  max-width: none;
+}
+
+/* Pit Stop Performance needs more horizontal room so the comparison bars are visible. */
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] {
+  grid-template-columns: minmax(190px, 230px) minmax(0, 1fr) !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-slide-copy {
+  padding: 16px !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-slide-copy h3 {
+  font-size: clamp(26px, 2.7vw, 36px) !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-window-body,
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .snapshot-section-body {
+  overflow-x: auto !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-window-body > *,
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .snapshot-section-body > * {
+  min-width: 760px !important;
+}
+
+/* Racecraft Leaderboard should start at the top of its own internal content. */
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body,
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body {
+  scroll-behavior: auto !important;
+}
+
 @media (max-width: 980px) {
-  .ra-showcase.ra-split-showcase-ready .ra-slide.active {
+  .ra-showcase.ra-split-showcase-ready .ra-slide.active,
+  .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] {
     grid-template-columns: 1fr !important;
   }
 
