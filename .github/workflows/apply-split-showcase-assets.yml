@@ -1,0 +1,59 @@
+name: Apply split showcase assets
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-split-showcase-assets
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load split showcase CSS and JS
+        run: |
+          git pull --rebase origin main || true
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('gripiq-race-analyzer-advert.html')
+          text = p.read_text(encoding='utf-8')
+          old = text
+          text = re.sub(r'\n?\s*<link[^>]*race-analyzer-tab-groups\.css[^>]*>\s*', '\n', text, flags=re.I)
+          text = re.sub(r'\n?\s*<script[^>]*race-analyzer-tab-groups\.js[^>]*>\s*</script>\s*', '\n', text, flags=re.I)
+          text = re.sub(r'Pace\s+vs\.?\s+Field', 'Long-Run Pace', text, flags=re.I)
+          text = text.replace('Compare Long-Run Pace to the Best Drivers in the Field', 'Long-Run Pace')
+          text = text.replace('Pit Stop Time', 'Pit Stop Performance')
+          text = text.replace('Racecraft Leader Board', 'Racecraft Leaderboard')
+          text = text.replace('Watch the panels circulate ↓', '')
+          css = '<link rel="stylesheet" href="race-analyzer-split-showcase.css?v=1">'
+          js = '<script defer src="race-analyzer-split-showcase.js?v=1"></script>'
+          if 'race-analyzer-split-showcase.css' not in text:
+              text = text.replace('</head>', css + '\n</head>', 1)
+          if 'race-analyzer-split-showcase.js' not in text:
+              text = text.replace('</body>', js + '\n</body>', 1)
+          text = re.sub(r'\n{3,}', '\n\n', text)
+          if text != old:
+              p.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- gripiq-race-analyzer-advert.html; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add gripiq-race-analyzer-advert.html
+          git commit -m "Load split race analyzer showcase assets"
+          git pull --rebase origin main || true
+          git push
