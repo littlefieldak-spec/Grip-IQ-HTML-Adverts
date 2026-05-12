@@ -8,9 +8,7 @@
   margin-top: 20px;
 }
 
-.ra-showcase.ra-split-showcase-ready .ra-split-box:first-of-type {
-  margin-top: 0;
-}
+.ra-showcase.ra-split-showcase-ready .ra-split-box:first-of-type { margin-top: 0; }
 
 .ra-showcase.ra-split-showcase-ready .ra-split-box-head {
   display: flex;
@@ -100,17 +98,9 @@
   letter-spacing: .02em;
 }
 
-.ra-showcase.ra-split-showcase-ready .ra-orbit-tab span {
-  margin-right: 8px;
-}
-
-.ra-showcase.ra-split-showcase-ready .ra-carousel {
-  margin-top: 0;
-}
-
-.ra-showcase.ra-split-showcase-ready .ra-slide {
-  display: none !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-orbit-tab span { margin-right: 8px; }
+.ra-showcase.ra-split-showcase-ready .ra-carousel { margin-top: 0; }
+.ra-showcase.ra-split-showcase-ready .ra-slide { display: none !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active {
   display: grid !important;
@@ -165,22 +155,15 @@
   margin: 0 !important;
 }
 
-.ra-showcase.ra-split-showcase-ready .ra-product-window * {
-  max-width: none;
-}
+.ra-showcase.ra-split-showcase-ready .ra-product-window * { max-width: none; }
 
 /* Pit Stop Performance needs more horizontal room so the comparison bars are visible. */
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] {
   grid-template-columns: minmax(190px, 230px) minmax(0, 1fr) !important;
 }
 
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-slide-copy {
-  padding: 16px !important;
-}
-
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-slide-copy h3 {
-  font-size: clamp(26px, 2.7vw, 36px) !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-slide-copy { padding: 16px !important; }
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-slide-copy h3 { font-size: clamp(26px, 2.7vw, 36px) !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-window-body,
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .snapshot-section-body {
@@ -192,6 +175,43 @@
   min-width: 760px !important;
 }
 
+/* Pace vs Consistency should fill the available software-window height instead of sitting small at the top. */
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] {
+  grid-template-columns: minmax(190px, 230px) minmax(0, 1fr) !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy {
+  padding: 16px !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy h3 {
+  font-size: clamp(26px, 2.8vw, 38px) !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-product-window {
+  min-height: 520px !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body,
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section,
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section-body {
+  min-height: 470px !important;
+  height: 100% !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section-body > div,
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body > div {
+  min-height: 455px !important;
+  height: 100% !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] svg,
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] canvas {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 390px !important;
+}
+
 /* Racecraft Leaderboard should start at the top of its own internal content. */
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body,
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body {
@@ -200,7 +220,8 @@
 
 @media (max-width: 980px) {
   .ra-showcase.ra-split-showcase-ready .ra-slide.active,
-  .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] {
+  .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"],
+  .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] {
     grid-template-columns: 1fr !important;
   }
 
@@ -224,7 +245,5 @@
     border-radius: 22px;
   }
 
-  .ra-showcase.ra-split-showcase-ready .ra-orbit-tabs {
-    grid-template-columns: 1fr;
-  }
+  .ra-showcase.ra-split-showcase-ready .ra-orbit-tabs { grid-template-columns: 1fr; }
 }
