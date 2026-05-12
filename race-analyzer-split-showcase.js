@@ -5,6 +5,8 @@
     all('.ra-orbit-tab',box).forEach(function(t){t.classList.toggle('active',t.getAttribute('data-slide')===id)})
     all('.ra-slide',box).forEach(function(sl){sl.classList.toggle('active',sl.getAttribute('data-slide')===id)})
     box.setAttribute('data-active-slide',id)
+    var active=one('.ra-slide.active',box), scroller=active&&one('.ra-window-body, .snapshot-section-body, [style*="overflow: auto"]',active);
+    if(scroller&&scroller.scrollTo)scroller.scrollTo({top:0,left:0,behavior:'instant'});
   }
   function startAutoCycle(box,ids){
     var index=0;
@@ -49,6 +51,25 @@
       slide.insertBefore(product,copy.nextSibling);
     }
   }
+  function moveRacecraftLeaderboardToTop(slide){
+    if(!slide)return;
+    var body=one('.ra-window-body',slide)||one('.snapshot-section-body',slide)||one('.ra-product-window',slide);
+    if(!body)return;
+    var candidates=all('section, article, div, table',body).filter(function(el){
+      var t=(el.textContent||'').toLowerCase();
+      return t.indexOf('racecraft leaderboard')!==-1 || (t.indexOf('driver')!==-1 && t.indexOf('passes')!==-1 && t.indexOf('defense')!==-1);
+    });
+    var target=candidates.sort(function(a,b){
+      var at=(a.textContent||'').length, bt=(b.textContent||'').length;
+      return at-bt;
+    })[0];
+    if(target&&target.parentElement){
+      var parent=target.parentElement;
+      parent.insertBefore(target,parent.firstChild);
+      var scrollers=all('[style*="overflow: auto"], .ra-window-body, .snapshot-section-body',slide);
+      scrollers.forEach(function(s){if(s.scrollTo)s.scrollTo(0,0); else s.scrollTop=0});
+    }
+  }
   function setSlideCopy(slide,title,desc){
     if(!slide)return;
     var copy=one('.ra-slide-copy',slide);
@@ -70,7 +91,7 @@
     ids.forEach(function(id){
       var t=tabs.find(function(x){return x.getAttribute('data-slide')===id});
       var s=slides.find(function(x){return x.getAttribute('data-slide')===id});
-      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); cr.appendChild(s)}
+      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); if(id==='5')moveRacecraftLeaderboardToTop(s); cr.appendChild(s)}
     });
     renumber(tr); b.appendChild(h); b.appendChild(tr); b.appendChild(cr); activate(b,ids[0]); startAutoCycle(b,ids); return b;
   }
@@ -82,7 +103,9 @@
     setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='3'}),'Long-Run Pace','Identify which laps and what part of the run separates you from the top runners.');
     setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='4'}),'Pace vs Consistency','See whether your speed comes with repeatability. Compare average pace against lap-to-lap consistency to spot drivers who are fast, stable, or leaving time through variation.');
     setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='2'}),'Pit Stop Performance','Break the stop into measurable phases and see where pit road gained or lost time against the field.');
-    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='5'}),'Racecraft Leaderboard','Rank the racecraft moments that changed the finish: passes, defense, traffic management, and position gains.');
+    var craftSlide=slides.find(function(s){return s.getAttribute('data-slide')==='5'});
+    setSlideCopy(craftSlide,'Racecraft Leaderboard','Rank the racecraft moments that changed the finish: passes, defense, traffic management, and position gains.');
+    moveRacecraftLeaderboardToTop(craftSlide);
     setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='6'}),'Final Report','End with the complete summary: what happened, why it mattered, and what to work on before the next race.');
     var head=one('.ra-showcase-head p',show); if(head)head.textContent='Start with the race and pace story, then move into execution and the final report. The panels auto-cycle like a guided demo, but visitors can click any tab to take control.';
     var top=box('See the race through the software','Review the race summary, long-run pace, and consistency together before moving into execution.','Race & Pace',['0','3','4'],tabs,slides);
