@@ -1,0 +1,45 @@
+name: Diagnose race tabs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write keyword excerpts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('gripiq-race-analyzer-advert.html').read_text(encoding='utf-8')
+          terms = ['Race Summary','Position Flow','Pit Stop Time','Pit Stop Performance','Long-Run Pace','Pace vs Consistency','Racecraft Leaderboard','Final Report','Compare Long-Run Pace']
+          out=[]
+          out.append('FILE LENGTH: '+str(len(text)))
+          for term in terms:
+              out.append('\n===== '+term+' =====')
+              start=0
+              found=0
+              while True:
+                  i=text.lower().find(term.lower(), start)
+                  if i<0 or found>=6: break
+                  found+=1
+                  a=max(0,i-900); b=min(len(text),i+1600)
+                  out.append('--- occurrence '+str(found)+' at '+str(i)+' ---')
+                  out.append(text[a:b])
+                  start=i+len(term)
+              if found==0: out.append('NOT FOUND')
+          Path('tab-diagnostics.txt').write_text('\n'.join(out), encoding='utf-8')
+          PY
+      - name: Commit diagnostics
+        run: |
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add tab-diagnostics.txt
+          git commit -m "Add tab diagnostics" || exit 0
+          git push
