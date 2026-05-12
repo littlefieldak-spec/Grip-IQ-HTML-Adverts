@@ -1,0 +1,69 @@
+name: Inject tab group assets
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: inject-tab-group-assets
+  cancel-in-progress: true
+
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Inject CSS and JS asset tags
+        run: |
+          git pull --rebase origin main || true
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('gripiq-race-analyzer-advert.html')
+          text = path.read_text(encoding='utf-8')
+          original = text
+
+          text = re.sub(r'Pace\s+vs\.?\s+Field', 'Long-Run Pace', text, flags=re.IGNORECASE)
+          text = text.replace('Compare Long-Run Pace to the Best Drivers in the Field', 'Long-Run Pace')
+          text = text.replace('Pit Stop Time', 'Pit Stop Performance')
+          text = text.replace('Racecraft Leader Board', 'Racecraft Leaderboard')
+          text = text.replace('Watch the panels circulate ↓', '')
+
+          css = '<link rel="stylesheet" href="race-analyzer-tab-groups.css?v=2">'
+          js = '<script defer src="race-analyzer-tab-groups.js?v=2"></script>'
+
+          if 'race-analyzer-tab-groups.css' not in text:
+              if '</head>' in text:
+                  text = text.replace('</head>', css + '\n</head>', 1)
+              else:
+                  text = css + '\n' + text
+
+          if 'race-analyzer-tab-groups.js' not in text:
+              if '</body>' in text:
+                  text = text.replace('</body>', js + '\n</body>', 1)
+              else:
+                  text += '\n' + js + '\n'
+
+          text = re.sub(r'\n{3,}', '\n\n', text)
+          if text != original:
+              path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- gripiq-race-analyzer-advert.html; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add gripiq-race-analyzer-advert.html
+          git commit -m "Load race analyzer tab grouping assets"
+          git pull --rebase origin main || true
+          git push
