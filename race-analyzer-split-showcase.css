@@ -1,0 +1,105 @@
+/* Split the Race Analyzer showcase into two large software-output boxes. */
+.ra-showcase.ra-split-showcase-ready .ra-split-box {
+  border: 1px solid rgba(0, 212, 240, 0.22);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(8, 20, 38, 0.96), rgba(5, 10, 21, 0.94));
+  padding: 24px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.26);
+  margin-top: 20px;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-box:first-of-type {
+  margin-top: 0;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-box-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-box-head h3 {
+  margin: 0;
+  color: #fff;
+  font-family: Rajdhani, "Exo 2", sans-serif;
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.05;
+  letter-spacing: .03em;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-box-head p {
+  margin: 6px 0 0;
+  max-width: 720px;
+  color: rgba(220, 240, 255, .74);
+  line-height: 1.5;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-label {
+  color: rgba(220, 240, 255, .64);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-cta {
+  margin: 28px 0;
+  padding: 24px;
+  border: 1px solid rgba(0, 212, 240, 0.24);
+  border-radius: 24px;
+  background: radial-gradient(circle at 8% 0%, rgba(0, 212, 240, .18), transparent 32%), rgba(0, 18, 32, .58);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-cta strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #fff;
+  font-family: Rajdhani, "Exo 2", sans-serif;
+  font-size: 24px;
+  letter-spacing: .04em;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-cta p {
+  margin: 0;
+  color: rgba(220, 240, 255, .75);
+  line-height: 1.5;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-cta a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 212, 240, .55);
+  color: #fff;
+  background: rgba(0, 212, 240, .14);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-orbit-tabs {
+  margin-bottom: 18px;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-carousel {
+  margin-top: 0;
+}
+
+@media (max-width: 820px) {
+  .ra-showcase.ra-split-showcase-ready .ra-split-box-head,
+  .ra-showcase.ra-split-showcase-ready .ra-split-cta {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .ra-showcase.ra-split-showcase-ready .ra-split-box {
+    padding: 18px;
+    border-radius: 22px;
+  }
+}
