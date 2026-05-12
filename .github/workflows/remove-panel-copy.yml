@@ -1,0 +1,57 @@
+name: Remove confusing panel CTA copy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove confusing CTA copy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('gripiq-race-analyzer-advert.html')
+          text = path.read_text(encoding='utf-8')
+          original = text
+
+          # Remove the hero CTA link whose visible text is "Watch the panels circulate ↓".
+          text = re.sub(
+              r'\s*<a\b(?=[^>]*href=["\']#product["\'])(?=[^>]*>\s*Watch the panels circulate\s*↓\s*</a>)[^>]*>\s*Watch the panels circulate\s*↓\s*</a>',
+              '',
+              text,
+              flags=re.IGNORECASE,
+          )
+
+          # Fallbacks for slightly different formatting.
+          text = re.sub(
+              r'\s*<a\b(?=[^>]*>\s*Watch the panels circulate\s*↓\s*</a>)[^>]*>\s*Watch the panels circulate\s*↓\s*</a>',
+              '',
+              text,
+              flags=re.IGNORECASE,
+          )
+          text = text.replace('Watch the panels circulate ↓', '')
+          text = re.sub(r'\n{3,}', '\n\n', text)
+
+          if text != original:
+              path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit change
+        run: |
+          if git diff --quiet -- gripiq-race-analyzer-advert.html; then
+            echo "No matching copy found."
+            exit 0
+          fi
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add gripiq-race-analyzer-advert.html
+          git commit -m "Remove confusing panel CTA copy"
+          git push
