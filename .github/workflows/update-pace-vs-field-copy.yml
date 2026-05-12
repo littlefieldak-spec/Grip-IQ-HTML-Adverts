@@ -1,0 +1,84 @@
+name: Update Pace vs Field copy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace outdated Pace vs Field wording
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('gripiq-race-analyzer-advert.html')
+          text = path.read_text(encoding='utf-8')
+          original = text
+
+          new_title = 'Compare Long-Run Pace to the Best Drivers in the Field'
+          new_desc = 'Identify which laps and what part of the run separates you from the top runners'
+
+          # Remove the unclear rotating-panel CTA if still present.
+          text = re.sub(
+              r'\s*<a\b(?=[^>]*href=["\']#product["\'])(?=[^>]*>\s*Watch the panels circulate\s*↓\s*</a>)[^>]*>\s*Watch the panels circulate\s*↓\s*</a>',
+              '',
+              text,
+              flags=re.IGNORECASE,
+          )
+          text = re.sub(
+              r'\s*<a\b(?=[^>]*>\s*Watch the panels circulate\s*↓\s*</a>)[^>]*>\s*Watch the panels circulate\s*↓\s*</a>',
+              '',
+              text,
+              flags=re.IGNORECASE,
+          )
+          text = text.replace('Watch the panels circulate ↓', '')
+
+          # Replace the old combined feature name anywhere it appears.
+          text = re.sub(r'Pace\s+vs\.?\s+Field', new_title, text, flags=re.IGNORECASE)
+
+          # Replace common old descriptions attached to that card/slide.
+          old_desc_patterns = [
+              r'See how your race pace stacks up against the field\.?',
+              r'See how your pace stacks up against the field\.?',
+              r'Compare your pace against the field\.?',
+              r'Compare your race pace against the field\.?',
+              r'Understand how your pace compares to the field\.?',
+              r'Find where your race pace separates you from the field\.?',
+              r'Show where your race pace separates you from the field\.?',
+          ]
+          for pat in old_desc_patterns:
+              text = re.sub(pat, new_desc, text, flags=re.IGNORECASE)
+
+          # If the new title exists but the requested description is missing, place the
+          # requested sentence in the nearest following paragraph/list item when possible.
+          if new_title in text and new_desc not in text:
+              pattern = re.compile(
+                  r'(' + re.escape(new_title) + r'(?:(?!</section>|</article>|<h2|<h3).){0,800}?<p[^>]*>)(.*?)(</p>)',
+                  flags=re.IGNORECASE | re.DOTALL,
+              )
+              text = pattern.sub(lambda m: m.group(1) + new_desc + m.group(3), text, count=1)
+
+          text = re.sub(r'\n{3,}', '\n\n', text)
+
+          if text != original:
+              path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit updated advert copy
+        run: |
+          if git diff --quiet -- gripiq-race-analyzer-advert.html; then
+            echo "No matching outdated copy found."
+            exit 0
+          fi
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add gripiq-race-analyzer-advert.html
+          git commit -m "Update race analyzer pace comparison copy"
+          git push
