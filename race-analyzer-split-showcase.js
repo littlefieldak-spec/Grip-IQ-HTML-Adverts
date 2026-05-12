@@ -15,6 +15,22 @@
     })
   }
   function renumber(root){all('.ra-orbit-tab',root).forEach(function(b,i){var s=b.querySelector('span'); if(s)s.textContent=String(i+1).padStart(2,'0')})}
+  function setSlideCopy(slide,title,desc){
+    if(!slide)return;
+    var copy=one('.ra-slide-copy',slide);
+    if(!copy){
+      copy=document.createElement('div');
+      copy.className='ra-slide-copy';
+      slide.insertBefore(copy,slide.firstChild);
+    }
+    var kicker=one('.ra-slide-kicker',copy);
+    if(!kicker){kicker=document.createElement('div'); kicker.className='ra-slide-kicker'; copy.insertBefore(kicker,copy.firstChild)}
+    kicker.textContent='Actual Race Analyzer output';
+    var h=one('h3',copy); if(!h){h=document.createElement('h3'); copy.appendChild(h)}
+    h.textContent=title;
+    var p=one('p',copy); if(!p){p=document.createElement('p'); copy.appendChild(p)}
+    p.textContent=desc;
+  }
   function box(title,desc,label,ids,tabs,slides){
     var b=document.createElement('div'); b.className='ra-split-box';
     var h=document.createElement('div'); h.className='ra-split-box-head';
@@ -32,6 +48,12 @@
     var show=one('.ra-showcase#showcase'); if(!show||show.classList.contains('ra-split-showcase-ready'))return !!show;
     var c=one('.ra-container',show), tabsWrap=one('.ra-orbit-tabs',show), car=one('.ra-carousel',show); if(!c||!tabsWrap||!car)return false;
     var tabs=all('.ra-orbit-tab',tabsWrap), slides=all('.ra-slide',car); if(tabs.length<7||slides.length<7)return false;
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='0'}),'Race Summary','Start with the result: finish, starting position, race length, cautions, conditions, and the session context before diving into the evidence.');
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='3'}),'Long-Run Pace','Identify which laps and what part of the run separates you from the top runners.');
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='4'}),'Pace vs Consistency','See whether your speed comes with repeatability. Compare average pace against lap-to-lap consistency to spot drivers who are fast, stable, or leaving time through variation.');
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='2'}),'Pit Stop Performance','Break the stop into measurable phases and see where pit road gained or lost time against the field.');
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='5'}),'Racecraft Leaderboard','Rank the racecraft moments that changed the finish: passes, defense, traffic management, and position gains.');
+    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='6'}),'Final Report','End with the complete summary: what happened, why it mattered, and what to work on before the next race.');
     var head=one('.ra-showcase-head p',show); if(head)head.textContent='Start with the race and pace story, then move into execution and the final report.';
     var top=box('See the race through the software','Review the race summary, long-run pace, and consistency together before moving into execution.','Race & Pace',['0','3','4'],tabs,slides);
     var mid=document.createElement('div'); mid.className='ra-split-cta'; mid.innerHTML='<div><strong>Race pace tells part of the story. Execution explains the finish.</strong><p>After the race and pace review, GripIQ shows where pit stops, racecraft, and the final report changed the result.</p></div>';
