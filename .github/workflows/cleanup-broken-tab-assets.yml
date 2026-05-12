@@ -1,0 +1,44 @@
+name: Cleanup broken tab assets
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove broken injected asset references
+        run: |
+          git pull --rebase origin main || true
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          path = Path('gripiq-race-analyzer-advert.html')
+          text = path.read_text(encoding='utf-8')
+          original = text
+          text = re.sub(r'\n?\s*<link[^>]*race-analyzer-tab-groups\.css[^>]*>\s*', '\n', text, flags=re.I)
+          text = re.sub(r'\n?\s*<script[^>]*race-analyzer-tab-groups\.js[^>]*>\s*</script>\s*', '\n', text, flags=re.I)
+          text = re.sub(r'\n{3,}', '\n\n', text)
+          if text != original:
+              path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit cleanup
+        run: |
+          if git diff --quiet -- gripiq-race-analyzer-advert.html; then
+            echo "No cleanup changes needed."
+            exit 0
+          fi
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add gripiq-race-analyzer-advert.html
+          git commit -m "Remove broken tab grouping asset references"
+          git pull --rebase origin main || true
+          git push
