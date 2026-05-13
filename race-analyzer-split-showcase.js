@@ -86,7 +86,7 @@
     nodes.forEach(function(node){
       var value=node.nodeValue;
       replacements.forEach(function(pair){value=value.split(pair[0]).join(pair[1])});
-      value=value.replace(/Driver\s+0?1\b/g,'Sebastian Roth').replace(/Driver\s+0?2\b/g,'Nico Bianchi').replace(/Driver\s+0?3\b/g,'Tomas Pereira').replace(/Driver\s+0?4\b/g,'Cole Reeves').replace(/Driver\s+0?5\b/g,'Owen Brennan').replace(/Driver\s+0?6\b/g,'Tristan Ladoux').replace(/Driver\s+0?7\b/g,'Lucas Aaltonen').replace(/Driver\s+0?8\b/g,'Damian Krol').replace(/Driver\s+0?9\b/g,'Kai Sato').replace(/Driver\s+10\b/g,'Caleb Foster').replace(/Driver\s+11\b/g,'Gavin Pearce').replace(/Driver\s+12\b/g,'Aiden Walsh').replace(/Driver\s+13\b/g,'Rafael Costa').replace(/Driver\s+14\b/g,'Yann Marchetti').replace(/Driver\s+15\b/g,'Bruno Almeida').replace(/Driver\s+16\b/g,'Isaac Renner').replace(/Driver\s+17\b/g,'Viktor Lindgren').replace(/Driver\s+18\b/g,'Elias Novak').replace(/Driver\s+19\b/g,'Wyatt Hollis');
+      value=value.replace(/Driver\s+0?1\b/g,'Sebastian Roth').replace(/Driver\s+0?2\b/g,'Nico Bianchi').replace(/Driver\s+0?3\b/g,'Tomas Pereira').replace(/Driver\s+0?4\b/g,'Cole Reeves').replace(/Driver\s+0?5\b/g,'Owen Brennan').replace(/Driver\s+0?6\b/g,'Tristan Ladoux').replace(/Driver\s+0?7\b/g,'Lucas Aaltonen').replace(/Driver\s+0?8\b/g,'Damian Krol').replace(/Driver\s+0?9\b/g,'Kai Sato').replace(/Driver\s+10\b/g,'Caleb Foster').replace(/Driver\s+11\b/g,'Gavin Pearce').replace(/Driver\s+12\b/g,'Aiden Walsh').replace(/Driver\s+13\b/g,'Rafael Costa').replace(/Driver\s+14\b/g,'Yann Marchetti').replace(/Driver\s+15\b/g,'Bruno Almeida').replace(/Driver\s+16\b/g,'Isaac Renner').replace(/Driver\s+17\b/g,'Viktor Lindgren').replace(/Driver\s+18\b/g,'Elias Novak').replace(/Driver\s+19\b/g,'Wyatt Hollis').replace(/\bAndrew\b/g,'Race').replace(/\bColin\b/g,'Kai');
       node.nodeValue=value;
     });
   }
@@ -128,7 +128,7 @@
     ids.forEach(function(id){
       var t=tabs.find(function(x){return x.getAttribute('data-slide')===id});
       var s=slides.find(function(x){return x.getAttribute('data-slide')===id});
-      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); if(id==='4')anonymizePaceConsistency(s); if(id==='5')moveRacecraftLeaderboardToTop(s); cr.appendChild(s)}
+      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); anonymizePaceConsistency(s); if(id==='5')moveRacecraftLeaderboardToTop(s); cr.appendChild(s)}
     });
     renumber(tr); b.appendChild(h); b.appendChild(hint); b.appendChild(tr); b.appendChild(cr); activate(b,ids[0]); startAutoCycle(b,ids); return b;
   }
