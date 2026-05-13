@@ -505,36 +505,46 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
 .ra-final p  { color: var(--pt-text-mut); }
 .ra-list li::before { color: var(--pt-green); }
 
-/* Racecraft Leaderboard slide: needs full slide width + scroll.
-   The leaderboard has ~13 columns + a 3-card Honor Roll above it; the
-   default `.ra-showcase.ra-split-showcase-ready .ra-slide` rule in the
-   split-showcase stylesheet pins a 220-260px copy column on every slide
-   with `!important`, which clips the Racecraft right edge.  We have to
-   match its specificity by prefixing with the same showcase selector,
-   then bump it by including [data-slide="5"]. */
+/* Racecraft Leaderboard slide: narrower copy column + scroll inside the
+   panel.  The leaderboard has ~13 columns + a 3-card Honor Roll above
+   it; the default `.ra-showcase.ra-split-showcase-ready .ra-slide`
+   rule in the split-showcase stylesheet pins a 220-260px copy column
+   with `!important`, which clips the Racecraft right edge.  Keep the
+   description column for context but make it slimmer (170-200px) and
+   let the panel body scroll horizontally as a safety net. */
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"],
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="5"],
 .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming[data-slide="5"] {
-  grid-template-columns: 1fr !important;
+  grid-template-columns: minmax(170px, 200px) minmax(0, 1fr) !important;
 }
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy {
-  display: none !important;
+  padding: 14px !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-product-window {
-  width: 100% !important;
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy h3 {
+  font-size: clamp(22px, 2.2vw, 30px) !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body {
-  height: auto !important;
-  max-height: 78vh !important;
-  overflow: auto !important;
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy p {
+  font-size: 14px !important;
+  line-height: 1.45 !important;
 }
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width: 1400px"],
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width:1400px"] {
   max-width: none !important;
 }
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body,
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body > * {
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body {
   overflow-x: auto !important;
+}
+
+/* Stabilise carousel height across both split-showcase boxes so the
+   Execution (bottom) box doesn't visually shift up/down when the Race &
+   Pace (top) box auto-cycles between slides of different content
+   heights.  The split-showcase stylesheet sets min-height: 420px which
+   is too short — the tallest slides (Pace vs Consistency scatter, Race
+   Summary, etc.) all go well past that, and the carousel growing on
+   each transition pushes the bottom box around. */
+.ra-showcase.ra-split-showcase-ready .ra-carousel {
+  min-height: 760px !important;
 }
 
 .ra-footer {
@@ -1577,7 +1587,7 @@ body{margin:0!important;}
     ids.forEach(function(id){
       var t=tabs.find(function(x){return x.getAttribute('data-slide')===id});
       var s=slides.find(function(x){return x.getAttribute('data-slide')===id});
-      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); anonymizePaceConsistency(s); if(id==='5'){moveRacecraftLeaderboardToTop(s); s.classList.add('ra-slide-focus')} cr.appendChild(s)}
+      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); anonymizePaceConsistency(s); if(id==='5')moveRacecraftLeaderboardToTop(s); cr.appendChild(s)}
     });
     renumber(tr); b.appendChild(h); b.appendChild(hint); b.appendChild(tr); b.appendChild(cr); activate(b,ids[0]); startAutoCycle(b,ids); return b;
   }

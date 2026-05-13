@@ -129,7 +129,7 @@
     ids.forEach(function(id){
       var t=tabs.find(function(x){return x.getAttribute('data-slide')===id});
       var s=slides.find(function(x){return x.getAttribute('data-slide')===id});
-      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); anonymizePaceConsistency(s); if(id==='5'){moveRacecraftLeaderboardToTop(s); s.classList.add('ra-slide-focus')} cr.appendChild(s)}
+      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); anonymizePaceConsistency(s); if(id==='5')moveRacecraftLeaderboardToTop(s); cr.appendChild(s)}
     });
     renumber(tr); b.appendChild(h); b.appendChild(hint); b.appendChild(tr); b.appendChild(cr); activate(b,ids[0]); startAutoCycle(b,ids); return b;
   }
