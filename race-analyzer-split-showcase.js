@@ -56,6 +56,23 @@
       slide.insertBefore(product,copy.nextSibling);
     }
   }
+  function anonymizePaceConsistency(slide){
+    if(!slide)return;
+    var names=['Andrew Littlefield','Sebastian Roth','Nico Bianchi','Tomas Pereira','Cole Reeves','Owen Brennan','Tristan Ladouc','Lucas Aaltonen','Damian Krol','Kai Sato','Caleb Foster','Gavin Pearce','Aiden Walsh','Rafael Costa','Yann Marchetti','Bruno Almeida','Isaac Renner','Viktor Lindgren','Elias Novak','Wyatt Hollis'];
+    var map={'Andrew Littlefield':'Race Craftsman'};
+    var n=1;
+    names.forEach(function(name){if(!map[name]){map[name]='Driver '+String(n).padStart(2,'0'); n++;}});
+    var walker=document.createTreeWalker(slide,NodeFilter.SHOW_TEXT,null);
+    var nodes=[];
+    while(walker.nextNode())nodes.push(walker.currentNode);
+    nodes.forEach(function(node){
+      var value=node.nodeValue;
+      names.forEach(function(name){
+        value=value.replace(new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'),map[name]);
+      });
+      node.nodeValue=value;
+    });
+  }
   function moveRacecraftLeaderboardToTop(slide){
     if(!slide)return;
     var body=one('.ra-window-body',slide)||one('.snapshot-section-body',slide)||one('.ra-product-window',slide);
@@ -96,7 +113,7 @@
     ids.forEach(function(id){
       var t=tabs.find(function(x){return x.getAttribute('data-slide')===id});
       var s=slides.find(function(x){return x.getAttribute('data-slide')===id});
-      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); if(id==='5')moveRacecraftLeaderboardToTop(s); cr.appendChild(s)}
+      if(t)tr.appendChild(t); if(s){normalizeSlideLayout(s); if(id==='4')anonymizePaceConsistency(s); if(id==='5')moveRacecraftLeaderboardToTop(s); cr.appendChild(s)}
     });
     renumber(tr); b.appendChild(h); b.appendChild(tr); b.appendChild(cr); activate(b,ids[0]); startAutoCycle(b,ids); return b;
   }
@@ -107,7 +124,9 @@
 
     setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='0'}),'Race Summary','Understand the story of the race in seconds: where you started, where you finished, how the race unfolded, and what context matters before analyzing the details.');
     setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='3'}),'Long-Run Pace','Find the exact laps where top runners pulled away. Compare your green-flag pace to the best drivers and identify the parts of the run that cost time.');
-    setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='4'}),'Pace vs Consistency','See whether you are slow, inconsistent, or both. Compare average pace against lap-to-lap variation so your next practice target is obvious.');
+    var paceConsistencySlide=slides.find(function(s){return s.getAttribute('data-slide')==='4'});
+    setSlideCopy(paceConsistencySlide,'Pace vs Consistency','See whether you are slow, inconsistent, or both. Compare average pace against lap-to-lap variation so your next practice target is obvious.');
+    anonymizePaceConsistency(paceConsistencySlide);
     setSlideCopy(slides.find(function(s){return s.getAttribute('data-slide')==='2'}),'Pit Stop Performance','Know whether pit road cost you positions. Break the stop into measurable phases and see where you gained or lost time against the field.');
     var craftSlide=slides.find(function(s){return s.getAttribute('data-slide')==='5'});
     setSlideCopy(craftSlide,'Racecraft Leaderboard','Identify who gained positions through clean passes, smart defense, traffic management, and racecraft decisions that changed the finish.');
