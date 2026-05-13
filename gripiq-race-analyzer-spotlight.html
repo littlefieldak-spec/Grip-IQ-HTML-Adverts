@@ -334,16 +334,21 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
   background: rgba(10, 12, 20, 0.72);
   border-bottom: 1px solid var(--pt-line);
 }
+/* Brand: inline GripIQ SVG wordmark (swapped in by restyle_advert.py).
+   We keep .ra-brand as a flex link wrapping just the SVG — no gradient box,
+   no separate text span — matching the live /spotlights pattern. */
 .ra-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
   font-family: var(--pt-display);
   color: var(--pt-cyan);
+  transition: filter .2s ease;
 }
-.ra-brand-mark {
-  background: linear-gradient(135deg, var(--pt-cyan), #4ae0ff);
-  color: var(--pt-bg);
-  box-shadow: 0 0 18px rgba(0,240,255,0.35);
-  font-family: var(--pt-mono);
-}
+.ra-brand:hover { filter: brightness(1.15); }
+.ra-brand svg { display: block; }
+/* Hide the original IQ-gradient-box if it's still in the DOM (e.g. fallback path) */
+.ra-brand-mark { display: none !important; }
 .ra-nav-links a:hover { color: var(--pt-cyan); }
 
 /* ── Buttons → pill + cyan gradient glow ─────────────────────────────── */
@@ -1252,7 +1257,7 @@ body{margin:0!important;}
 <div class="ra-page">
 <nav class="ra-nav">
 <div class="ra-container ra-nav-inner">
-<a class="ra-brand" href="#top"><span class="ra-brand-mark">IQ</span><span>GripIQ Race Analyzer</span></a>
+<a class="ra-brand" href="#top" aria-label="GripIQ home"><svg width="138" height="34" viewBox="0 0 200 50" aria-hidden="true"><text x="0" y="38" font-family="Orbitron, sans-serif" font-size="34" font-weight="900" fill="#00f0ff" style="filter: drop-shadow(0 0 16px rgba(0,240,255,0.35));">GripIQ</text></svg></a>
 <div class="ra-nav-links">
 <a href="#showcase">Product output</a>
 <a href="#why">Why it matters</a>
