@@ -6,20 +6,25 @@
     var slides=all('.ra-slide',box);
     var next=slides.find(function(sl){return sl.getAttribute('data-slide')===id});
     if(!next)return;
+    var current=slides.find(function(sl){return sl.classList.contains('active')&&sl!==next});
+    if(box._raTransitionTimer)clearTimeout(box._raTransitionTimer);
     tabs.forEach(function(t){t.classList.toggle('active',t.getAttribute('data-slide')===id)});
-    /* Add the incoming slide before removing the outgoing one. This prevents a one-frame blank repaint on slower browsers/GPU combinations. */
+    if(current){current.classList.add('ra-slide-outgoing')}
     next.classList.add('active');
     next.classList.add('ra-slide-incoming');
     box.setAttribute('data-active-slide',id);
     requestAnimationFrame(function(){
-      slides.forEach(function(sl){
-        if(sl!==next)sl.classList.remove('active','ra-slide-incoming');
-      });
       next.classList.remove('ra-slide-incoming');
       var scroller=one('.ra-window-body, .snapshot-section-body, [style*="overflow: auto"]',next);
       if(scroller&&scroller.scrollTo)scroller.scrollTo({top:0,left:0,behavior:'instant'});
       else if(scroller)scroller.scrollTop=0;
     });
+    box._raTransitionTimer=setTimeout(function(){
+      slides.forEach(function(sl){
+        if(sl!==next)sl.classList.remove('active','ra-slide-incoming','ra-slide-outgoing');
+      });
+      next.classList.remove('ra-slide-incoming','ra-slide-outgoing');
+    },650);
   }
   function startAutoCycle(box,ids){
     var index=0;
