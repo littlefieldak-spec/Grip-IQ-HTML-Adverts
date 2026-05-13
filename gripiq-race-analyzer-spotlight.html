@@ -504,6 +504,35 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
 .ra-final h2 { color: var(--pt-text); }
 .ra-final p  { color: var(--pt-text-mut); }
 .ra-list li::before { color: var(--pt-green); }
+
+/* Racecraft Leaderboard slide: needs full slide width + scroll.
+   The leaderboard has ~13 columns + a 3-card Honor Roll above it; the
+   default 300px-copy + 1fr-panel layout clips the right edge. Target
+   data-slide=5 directly via attribute selector so this works even if
+   the JS-applied .ra-slide-focus class is missing or arrives late. */
+.ra-slide[data-slide="5"] {
+  grid-template-columns: 1fr !important;
+}
+.ra-slide[data-slide="5"] .ra-slide-copy {
+  display: none !important;
+}
+.ra-slide[data-slide="5"] .ra-product-window {
+  width: 100% !important;
+}
+.ra-slide[data-slide="5"] .ra-window-body {
+  height: auto !important;
+  max-height: 78vh !important;
+  overflow: auto !important;
+}
+.ra-slide[data-slide="5"] [style*="max-width: 1400px"],
+.ra-slide[data-slide="5"] [style*="max-width:1400px"] {
+  max-width: none !important;
+}
+.ra-slide[data-slide="5"] .snapshot-section-body,
+.ra-slide[data-slide="5"] .ra-window-body > * {
+  overflow-x: auto !important;
+}
+
 .ra-footer {
   color: var(--pt-text-dim) !important;
   border-top: 1px solid var(--pt-line) !important;
