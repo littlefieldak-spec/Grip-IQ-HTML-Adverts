@@ -15,7 +15,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 18px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .ra-showcase.ra-split-showcase-ready .ra-split-box-head h3 {
@@ -38,6 +38,31 @@
   color: rgba(220, 240, 255, .64);
   font-size: 13px;
   white-space: nowrap;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-click-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 9px 12px;
+  border: 1px solid rgba(0, 212, 240, .28);
+  border-radius: 999px;
+  background: rgba(0, 212, 240, .08);
+  color: rgba(220, 240, 255, .78);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-click-hint strong {
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-size: 11px;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-user-controlled .ra-click-hint {
+  opacity: .45;
 }
 
 .ra-showcase.ra-split-showcase-ready .ra-split-cta {
@@ -110,16 +135,10 @@
   align-items: stretch !important;
 }
 
-.ra-showcase.ra-split-showcase-ready .ra-slide.active > .ra-slide-copy {
-  grid-column: 1 !important;
-  grid-row: 1 !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active > .ra-slide-copy { grid-column: 1 !important; grid-row: 1 !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active > .ra-product-window,
-.ra-showcase.ra-split-showcase-ready .ra-slide.active > .ra-product-window--wrapped {
-  grid-column: 2 !important;
-  grid-row: 1 !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active > .ra-product-window--wrapped { grid-column: 2 !important; grid-row: 1 !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide-copy {
   display: flex !important;
@@ -157,58 +176,28 @@
 
 .ra-showcase.ra-split-showcase-ready .ra-product-window * { max-width: none; }
 
-/* Pit Stop Performance needs more horizontal room so the comparison bars are visible. */
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] {
-  grid-template-columns: minmax(190px, 230px) minmax(0, 1fr) !important;
-}
-
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] { grid-template-columns: minmax(190px, 230px) minmax(0, 1fr) !important; }
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-slide-copy { padding: 16px !important; }
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-slide-copy h3 { font-size: clamp(26px, 2.7vw, 36px) !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-window-body,
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .snapshot-section-body {
-  overflow-x: auto !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .snapshot-section-body { overflow-x: auto !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .ra-window-body > *,
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .snapshot-section-body > * {
-  min-width: 760px !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"] .snapshot-section-body > * { min-width: 760px !important; }
 
-/* Pace vs Consistency should fill the available software-window instead of leaving dead space. */
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] {
-  grid-template-columns: minmax(170px, 210px) minmax(0, 1fr) !important;
-}
-
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy {
-  padding: 14px !important;
-}
-
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy h3 {
-  font-size: clamp(24px, 2.5vw, 34px) !important;
-}
-
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy p {
-  font-size: 15px !important;
-  line-height: 1.45 !important;
-}
-
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-product-window {
-  min-height: 680px !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] { grid-template-columns: minmax(170px, 210px) minmax(0, 1fr) !important; }
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy { padding: 14px !important; }
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy h3 { font-size: clamp(24px, 2.5vw, 34px) !important; }
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy p { font-size: 15px !important; line-height: 1.45 !important; }
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-product-window { min-height: 680px !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body,
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section,
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section-body {
-  min-height: 630px !important;
-  height: 100% !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section-body { min-height: 630px !important; height: 100% !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section-body > div,
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body > div {
-  min-height: 610px !important;
-  height: 100% !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body > div { min-height: 610px !important; height: 100% !important; }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section-body > div > div,
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body > div > div {
@@ -219,13 +208,8 @@
 }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] svg,
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] canvas {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 500px !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] canvas { width: 100% !important; height: auto !important; min-height: 500px !important; }
 
-/* Racecraft Leaderboard: reverse the internal content stack so the leaderboard that was at the bottom appears first. */
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body > div,
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body > div {
   display: flex !important;
@@ -242,36 +226,21 @@
 }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body,
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body {
-  scroll-behavior: auto !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body { scroll-behavior: auto !important; }
 
 @media (max-width: 980px) {
   .ra-showcase.ra-split-showcase-ready .ra-slide.active,
   .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="2"],
-  .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] {
-    grid-template-columns: 1fr !important;
-  }
+  .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] { grid-template-columns: 1fr !important; }
 
   .ra-showcase.ra-split-showcase-ready .ra-slide.active > .ra-slide-copy,
   .ra-showcase.ra-split-showcase-ready .ra-slide.active > .ra-product-window,
-  .ra-showcase.ra-split-showcase-ready .ra-slide.active > .ra-product-window--wrapped {
-    grid-column: 1 !important;
-    grid-row: auto !important;
-  }
+  .ra-showcase.ra-split-showcase-ready .ra-slide.active > .ra-product-window--wrapped { grid-column: 1 !important; grid-row: auto !important; }
 }
 
 @media (max-width: 820px) {
   .ra-showcase.ra-split-showcase-ready .ra-split-box-head,
-  .ra-showcase.ra-split-showcase-ready .ra-split-cta {
-    grid-template-columns: 1fr;
-    align-items: flex-start;
-  }
-
-  .ra-showcase.ra-split-showcase-ready .ra-split-box {
-    padding: 18px;
-    border-radius: 22px;
-  }
-
+  .ra-showcase.ra-split-showcase-ready .ra-split-cta { grid-template-columns: 1fr; align-items: flex-start; }
+  .ra-showcase.ra-split-showcase-ready .ra-split-box { padding: 18px; border-radius: 22px; }
   .ra-showcase.ra-split-showcase-ready .ra-orbit-tabs { grid-template-columns: 1fr; }
 }
