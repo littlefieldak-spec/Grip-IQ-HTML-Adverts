@@ -1407,28 +1407,6 @@ body{margin:0!important;}
 </footer>
 </div>
 <script>
-(function(){
-  const slides = Array.from(document.querySelectorAll('.ra-slide'));
-  const tabs = Array.from(document.querySelectorAll('.ra-orbit-tab'));
-  let index = 0;
-  let timer = null;
-  function show(i){
-    index = (i + slides.length) % slides.length;
-    slides.forEach((s, n) => s.classList.toggle('active', n === index));
-    tabs.forEach((t, n) => t.classList.toggle('active', n === index));
-  }
-  function start(){
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    timer = setInterval(() => show(index + 1), 6200);
-  }
-  tabs.forEach((tab, i) => tab.addEventListener('click', () => { clearInterval(timer); show(i); start(); }));
-  const carousel = document.getElementById('ra-carousel');
-  carousel.addEventListener('mouseenter', () => clearInterval(timer));
-  carousel.addEventListener('mouseleave', start);
-  show(0); start();
-})();
-</script>
-<script>
 /* inlined from race-analyzer-split-showcase.js so animations + anonymization run when opened locally */
 (function(){
   function one(s,r){return (r||document).querySelector(s)}
