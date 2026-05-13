@@ -78,6 +78,7 @@
     if(!slide)return;
     var replacements=[
       ['Andrew Littlefield','Race Craftsman'],['Andrew Littlef','Race Craftsman'],['Andrew Little','Race Craftsman'],['Andrew L','Race Craftsman'],
+      ['Colin Fambrough','Kai Soto'],['Colin Fambrou','Kai Soto'],['Colin Fambro','Kai Soto'],['Colin Fambr','Kai Soto'],['Colin F','Kai Soto'],
       ['Sebastian Roth','Sebastian Roth'],['Nico Bianchi','Nico Bianchi'],['Tomas Pereira','Tomas Pereira'],['Cole Reeves','Cole Reeves'],['Owen Brennan','Owen Brennan'],['Tristan Ladouc','Tristan Ladoux'],['Lucas Aaltonen','Lucas Aaltonen'],['Damian Krol','Damian Krol'],['Kai Sato','Kai Sato'],['Caleb Foster','Caleb Foster'],['Gavin Pearce','Gavin Pearce'],['Aiden Walsh','Aiden Walsh'],['Rafael Costa','Rafael Costa'],['Yann Marchetti','Yann Marchetti'],['Bruno Almeida','Bruno Almeida'],['Isaac Renner','Isaac Renner'],['Viktor Lindgren','Viktor Lindgren'],['Elias Novak','Elias Novak'],['Wyatt Hollis','Wyatt Hollis']
     ];
     var walker=document.createTreeWalker(slide,NodeFilter.SHOW_TEXT,null);
