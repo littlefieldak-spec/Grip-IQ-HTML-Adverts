@@ -175,33 +175,54 @@
   min-width: 760px !important;
 }
 
-/* Pace vs Consistency should fill the available software-window height instead of sitting small at the top. */
+/* Pace vs Consistency should fill the available software-window instead of leaving dead space. */
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] {
-  grid-template-columns: minmax(190px, 230px) minmax(0, 1fr) !important;
+  grid-template-columns: minmax(170px, 210px) minmax(0, 1fr) !important;
 }
 
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy { padding: 16px !important; }
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy h3 { font-size: clamp(26px, 2.8vw, 38px) !important; }
-.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-product-window { min-height: 520px !important; }
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy {
+  padding: 14px !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy h3 {
+  font-size: clamp(24px, 2.5vw, 34px) !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-slide-copy p {
+  font-size: 15px !important;
+  line-height: 1.45 !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-product-window {
+  min-height: 680px !important;
+}
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body,
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section,
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section-body {
-  min-height: 470px !important;
+  min-height: 630px !important;
   height: 100% !important;
 }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section-body > div,
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body > div {
-  min-height: 455px !important;
+  min-height: 610px !important;
   height: 100% !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .snapshot-section-body > div > div,
+.ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] .ra-window-body > div > div {
+  transform: scale(1.22) !important;
+  transform-origin: top left !important;
+  width: 82% !important;
+  min-height: 500px !important;
 }
 
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] svg,
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="4"] canvas {
   width: 100% !important;
   height: auto !important;
-  min-height: 390px !important;
+  min-height: 500px !important;
 }
 
 /* Racecraft Leaderboard: reverse the internal content stack so the leaderboard that was at the bottom appears first. */
