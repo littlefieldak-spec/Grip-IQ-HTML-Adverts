@@ -2,11 +2,24 @@
   function one(s,r){return (r||document).querySelector(s)}
   function all(s,r){return Array.from((r||document).querySelectorAll(s))}
   function activate(box,id){
-    all('.ra-orbit-tab',box).forEach(function(t){t.classList.toggle('active',t.getAttribute('data-slide')===id)})
-    all('.ra-slide',box).forEach(function(sl){sl.classList.toggle('active',sl.getAttribute('data-slide')===id)})
-    box.setAttribute('data-active-slide',id)
-    var active=one('.ra-slide.active',box), scroller=active&&one('.ra-window-body, .snapshot-section-body, [style*="overflow: auto"]',active);
-    if(scroller&&scroller.scrollTo)scroller.scrollTo({top:0,left:0,behavior:'instant'});
+    var tabs=all('.ra-orbit-tab',box);
+    var slides=all('.ra-slide',box);
+    var next=slides.find(function(sl){return sl.getAttribute('data-slide')===id});
+    if(!next)return;
+    tabs.forEach(function(t){t.classList.toggle('active',t.getAttribute('data-slide')===id)});
+    /* Add the incoming slide before removing the outgoing one. This prevents a one-frame blank repaint on slower browsers/GPU combinations. */
+    next.classList.add('active');
+    next.classList.add('ra-slide-incoming');
+    box.setAttribute('data-active-slide',id);
+    requestAnimationFrame(function(){
+      slides.forEach(function(sl){
+        if(sl!==next)sl.classList.remove('active','ra-slide-incoming');
+      });
+      next.classList.remove('ra-slide-incoming');
+      var scroller=one('.ra-window-body, .snapshot-section-body, [style*="overflow: auto"]',next);
+      if(scroller&&scroller.scrollTo)scroller.scrollTo({top:0,left:0,behavior:'instant'});
+      else if(scroller)scroller.scrollTop=0;
+    });
   }
   function startAutoCycle(box,ids){
     var index=0;
