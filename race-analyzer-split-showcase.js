@@ -58,18 +58,37 @@
   }
   function anonymizePaceConsistency(slide){
     if(!slide)return;
-    var names=['Andrew Littlefield','Sebastian Roth','Nico Bianchi','Tomas Pereira','Cole Reeves','Owen Brennan','Tristan Ladouc','Lucas Aaltonen','Damian Krol','Kai Sato','Caleb Foster','Gavin Pearce','Aiden Walsh','Rafael Costa','Yann Marchetti','Bruno Almeida','Isaac Renner','Viktor Lindgren','Elias Novak','Wyatt Hollis'];
-    var map={'Andrew Littlefield':'Race Craftsman'};
-    var n=1;
-    names.forEach(function(name){if(!map[name]){map[name]='Driver '+String(n).padStart(2,'0'); n++;}});
+    var replacements=[
+      ['Andrew Littlefield','Race Craftsman'],['Andrew Littlef','Race Craftsman'],['Andrew Little','Race Craftsman'],['Andrew L','Race Craftsman'],
+      ['Sebastian Roth','Sebastian Roth'],['Nico Bianchi','Nico Bianchi'],['Tomas Pereira','Tomas Pereira'],['Cole Reeves','Cole Reeves'],['Owen Brennan','Owen Brennan'],['Tristan Ladouc','Tristan Ladoux'],['Lucas Aaltonen','Lucas Aaltonen'],['Damian Krol','Damian Krol'],['Kai Sato','Kai Sato'],['Caleb Foster','Caleb Foster'],['Gavin Pearce','Gavin Pearce'],['Aiden Walsh','Aiden Walsh'],['Rafael Costa','Rafael Costa'],['Yann Marchetti','Yann Marchetti'],['Bruno Almeida','Bruno Almeida'],['Isaac Renner','Isaac Renner'],['Viktor Lindgren','Viktor Lindgren'],['Elias Novak','Elias Novak'],['Wyatt Hollis','Wyatt Hollis']
+    ];
     var walker=document.createTreeWalker(slide,NodeFilter.SHOW_TEXT,null);
     var nodes=[];
     while(walker.nextNode())nodes.push(walker.currentNode);
     nodes.forEach(function(node){
       var value=node.nodeValue;
-      names.forEach(function(name){
-        value=value.replace(new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'),map[name]);
+      replacements.forEach(function(pair){
+        value=value.split(pair[0]).join(pair[1]);
       });
+      value=value.replace(/Driver\s+0?1\b/g,'Sebastian Roth')
+        .replace(/Driver\s+0?2\b/g,'Nico Bianchi')
+        .replace(/Driver\s+0?3\b/g,'Tomas Pereira')
+        .replace(/Driver\s+0?4\b/g,'Cole Reeves')
+        .replace(/Driver\s+0?5\b/g,'Owen Brennan')
+        .replace(/Driver\s+0?6\b/g,'Tristan Ladoux')
+        .replace(/Driver\s+0?7\b/g,'Lucas Aaltonen')
+        .replace(/Driver\s+0?8\b/g,'Damian Krol')
+        .replace(/Driver\s+0?9\b/g,'Kai Sato')
+        .replace(/Driver\s+10\b/g,'Caleb Foster')
+        .replace(/Driver\s+11\b/g,'Gavin Pearce')
+        .replace(/Driver\s+12\b/g,'Aiden Walsh')
+        .replace(/Driver\s+13\b/g,'Rafael Costa')
+        .replace(/Driver\s+14\b/g,'Yann Marchetti')
+        .replace(/Driver\s+15\b/g,'Bruno Almeida')
+        .replace(/Driver\s+16\b/g,'Isaac Renner')
+        .replace(/Driver\s+17\b/g,'Viktor Lindgren')
+        .replace(/Driver\s+18\b/g,'Elias Novak')
+        .replace(/Driver\s+19\b/g,'Wyatt Hollis');
       node.nodeValue=value;
     });
   }
