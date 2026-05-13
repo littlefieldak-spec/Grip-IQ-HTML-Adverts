@@ -11,8 +11,13 @@
   function startAutoCycle(box,ids){
     var index=0;
     var userOverride=false;
+    var hoverPaused=false;
     function stop(){userOverride=true; if(box._raCycleTimer)clearInterval(box._raCycleTimer)}
     all('.ra-orbit-tab',box).forEach(function(btn){
+      btn.addEventListener('mouseenter',function(){hoverPaused=true},true)
+      btn.addEventListener('mouseleave',function(){hoverPaused=false},true)
+      btn.addEventListener('focus',function(){hoverPaused=true},true)
+      btn.addEventListener('blur',function(){hoverPaused=false},true)
       btn.addEventListener('click',function(e){
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -21,7 +26,7 @@
       },true)
     })
     box._raCycleTimer=setInterval(function(){
-      if(userOverride)return;
+      if(userOverride||hoverPaused)return;
       index=(index+1)%ids.length;
       activate(box,ids[index])
     },3000)
