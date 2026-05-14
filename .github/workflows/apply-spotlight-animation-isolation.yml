@@ -1,0 +1,53 @@
+name: Apply spotlight animation isolation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-spotlight-animation-isolation
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add isolation patch assets to spotlight page
+        run: |
+          git pull --rebase origin main || true
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('gripiq-race-analyzer-spotlight.html')
+          text = p.read_text(encoding='utf-8')
+          old = text
+          # Remove duplicate older references if re-run.
+          text = re.sub(r'\n?\s*<link[^>]*spotlight-animation-isolation\.css[^>]*>\s*', '\n', text, flags=re.I)
+          text = re.sub(r'\n?\s*<script[^>]*spotlight-animation-isolation\.js[^>]*>\s*</script>\s*', '\n', text, flags=re.I)
+          css = '<link rel="stylesheet" href="spotlight-animation-isolation.css?v=2">'
+          js = '<script defer src="spotlight-animation-isolation.js?v=2"></script>'
+          text = text.replace('</head>', css + '\n</head>', 1)
+          text = text.replace('</body>', js + '\n</body>', 1)
+          text = re.sub(r'\n{3,}', '\n\n', text)
+          if text != old:
+              p.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- gripiq-race-analyzer-spotlight.html; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add gripiq-race-analyzer-spotlight.html
+          git commit -m "Load spotlight animation isolation patch"
+          git pull --rebase origin main || true
+          git push
