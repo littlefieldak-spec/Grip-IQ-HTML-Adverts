@@ -42,8 +42,8 @@ jobs:
           # Create the separate fixed preview file only.
           fixed = clean
           fixed = fixed.replace('</title>', ' — Animation Fixed</title>', 1)
-          fixed = fixed.replace('</head>', '<link rel="stylesheet" href="spotlight-animation-isolation.css?v=3">\n</head>', 1)
-          fixed = fixed.replace('</body>', '<script defer src="spotlight-animation-isolation.js?v=3"></script>\n</body>', 1)
+          fixed = fixed.replace('</head>', '<link rel="stylesheet" href="spotlight-animation-isolation.css?v=4">\n</head>', 1)
+          fixed = fixed.replace('</body>', '<script defer src="spotlight-animation-isolation.js?v=4"></script>\n</body>', 1)
           dst.write_text(fixed, encoding='utf-8')
           PY
       - name: Commit and push
