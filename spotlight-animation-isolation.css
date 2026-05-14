@@ -1,0 +1,71 @@
+/*
+  Spotlight animation isolation patch.
+  Purpose: stop the two animated showcase boxes from visually bleeding/merging during auto-rotation.
+  This intentionally disables cross-fade/slide overlap for the spotlight page and binds visibility to
+  each box's own data-active-slide value.
+*/
+
+.ra-showcase.ra-split-showcase-ready .ra-split-box {
+  isolation: isolate !important;
+  contain: layout paint style !important;
+}
+
+.ra-showcase.ra-split-showcase-ready .ra-split-box .ra-carousel {
+  position: relative !important;
+  isolation: isolate !important;
+  contain: layout paint style !important;
+  overflow: hidden !important;
+}
+
+/* Default every slide to hidden and out of flow. No opacity transitions, no transform transitions. */
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide,
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide.active,
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide.ra-slide-incoming,
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide.ra-slide-outgoing {
+  display: grid !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Show exactly one slide per box. This prevents Box 1 and Box 2 from sharing an active/outgoing frame. */
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="0"] .ra-slide[data-slide="0"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="1"] .ra-slide[data-slide="1"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="2"] .ra-slide[data-slide="2"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="3"] .ra-slide[data-slide="3"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="4"] .ra-slide[data-slide="4"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="5"] .ra-slide[data-slide="5"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="6"] .ra-slide[data-slide="6"] {
+  position: relative !important;
+  z-index: 2 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Keep special layouts intact for the active slide only. */
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="2"] .ra-slide[data-slide="2"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="4"] .ra-slide[data-slide="4"] {
+  grid-template-columns: minmax(170px, 230px) minmax(0, 1fr) !important;
+}
+
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="5"] .ra-slide[data-slide="5"] {
+  grid-template-columns: 1fr !important;
+  grid-template-rows: auto 1fr !important;
+}
+
+/* Avoid browser compositing artifacts from the older slide-transition rules. */
+.ra-showcase.ra-split-showcase-ready .ra-slide *,
+.ra-showcase.ra-split-showcase-ready .ra-product-window,
+.ra-showcase.ra-split-showcase-ready .ra-slide-copy {
+  backface-visibility: hidden !important;
+}
