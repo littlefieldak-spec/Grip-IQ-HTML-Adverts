@@ -572,35 +572,48 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
   overflow-x: visible !important;
 }
 
-/* Stabilise carousel height across both split-showcase boxes.
-   Root cause of the "animations mixing between top and bottom boxes":
-   the split-showcase stylesheet forces active slides to
-   `position: relative !important`, AND during transitions the JS
-   briefly gives BOTH the outgoing and incoming slides the `.active`
-   class.  Two relative slides stack vertically → carousel doubles in
-   height → box below visibly shifts.
-
-   Fix: force slides back to `position: absolute; inset: 0` (the
-   pre-split-showcase original) so they overlap rather than stack.
-   The `body` prefix beats the split-showcase rule's specificity
-   (0,4,0 vs 0,4,1 with body) since split-showcase CSS loads after
-   our overlay. */
-body .ra-showcase.ra-split-showcase-ready .ra-slide {
-  position: absolute !important;
-  inset: 0 !important;
-}
+/* Slides positioned absolutely so they overlap during cross-fade
+   (instead of stacking and doubling carousel height during the brief
+   moment both have `.active` — that was the "animations spilling into
+   the bottom box" problem). The `body` prefix beats split-showcase's
+   `position: relative !important` specificity. */
+body .ra-showcase.ra-split-showcase-ready .ra-slide,
 body .ra-showcase.ra-split-showcase-ready .ra-slide.active,
 body .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming {
   position: absolute !important;
   inset: 0 !important;
 }
-/* Now that slides overlap absolutely, the carousel needs an explicit
-   height — there's no flow-content to size it.  Make it tall enough
-   for the Racecraft leaderboard (the tallest slide) and let any
-   overflow clip rather than push siblings around. */
+
+/* Clean cross-fade animation: kill the translateX+scale (that combo
+   was what made the transition look blurry and erratic).  Pure opacity
+   at a shorter duration reads cleaner. */
+body .ra-showcase.ra-split-showcase-ready .ra-slide,
+body .ra-showcase.ra-split-showcase-ready .ra-slide.active,
+body .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming {
+  transform: none !important;
+  transition: opacity .35s ease !important;
+}
+
+/* Carousel sized for the tallest *non*-Racecraft slide.  Racecraft
+   has its own bigger min-height below.  720px gets us close to the
+   actual Pace vs Consistency / Long-Run Pace content height so the
+   black space underneath shrinks from ~200px to ~50px. */
 .ra-showcase.ra-split-showcase-ready .ra-carousel {
-  min-height: 900px !important;
+  min-height: 720px !important;
   overflow: hidden !important;
+}
+/* The Execution box owns slide 5 (Racecraft Leaderboard) which is
+   ~900px tall (description bar + Honor Roll + 13-row leaderboard).
+   The Execution box is the second .ra-split-box in the container.
+   Use a sibling-combinator selector to target only it. */
+.ra-showcase.ra-split-showcase-ready .ra-split-box ~ .ra-split-cta ~ .ra-split-box .ra-carousel {
+  min-height: 900px !important;
+}
+/* Slide content can be taller than its carousel — let it scroll
+   vertically inside the slide so nothing is clipped silently. */
+body .ra-showcase.ra-split-showcase-ready .ra-slide.active,
+body .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming {
+  overflow-y: auto !important;
 }
 
 .ra-footer {
