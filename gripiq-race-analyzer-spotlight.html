@@ -588,7 +588,7 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
    visibility to it kills the overlap instantly.  Outgoing slide
    becomes invisible + position:absolute the moment the JS calls
    `setAttribute('data-active-slide', id)`, no waiting on RAF. */
-body .ra-split-box[data-active-slide] .ra-slide {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide {
   opacity: 0 !important;
   visibility: hidden !important;
   position: absolute !important;
@@ -600,13 +600,13 @@ body .ra-split-box[data-active-slide] .ra-slide {
 /* The one slide whose data-slide matches the box's data-active-slide:
    visible, in document flow (so carousel auto-sizes), pure opacity
    fade-in at .15s. */
-body .ra-split-box[data-active-slide="0"] .ra-slide[data-slide="0"],
-body .ra-split-box[data-active-slide="1"] .ra-slide[data-slide="1"],
-body .ra-split-box[data-active-slide="2"] .ra-slide[data-slide="2"],
-body .ra-split-box[data-active-slide="3"] .ra-slide[data-slide="3"],
-body .ra-split-box[data-active-slide="4"] .ra-slide[data-slide="4"],
-body .ra-split-box[data-active-slide="5"] .ra-slide[data-slide="5"],
-body .ra-split-box[data-active-slide="6"] .ra-slide[data-slide="6"] {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="0"] .ra-slide[data-slide="0"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="1"] .ra-slide[data-slide="1"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="2"] .ra-slide[data-slide="2"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="3"] .ra-slide[data-slide="3"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="4"] .ra-slide[data-slide="4"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="5"] .ra-slide[data-slide="5"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="6"] .ra-slide[data-slide="6"] {
   opacity: 1 !important;
   visibility: visible !important;
   position: relative !important;
