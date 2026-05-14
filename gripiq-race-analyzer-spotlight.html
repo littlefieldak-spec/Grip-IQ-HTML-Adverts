@@ -505,61 +505,71 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
 .ra-final p  { color: var(--pt-text-mut); }
 .ra-list li::before { color: var(--pt-green); }
 
-/* Racecraft Leaderboard slide: narrower copy column + scroll inside the
-   panel.  The leaderboard has ~13 columns + a 3-card Honor Roll above
-   it; the default `.ra-showcase.ra-split-showcase-ready .ra-slide`
-   rule in the split-showcase stylesheet pins a 220-260px copy column
-   with `!important`, which clips the Racecraft right edge.  Keep the
-   description column for context but make it slimmer (170-200px) and
-   let the panel body scroll horizontally as a safety net. */
+/* ──────────────────────────────────────────────────────────────────────
+   Widen the showcase container.  Original advert caps `.ra-container`
+   at 1180px which is too tight once a slide is split into copy-column
+   + panel.  Bumping to 1400px reclaims ~220px of horizontal real
+   estate for the panel; the table no longer needs horizontal scroll. */
+.ra-container {
+  width: min(1400px, calc(100% - 32px)) !important;
+}
+
+/* Racecraft Leaderboard slide: stack description ON TOP of the panel
+   (instead of a side column) and let the panel use the FULL slide
+   width.  The leaderboard then renders naturally with no horizontal
+   scrollbar and no clipping — much cleaner during slide transitions
+   than the scrollbar approach.  Description becomes a thin horizontal
+   bar above the panel. */
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"],
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="5"],
 .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming[data-slide="5"] {
-  grid-template-columns: minmax(170px, 200px) minmax(0, 1fr) !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: auto 1fr !important;
+  gap: 12px !important;
 }
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy {
-  padding: 14px !important;
+  grid-row: 1 !important;
+  grid-column: 1 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: baseline !important;
+  flex-wrap: wrap !important;
+  gap: 4px 16px !important;
+  padding: 10px 16px !important;
+  border-radius: 12px !important;
 }
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy h3 {
-  font-size: clamp(22px, 2.2vw, 30px) !important;
+  font-size: 18px !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+  line-height: 1.2 !important;
 }
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy p {
-  font-size: 14px !important;
-  line-height: 1.45 !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+  color: rgba(220, 240, 255, .72) !important;
 }
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-kicker {
+  display: none !important;
+}
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-product-window {
+  grid-row: 2 !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+}
+/* Strip the inline 1400px inner cap inside the snapshot so it uses
+   every pixel the now-wider panel offers. */
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width: 1400px"],
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width:1400px"] {
   max-width: none !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body,
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body {
-  overflow-x: auto !important;
-}
-/* The original advert's reset rule on .snapshot-section-body kills
-   inline overflow:auto on every descendant — that prevents the
-   leaderboard table from ever overflowing the panel.  Re-enable it
-   for slide 5 so the table actually scrolls horizontally instead of
-   clipping.  Also force any inner data table to keep at least its
-   natural width via white-space:nowrap on header/data cells. */
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body [style*="overflow: auto"],
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body [style*="overflow:auto"] {
-  overflow: auto !important;
-  overflow-x: auto !important;
-}
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] table,
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] table th,
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] table td {
-  white-space: nowrap !important;
-}
-/* Force snapshot content to its natural width so it actually overflows
-   the panel instead of shrinking to fit.  `min-width: max-content`
-   tells the snapshot section "be as wide as your contents require",
-   and the parent .ra-window-body's overflow-x: auto then provides the
-   horizontal scrollbar.  Without this, the table compresses columns
-   to fit the available space and clips the right edge silently. */
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body .snapshot-section,
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body .snapshot-section-body {
-  min-width: max-content !important;
+/* Kill horizontal scroll on the panel body — we don't need it now that
+   the panel has the full width. (Removes the ugly scrollbar that was
+   appearing during slide transitions.) */
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body,
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body {
+  overflow-x: visible !important;
 }
 
 /* Stabilise carousel height across both split-showcase boxes.
