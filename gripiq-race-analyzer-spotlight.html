@@ -546,23 +546,51 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
   overflow: auto !important;
   overflow-x: auto !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] table {
-  white-space: nowrap !important;
-}
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] table,
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] table th,
 .ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] table td {
   white-space: nowrap !important;
 }
+/* Force snapshot content to its natural width so it actually overflows
+   the panel instead of shrinking to fit.  `min-width: max-content`
+   tells the snapshot section "be as wide as your contents require",
+   and the parent .ra-window-body's overflow-x: auto then provides the
+   horizontal scrollbar.  Without this, the table compresses columns
+   to fit the available space and clips the right edge silently. */
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body .snapshot-section,
+.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body .snapshot-section-body {
+  min-width: max-content !important;
+}
 
-/* Stabilise carousel height across both split-showcase boxes so the
-   Execution (bottom) box doesn't visually shift up/down when the Race &
-   Pace (top) box auto-cycles between slides of different content
-   heights.  The split-showcase stylesheet sets min-height: 420px which
-   is too short — the tallest slides (Pace vs Consistency scatter, Race
-   Summary, etc.) all go well past that, and the carousel growing on
-   each transition pushes the bottom box around. */
+/* Stabilise carousel height across both split-showcase boxes.
+   Root cause of the "animations mixing between top and bottom boxes":
+   the split-showcase stylesheet forces active slides to
+   `position: relative !important`, AND during transitions the JS
+   briefly gives BOTH the outgoing and incoming slides the `.active`
+   class.  Two relative slides stack vertically → carousel doubles in
+   height → box below visibly shifts.
+
+   Fix: force slides back to `position: absolute; inset: 0` (the
+   pre-split-showcase original) so they overlap rather than stack.
+   The `body` prefix beats the split-showcase rule's specificity
+   (0,4,0 vs 0,4,1 with body) since split-showcase CSS loads after
+   our overlay. */
+body .ra-showcase.ra-split-showcase-ready .ra-slide {
+  position: absolute !important;
+  inset: 0 !important;
+}
+body .ra-showcase.ra-split-showcase-ready .ra-slide.active,
+body .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming {
+  position: absolute !important;
+  inset: 0 !important;
+}
+/* Now that slides overlap absolutely, the carousel needs an explicit
+   height — there's no flow-content to size it.  Make it tall enough
+   for the Racecraft leaderboard (the tallest slide) and let any
+   overflow clip rather than push siblings around. */
 .ra-showcase.ra-split-showcase-ready .ra-carousel {
-  min-height: 760px !important;
+  min-height: 900px !important;
+  overflow: hidden !important;
 }
 
 .ra-footer {
