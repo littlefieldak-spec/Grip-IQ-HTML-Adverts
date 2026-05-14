@@ -1,0 +1,54 @@
+name: Diagnose spotlight animation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write spotlight animation excerpts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('gripiq-race-analyzer-spotlight.html')
+          text=p.read_text(encoding='utf-8')
+          terms=['@keyframes','animation','spotlight','square','card','panel','IntersectionObserver','setInterval','requestAnimationFrame','querySelector','addEventListener','transform','timeline','compare','impact']
+          out=['FILE LENGTH: '+str(len(text))]
+          for term in terms:
+              out.append('\n===== '+term+' =====')
+              start=0; count=0
+              while count<8:
+                  i=text.lower().find(term.lower(), start)
+                  if i<0: break
+                  count+=1
+                  out.append('--- occurrence '+str(count)+' at '+str(i)+' ---')
+                  out.append(text[max(0,i-1800):min(len(text),i+2600)])
+                  start=i+len(term)
+              if count==0: out.append('NOT FOUND')
+          # list class names around likely spotlight/demo sections
+          out.append('\n===== CLASS FREQUENCIES spotlight-ish =====')
+          classes=re.findall(r'class=["\']([^"\']+)', text)
+          flat=[]
+          for c in classes:
+              flat.extend(c.split())
+          from collections import Counter
+          for k,v in Counter(flat).most_common(160):
+              if any(s in k.lower() for s in ['spot','square','card','anim','panel','demo','tile','feature','stage','orbit','race','impact','compare','metric','showcase','grid']):
+                  out.append(f'{k}: {v}')
+          Path('spotlight-animation-diagnostics.txt').write_text('\n'.join(out), encoding='utf-8')
+          PY
+      - name: Commit diagnostics
+        run: |
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add spotlight-animation-diagnostics.txt
+          git commit -m "Add spotlight animation diagnostics" || exit 0
+          git push
