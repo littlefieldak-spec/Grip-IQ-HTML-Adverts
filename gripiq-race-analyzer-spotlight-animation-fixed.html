@@ -613,25 +613,35 @@ body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="6"] .
   transition: opacity .15s ease !important;
 }
 
-/* Fixed carousel height per box — stops both boxes from shifting
-   up/down when the active slide changes height.  Top box (Race &
-   Pace: slides 0/3/4) gets 720px, bottom box (Execution: slides
-   2/5/6 — Racecraft Leaderboard is the tall one) gets 900px.
-
-   Trade-off accepted: ~50-100px black space under the shortest slide
-   in each box (e.g. Race Summary in 720px) in exchange for ZERO
-   layout shift when either box auto-cycles or you click a tab.
-   The fixed slide-visibility selector above keeps only one slide in
-   document flow per box, so this min-height locks each box's height
-   independently of the other. */
+/* FIXED carousel height (not min-height) — locks each box to one
+   exact size regardless of which slide is active.  `min-height` was
+   only a floor; slides taller than the floor pushed the carousel
+   bigger, then switching to a shorter slide shrunk it again — that
+   was the "size of the top box changes" problem.
+   Using `height` flattens that out: every slide renders inside the
+   same-sized container, no growing or shrinking ever. */
 body .ra-showcase.ra-split-showcase-ready .ra-carousel {
-  min-height: 720px !important;
+  height: 780px !important;
+  min-height: 780px !important;
+  max-height: 780px !important;
   overflow: hidden !important;
 }
-/* Bottom box (Execution) carousel — sibling-combinator targets only
-   the second .ra-split-box. */
 body .ra-showcase.ra-split-showcase-ready .ra-split-box ~ .ra-split-cta ~ .ra-split-box .ra-carousel {
-  min-height: 900px !important;
+  height: 780px !important;
+  min-height: 780px !important;
+  max-height: 780px !important;
+}
+/* When the active slide's content would naturally be taller than the
+   carousel (Racecraft Leaderboard with 13+ rows), let the slide
+   scroll internally rather than overflow the box. */
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="0"] .ra-slide[data-slide="0"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="2"] .ra-slide[data-slide="2"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="3"] .ra-slide[data-slide="3"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="4"] .ra-slide[data-slide="4"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="5"] .ra-slide[data-slide="5"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="6"] .ra-slide[data-slide="6"] {
+  height: 100% !important;
+  overflow-y: auto !important;
 }
 
 .ra-footer {
