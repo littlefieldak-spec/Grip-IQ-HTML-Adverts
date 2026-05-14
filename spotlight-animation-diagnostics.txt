@@ -1,4 +1,4 @@
-FILE LENGTH: 829465
+FILE LENGTH: 830630
 
 ===== @keyframes =====
 --- occurrence 1 at 14956 ---
@@ -274,7 +274,7 @@ der-color: var(--pt-cyan);
 .ra-final h2 { color: var(--pt-text); }
 .ra-final p  { color: var(--pt-text-mut); }
 .ra-list li::before { color: var(--p
---- occurrence 4 at 48054 ---
+--- occurrence 4 at 49219 ---
 
   list-style: none;
 }
@@ -400,7 +400,7 @@ body{margin:0!important;}
 .ra-btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:13px 20px; border-radius:999px; border:1px solid rgba(0,212,255,.22); background:rgba(0,212,255,.08); color:#e7f3ff; text-decoration:none; font-weight:900; transition:transform .16s ease, box-shadow .16s ease;}
 .ra-btn:hover{transform:translateY(-2px); box-shadow:0 16px 40px rgba(0,212,255,.18);}
 .ra-btn.primary{background:linear-gradient(135deg,#00
---- occurrence 5 at 53042 ---
+--- occurrence 5 at 54207 ---
 px;height:8px;border-radius:50%;background:var(--ra-green);box-shadow:0 0 0 5px rgba(74,222,128,.14)}
 .ra-h1{max-width:980px; margin:24px auto 22px; color:#fff; font-size:clamp(3.4rem, 7.2vw, 6.8rem); line-height:.90; letter-spacing:-.065em; font-weight:1000; font-family:var(--ra-font); text-align:center; text-wrap:balance;}
 .ra-h1 em{font-style:normal;color:var(--ra-cyan);text-shadow:0 0 28px rgba(0,212,255,.2)}
@@ -702,41 +702,32 @@ ver {
 }
 .ra-final h2 { color: var(--pt-text); }
 .ra-final p  { color: var(--pt-te
---- occurrence 3 at 37556 ---
-x !important;
-  border-radius: 12px !important;
-}
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy h3 {
-  font-size: 18px !important;
-  margin: 0 !important;
-  flex-shrink: 0 !important;
-  line-height: 1.2 !important;
-}
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy p {
+--- occurrence 3 at 37936 ---
+.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-slide-copy p {
   font-size: 13px !important;
   line-height: 1.4 !important;
   margin: 0 !important;
   color: rgba(220, 240, 255, .72) !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-kicker {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-slide-kicker {
   display: none !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-product-window {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-product-window {
   grid-row: 2 !important;
   grid-column: 1 !important;
   width: 100% !important;
 }
 /* Strip the inline 1400px inner cap inside the snapshot so it uses
    every pixel the now-wider panel offers. */
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width: 1400px"],
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width:1400px"] {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] [style*="max-width: 1400px"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] [style*="max-width:1400px"] {
   max-width: none !important;
 }
 /* Kill horizontal scroll on the panel body — we don't need it now that
    the panel has the full width. (Removes the ugly scrollbar that was
    appearing during slide transitions.) */
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body,
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-window-body,
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .snapshot-section-body {
   overflow-x: visible !important;
 }
 
@@ -782,21 +773,19 @@ body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="6"] .
   transition: opacity .15s ease !important;
 }
 
-/* Carousel auto-sizes to its one visible slide — no min-height, no
-   fixed height.  No dead black space underneath. */
-.ra-showcase.ra-split-showcase-ready .ra-carousel {
-  overflow: hidden !important;
-}
+/* Fixed carousel height per box — stops both boxes from shifting
+   up/down when the active slide changes height.  Top box (Race &
+   Pace: slides 0/3/4) gets 720px, bottom box (Execution: slides
+   2/5/6 — Racecraft Leaderboard is the tall one) gets 900px.
 
-.ra-footer {
-  color: var(--pt-text-dim) !important;
-  border-top: 1px solid var(--pt-line) !important;
-  font-family: var(--pt-mono);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════ */
-</style><style></style><style>body{margin:0;background:#0a0e1a;color:#fff;font-family:var(--font-sans,system-ui)}.snapshot-section{border-bottom:2px solid rgba(255,255,255,0.06);padding:0 0 40px 0}.snapshot-section-head{padding:28px 24px 14px;background:linear-g
---- occurrence 4 at 52737 ---
+   Trade-off accepted: ~50-100px black space under the shortest slide
+   in each box (e.g. Race Summary in 720px) in exchange for ZERO
+   layout shift when either box auto-cycles or you click a tab.
+   The fixed slide-visibility selector above keeps only one slide in
+   document flow per box, so this min-height locks each box's height
+   independently of the other. */
+body .ra-showcase.ra-split-showcase-ready .ra-carousel
+--- occurrence 4 at 53902 ---
 r; gap:10px; padding:8px 12px; border:1px solid rgba(0,212,255,.22); border-radius:999px; color:var(--ra-cyan); font-family:var(--font-mono,monospace); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; font-weight:800; background:rgba(0,212,255,.06)}
 .ra-eyebrow:before{content:""; width:8px;height:8px;border-radius:50%;background:var(--ra-green);box-shadow:0 0 0 5px rgba(74,222,128,.14)}
 .ra-h1{max-width:980px; margin:24px auto 22px; color:#fff; font-size:clamp(3.4rem, 7.2vw, 6.8rem); line-height:.90; letter-spacing:-.065em; font-weight:1000; font-family:var(--ra-font); text-align:center; text-wrap:balance;}
@@ -826,7 +815,7 @@ r; gap:10px; padding:8px 12px; border:1px solid rgba(0,212,255,.22); border-radi
 .ra-slide{position:absolute; inset:0; padding:22px; display:grid; grid-template-columns:300px minmax(0,1fr); gap:22px; opacity:0; pointer-events:none; transform:translateX(30px) scale(.985); transition:opacity .7s ease, transform .7s ease;}
 .ra-slide.active{opacity:1; pointer-events:auto; transform:translateX(0) scale(1);}
 .ra-slide-copy{align-self:stretch; border:1px solid rgba(0,212,255,.12); border-radius:22px; padding:22px; background:rgba(3,10,20,.64); display:flex; flex-direction:column; justify-conten
---- occurrence 5 at 52958 ---
+--- occurrence 5 at 54123 ---
 t-weight:800; background:rgba(0,212,255,.06)}
 .ra-eyebrow:before{content:""; width:8px;height:8px;border-radius:50%;background:var(--ra-green);box-shadow:0 0 0 5px rgba(74,222,128,.14)}
 .ra-h1{max-width:980px; margin:24px auto 22px; color:#fff; font-size:clamp(3.4rem, 7.2vw, 6.8rem); line-height:.90; letter-spacing:-.065em; font-weight:1000; font-family:var(--ra-font); text-align:center; text-wrap:balance;}
@@ -858,7 +847,7 @@ t-weight:800; background:rgba(0,212,255,.06)}
 .ra-slide-copy{align-self:stretch; border:1px solid rgba(0,212,255,.12); border-radius:22px; padding:22px; background:rgba(3,10,20,.64); display:flex; flex-direction:column; justify-content:center;}
 .ra-slide-kicker{color:var(--ra-green); font-family:var(--font-mono,monospace); text-transform:uppercase; letter-spacing:.12em; font-size:.68rem; font-weight:900; margin-bottom:14px;}
 .ra-slide-copy h3{font-fam
---- occurrence 6 at 53020 ---
+--- occurrence 6 at 54185 ---
 re{content:""; width:8px;height:8px;border-radius:50%;background:var(--ra-green);box-shadow:0 0 0 5px rgba(74,222,128,.14)}
 .ra-h1{max-width:980px; margin:24px auto 22px; color:#fff; font-size:clamp(3.4rem, 7.2vw, 6.8rem); line-height:.90; letter-spacing:-.065em; font-weight:1000; font-family:var(--ra-font); text-align:center; text-wrap:balance;}
 .ra-h1 em{font-style:normal;color:var(--ra-cyan);text-shadow:0 0 28px rgba(0,212,255,.2)}
@@ -889,7 +878,7 @@ re{content:""; width:8px;height:8px;border-radius:50%;background:var(--ra-green)
 .ra-slide-copy{align-self:stretch; border:1px solid rgba(0,212,255,.12); border-radius:22px; padding:22px; background:rgba(3,10,20,.64); display:flex; flex-direction:column; justify-content:center;}
 .ra-slide-kicker{color:var(--ra-green); font-family:var(--font-mono,monospace); text-transform:uppercase; letter-spacing:.12em; font-size:.68rem; font-weight:900; margin-bottom:14px;}
 .ra-slide-copy h3{font-family:var(--ra-font); margin:0 0 14px; font-size:clamp(1.7rem,2.
---- occurrence 7 at 59355 ---
+--- occurrence 7 at 60520 ---
 ckground:rgba(7,20,40,.68); border-radius:22px; padding:24px;}
 .ra-principle b{display:block; color:#fff; font-size:1.18rem; margin-bottom:8px;}
 .ra-principle p{margin:0; color:#a9c0d8; line-height:1.6;}
@@ -971,7 +960,7 @@ ckground:rgba(7,20,40,.68); border-radius:22px; padding:24px;}
 .ra-showcase.ra-split-showcase-ready .ra-split-box {
   border: 1px solid rgba(0, 212, 240, 0.22);
   border-radius: 
---- occurrence 8 at 816788 ---
+--- occurrence 8 at 817953 ---
 er-spacing: 0.06em; margin-bottom: 10px; color: rgb(248, 113, 113);">What to Improve</div><p style="font-size: 13px; color: var(--text-color); line-height: 1.75; margin-bottom: 6px; margin-top: 0px;">Stint 1 faded 0.887s over 49 green laps — pace dropped in the second half.</p><p style="font-size: 13px; color: var(--text-color); line-height: 1.75; margin-bottom: 6px; margin-top: 0px;">Stint 3 faded 1.064s over 26 green laps — pace dropped in the second half.</p></div></div></div></div></div></section></div>
 </div>
 </article></div>
@@ -1349,7 +1338,7 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
   gap: 10px;
   color: var(--pt-cyan);
   background: rgba(0,240,255,0.06
---- occurrence 4 at 53130 ---
+--- occurrence 4 at 54295 ---
 222,128,.14)}
 .ra-h1{max-width:980px; margin:24px auto 22px; color:#fff; font-size:clamp(3.4rem, 7.2vw, 6.8rem); line-height:.90; letter-spacing:-.065em; font-weight:1000; font-family:var(--ra-font); text-align:center; text-wrap:balance;}
 .ra-h1 em{font-style:normal;color:var(--ra-cyan);text-shadow:0 0 28px rgba(0,212,255,.2)}
@@ -1381,7 +1370,7 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
 .ra-slide-kicker{color:var(--ra-green); font-family:var(--font-mono,monospace); text-transform:uppercase; letter-spacing:.12em; font-size:.68rem; font-weight:900; margin-bottom:14px;}
 .ra-slide-copy h3{font-family:var(--ra-font); margin:0 0 14px; font-size:clamp(1.7rem,2.8vw,3rem); line-height:1; letter-spacing:-.04em; color:#fff;}
 .ra-slide-copy p{margin:0; color:#b8cde2; line-h
---- occurrence 5 at 58782 ---
+--- occurrence 5 at 59947 ---
 le*="overflow:hidden"]{overflow:visible!important;}
 .ra-window-body [style*="flex: 1"], .ra-window-body [style*="flex:1"]{flex:none!important;}
 .ra-window-body [style*="height: 100%"], .ra-window-body [style*="height:100%"], .ra-window-body [style*="height: 100vh"], .ra-window-body [style*="height:100vh"]{height:auto!important;}
@@ -1533,7 +1522,7 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
 NOT FOUND
 
 ===== setInterval =====
---- occurrence 1 at 819055 ---
+--- occurrence 1 at 820220 ---
 st.contains('active')&&sl!==next});
     if(box._raTransitionTimer)clearTimeout(box._raTransitionTimer);
     tabs.forEach(function(t){t.classList.toggle('active',t.getAttribute('data-slide')===id)});
@@ -1616,7 +1605,7 @@ st.contains('active')&&sl!==next});
       var value=node.nodeValue;
       replacements.forEach(function(pair){value=value.split(pair[0]).join(pair[1])});
    
---- occurrence 2 at 829264 ---
+--- occurrence 2 at 830429 ---
  kicker=one('.ra-showcase-head .ra-kicker',show); if(kicker)kicker.textContent='Actual Race Analyzer output';
     var heading=one('.ra-showcase-head h2',show); if(heading)heading.textContent='Stop guessing why you finished where you finished.';
     var head=one('.ra-showcase-head p',show); if(head)head.textContent='GripIQ turns your race data into a clear breakdown of pace, consistency, pit execution, racecraft, and the next things to improve. The panels auto-cycle like a guided demo, but visitors can click any tab to take control.';
@@ -1635,41 +1624,32 @@ st.contains('active')&&sl!==next});
 </html>
 
 ===== requestAnimationFrame =====
---- occurrence 1 at 37549 ---
-0px 16px !important;
-  border-radius: 12px !important;
-}
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy h3 {
-  font-size: 18px !important;
-  margin: 0 !important;
-  flex-shrink: 0 !important;
-  line-height: 1.2 !important;
-}
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy p {
+--- occurrence 1 at 37929 ---
+howcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-slide-copy p {
   font-size: 13px !important;
   line-height: 1.4 !important;
   margin: 0 !important;
   color: rgba(220, 240, 255, .72) !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-kicker {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-slide-kicker {
   display: none !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-product-window {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-product-window {
   grid-row: 2 !important;
   grid-column: 1 !important;
   width: 100% !important;
 }
 /* Strip the inline 1400px inner cap inside the snapshot so it uses
    every pixel the now-wider panel offers. */
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width: 1400px"],
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width:1400px"] {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] [style*="max-width: 1400px"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] [style*="max-width:1400px"] {
   max-width: none !important;
 }
 /* Kill horizontal scroll on the panel body — we don't need it now that
    the panel has the full width. (Removes the ugly scrollbar that was
    appearing during slide transitions.) */
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body,
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-window-body,
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .snapshot-section-body {
   overflow-x: visible !important;
 }
 
@@ -1715,21 +1695,19 @@ body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="6"] .
   transition: opacity .15s ease !important;
 }
 
-/* Carousel auto-sizes to its one visible slide — no min-height, no
-   fixed height.  No dead black space underneath. */
-.ra-showcase.ra-split-showcase-ready .ra-carousel {
-  overflow: hidden !important;
-}
+/* Fixed carousel height per box — stops both boxes from shifting
+   up/down when the active slide changes height.  Top box (Race &
+   Pace: slides 0/3/4) gets 720px, bottom box (Execution: slides
+   2/5/6 — Racecraft Leaderboard is the tall one) gets 900px.
 
-.ra-footer {
-  color: var(--pt-text-dim) !important;
-  border-top: 1px solid var(--pt-line) !important;
-  font-family: var(--pt-mono);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════ */
-</style><style></style><style>body{margin:0;background:#0a0e1a;color:#fff;font-family:var(--font-sans,system-ui)}.snapshot-section{border-bottom:2px solid rgba(255,255,255,0.06);padding:0 0 40px 0}.snapshot-section-head{padding:28px 24px 14px;background:l
---- occurrence 2 at 817643 ---
+   Trade-off accepted: ~50-100px black space under the shortest slide
+   in each box (e.g. Race Summary in 720px) in exchange for ZERO
+   layout shift when either box auto-cycles or you click a tab.
+   The fixed slide-visibility selector above keeps only one slide in
+   document flow per box, so this min-height locks each box's height
+   independently of the other. */
+body .ra-showcase.ra-split-showcase-ready .ra-c
+--- occurrence 2 at 818808 ---
 re you lost, what was pace, what was pit road, and what was racecraft.</p>
 <div class="ra-cta-row" style="margin-top:24px;"><a class="ra-btn primary" href="mailto:andrew.littlefield@ttu.edu?subject=GripIQ%20Race%20Analyzer%20early%20access">Request early access →</a></div>
 </div>
@@ -1823,7 +1801,7 @@ re you lost, what was pace, what was pit road, and what was racecraft.</p>
       slide.in
 
 ===== querySelector =====
---- occurrence 1 at 816896 ---
+--- occurrence 1 at 818061 ---
 e: 13px; color: var(--text-color); line-height: 1.75; margin-bottom: 6px; margin-top: 0px;">Stint 1 faded 0.887s over 49 green laps — pace dropped in the second half.</p><p style="font-size: 13px; color: var(--text-color); line-height: 1.75; margin-bottom: 6px; margin-top: 0px;">Stint 3 faded 1.064s over 26 green laps — pace dropped in the second half.</p></div></div></div></div></div></section></div>
 </div>
 </article></div>
@@ -1908,7 +1886,7 @@ e: 13px; color: var(--text-color); line-height: 1.75; margin-bottom: 6px; margin
   function normalizeSlideLayout(slide){
     if(!slide)return;
     var copy=one(':scope > .ra-slide-copy',slide)||one('.ra-slide-copy',slid
---- occurrence 2 at 816966 ---
+--- occurrence 2 at 818131 ---
 px; margin-top: 0px;">Stint 1 faded 0.887s over 49 green laps — pace dropped in the second half.</p><p style="font-size: 13px; color: var(--text-color); line-height: 1.75; margin-bottom: 6px; margin-top: 0px;">Stint 3 faded 1.064s over 26 green laps — pace dropped in the second half.</p></div></div></div></div></div></section></div>
 </div>
 </article></div>
@@ -1995,7 +1973,7 @@ px; margin-top: 0px;">Stint 1 faded 0.887s over 49 green laps — pace dropped i
     var copy=one(':scope > .ra-slide-copy',slide)||one('.ra-slide-copy',slide);
     if(!copy)return;
     if(copy.parentElement!==slide)slide.inser
---- occurrence 3 at 819285 ---
+--- occurrence 3 at 820450 ---
 st.add('ra-slide-outgoing')}
     next.classList.add('active');
     next.classList.add('ra-slide-incoming');
@@ -2077,7 +2055,7 @@ st.add('ra-slide-outgoing')}
       value=value.replace(/Driver\s+0?1\b/g,'Kai Soto').replace(/Driver\s+0?2\b/g,'Nico Bianchi').replace(/Driver\s+0?3\b/g,'Tomas Pereira').replace(/Driver\s+0?4\b/g,'Cole Reeves').replace(/Driver\s+0?5\b/g,'Owen Brennan').replace(/
 
 ===== addEventListener =====
---- occurrence 1 at 818548 ---
+--- occurrence 1 at 819713 ---
 from race-analyzer-split-showcase.js so animations + anonymization run when opened locally */
 (function(){
   function one(s,r){return (r||document).querySelector(s)}
@@ -2161,7 +2139,7 @@ from race-analyzer-split-showcase.js so animations + anonymization run when open
       ['Andrew Littlefield','Race Craftsman'],['Andrew Littlef','Race Craftsman'],['Andrew Little','Race Craftsman'],['Andrew L','Race Craftsman'],
       ['Colin Fambrough','Kai Soto'],['Colin Fambrou','Kai Soto'],['Colin Fambro','Kai Soto'],['Colin Fambr','Kai Soto'],['Colin F','Kai Soto'],
       ['Sebastian Roth','Kai Soto'],['Nico Bianchi','Nico Bianchi'],['Tomas Pereira','Tomas Pereira'],['Cole Reeves','Cole Reeves'],['Owen Brennan','Owen Brennan'],['Tristan Ladouc','Tristan Ladoux'],['Lucas Aaltonen','Lucas Aaltonen'],['Damian Krol','Damian Krol'],['Kai Sato','Kai Sato'],['Caleb Foster','Caleb Foster'],['Gavin Pearce','Gavin Pearce'],['Aiden Walsh','Aiden Walsh'],['Rafael Costa','Rafael Costa'],['Yann Mar
---- occurrence 2 at 818623 ---
+--- occurrence 2 at 819788 ---
  opened locally */
 (function(){
   function one(s,r){return (r||document).querySelector(s)}
@@ -2245,7 +2223,7 @@ from race-analyzer-split-showcase.js so animations + anonymization run when open
       ['Andrew Littlefield','Race Craftsman'],['Andrew Littlef','Race Craftsman'],['Andrew Little','Race Craftsman'],['Andrew L','Race Craftsman'],
       ['Colin Fambrough','Kai Soto'],['Colin Fambrou','Kai Soto'],['Colin Fambro','Kai Soto'],['Colin Fambr','Kai Soto'],['Colin F','Kai Soto'],
       ['Sebastian Roth','Kai Soto'],['Nico Bianchi','Nico Bianchi'],['Tomas Pereira','Tomas Pereira'],['Cole Reeves','Cole Reeves'],['Owen Brennan','Owen Brennan'],['Tristan Ladouc','Tristan Ladoux'],['Lucas Aaltonen','Lucas Aaltonen'],['Damian Krol','Damian Krol'],['Kai Sato','Kai Sato'],['Caleb Foster','Caleb Foster'],['Gavin Pearce','Gavin Pearce'],['Aiden Walsh','Aiden Walsh'],['Rafael Costa','Rafael Costa'],['Yann Marchetti','Yann Marchetti'],['Bruno Almeida','Bruno Almeida'],['Isaac Renner'
---- occurrence 3 at 818699 ---
+--- occurrence 3 at 819864 ---
 rySelector(s)}
   function all(s,r){return Array.from((r||document).querySelectorAll(s))}
   function activate(box,id){
@@ -2327,7 +2305,7 @@ rySelector(s)}
       ['Andrew Littlefield','Race Craftsman'],['Andrew Littlef','Race Craftsman'],['Andrew Little','Race Craftsman'],['Andrew L','Race Craftsman'],
       ['Colin Fambrough','Kai Soto'],['Colin Fambrou','Kai Soto'],['Colin Fambro','Kai Soto'],['Colin Fambr','Kai Soto'],['Colin F','Kai Soto'],
       ['Sebastian Roth','Kai Soto'],['Nico Bianchi','Nico Bianchi'],['Tomas Pereira','Tomas Pereira'],['Cole Reeves','Cole Reeves'],['Owen Brennan','Owen Brennan'],['Tristan Ladouc','Tristan Ladoux'],['Lucas Aaltonen','Lucas Aaltonen'],['Damian Krol','Damian Krol'],['Kai Sato','Kai Sato'],['Caleb Foster','Caleb Foster'],['Gavin Pearce','Gavin Pearce'],['Aiden Walsh','Aiden Walsh'],['Rafael Costa','Rafael Costa'],['Yann Marchetti','Yann Marchetti'],['Bruno Almeida','Bruno Almeida'],['Isaac Renner','Isaac Renner'],['Viktor Lindgren','Viktor Lindgren'],['Elias Novak','Elias
---- occurrence 4 at 818769 ---
+--- occurrence 4 at 819934 ---
 rySelectorAll(s))}
   function activate(box,id){
     var tabs=all('.ra-orbit-tab',box);
@@ -2410,7 +2388,7 @@ rySelectorAll(s))}
       ['Sebastian Roth','Kai Soto'],['Nico Bianchi','Nico Bianchi'],['Tomas Pereira','Tomas Pereira'],['Cole Reeves','Cole Reeves'],['Owen Brennan','Owen Brennan'],['Tristan Ladouc','Tristan Ladoux'],['Lucas Aaltonen','Lucas Aaltonen'],['Damian Krol','Damian Krol'],['Kai Sato','Kai Sato'],['Caleb Foster','Caleb Foster'],['Gavin Pearce','Gavin Pearce'],['Aiden Walsh','Aiden Walsh'],['Rafael Costa','Rafael Costa'],['Yann Marchetti','Yann Marchetti'],['Bruno Almeida','Bruno Almeida'],['Isaac Renner','Isaac Renner'],['Viktor Lindgren','Viktor Lindgren'],['Elias Novak','Elias Novak'],['Wyatt Hollis','Wyatt Hollis']
     ];
     var walker=documen
---- occurrence 5 at 818839 ---
+--- occurrence 5 at 820004 ---
 orbit-tab',box);
     var slides=all('.ra-slide',box);
     var next=slides.find(function(sl){return sl.getAttribute('data-slide')===id});
@@ -2492,7 +2470,7 @@ orbit-tab',box);
     ];
     var walker=document.createTreeWalker(slide,NodeFilter.SHOW_TEXT,null);
     var nodes=[];
---- occurrence 6 at 829377 ---
+--- occurrence 6 at 830542 ---
  var heading=one('.ra-showcase-head h2',show); if(heading)heading.textContent='Stop guessing why you finished where you finished.';
     var head=one('.ra-showcase-head p',show); if(head)head.textContent='GripIQ turns your race data into a clear breakdown of pace, consistency, pit execution, racecraft, and the next things to improve. The panels auto-cycle like a guided demo, but visitors can click any tab to take control.';
     var top=box('Understand your race before you analyze your laps','Start with the race story, then see whether the gap came from long-run pace, consistency, or both.','Race & Pace',['0','3','4'],tabs,slides);
@@ -2549,7 +2527,7 @@ er-color));color:var(--toggle-color)}button.btn-toggle.btn-toggle--on{background
 NOT FOUND
 
 ===== compare =====
---- occurrence 1 at 461380 ---
+--- occurrence 1 at 462545 ---
 dding: 3px 8px; color: rgb(74, 222, 128); font-weight: 600; border-bottom: 1px solid var(--border-inner);">+8</td></tr><tr><td style="padding: 3px 8px; color: var(--text-color); font-weight: 400; border-bottom: 1px solid var(--border-inner);">#12 Wyatt Hollis</td><td style="text-align: right; padding: 3px 8px; color: var(--text-color); border-bottom: 1px solid var(--border-inner);">P12</td><td style="text-align: right; padding: 3px 8px; color: var(--text-color); border-bottom: 1px solid var(--border-inner);">P20</td><td style="text-align: right; padding: 3px 8px; color: rgb(248, 113, 113); font-weight: 600; border-bottom: 1px solid var(--border-inner);">-8</td></tr></tbody></table></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide ra-slide-pit-field" data-slide="2" data-tab="Pit Strategy">
@@ -2561,7 +2539,7 @@ dding: 3px 8px; color: rgb(74, 222, 128); font-weight: 600; border-bottom: 1px s
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>GREEN-FLAG PIT STOP TIME</b></div>
 <div class="ra-window-body ra-window-body--pit-field"><div class="ra-native-pit-panel"><div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-bottom: 10px;"><div style="font-size: 15px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-heading); margin-bottom: 10px;">Green-Flag Pit Stop Performance</div><div style="font-size: 13px; color: var(--text-color); margin-bottom: 12px;">3-lap pit sequence: pit-in lap → pit-out lap → first clean lap. Compared against other drivers who also pitted under green.</div><div style="font-size: 12px; color: var(--text-color); font-style: italic; margin-bottom: 8px; padding: 6px 10px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 4px;">Stop 2 (Lap 79) excluded from comparison — black flag during cycle.</div><div style="margin-bottom: 16px; padding: 12px; background: var(--bg-panel); border-radius: 6px; border: 1px solid var(--border-color);"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap;"><span style="font-size: 14px; font-weight: 700; color: var(--text-color);">Pit Stop 1</span><span style="font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgb(26, 46, 5); color: rgb(250, 204, 21);">P11 of 21</span><span style="font-size: 12px; color: var(--text-color); font-style: italic;">You: 2 green stops · Field: 6 made 1 green stop, 12 made 2 green stops</span></div><div style="font-size: 12px; color: var(--text-color); margin-bottom: 8px; padding: 4px 8px; background: rgba(251, 191, 36, 0.06); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 4px;"><span style="color: rgb(250, 204, 21); font-weight: 600;">Alternate strategies: </span>1 stop: Diego Mendoza, Viktor Lindgren, Yann Marchetti, Caleb Foster +2 more</div><table style="width: 100%; max-width: 560px; border-collapse: collapse; font-size: 14px; margin-bottom: 10px;"><thead><tr style="border-bottom: 1px solid var(--border-color);"><th style="text-align: left; padding: 4px 8px; font-size: 12px; color: var(--text-color); font-weight: 600;">Lap</th><th style="text-align: left; padding: 4px 8px; font-size: 12px; color: var(--text-color); font-weight: 600;">Phase</th><th style="text-align: right; padding: 4px 8px; font-size: 12px; color: var(--text-color); font-weight: 600;">Your Time</th><th style="text-align: right; padding: 4px 8px; font-size: 12px; color: var(--text-color); font-weight: 600;">Field Median</th><th style="text-align: right; padding: 4px 8px; font-size: 12px; color: var(--text-color); font-weight: 600;">Delta</th></tr></thead><tbody><tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 6px 8px; font-weight: 600;">L50</td><td style="padding: 6px 8px; color: var(--text-color);">Pit-in lap</td><td style="padding: 6px 8px; text-align: right; font-variant-numeric: tabular-nums;">43.916s</td><td style="padding: 6px 8px; text-align: right; color: var(--text-color); font-variant-numeric: tabular-nums;">44.999s</td><td style="padding: 6px 8px; tex
---- occurrence 2 at 492824 ---
+--- occurrence 2 at 493989 ---
 ght; font-variant-numeric: tabular-nums;">L51</span><div style="flex: 1 1 0%; height: 12px; display: flex; border-radius: 3px; overflow: hidden; max-width: 100%; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial;"><div style="width: 38.0205%; background: rgb(245, 158, 11); min-width: 1px;" title="Pit-in: 57.6s"></div><div style="width: 41.3987%; background: rgb(239, 68, 68); min-width: 1px;" title="Pit-out: 62.7s"></div><div style="width: 20.5808%; background: rgb(34, 197, 94); min-width: 1px;" title="Clean: 31.2s"></div></div><span style="width: 52px; font-size: 14px; font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-color);">151.5s</span></div></div></div></div></div></div>
 </div>
 </article><article class="ra-slide" data-slide="3" data-tab="Long-Run Pace">
@@ -2573,7 +2551,7 @@ ght; font-variant-numeric: tabular-nums;">L51</span><div style="flex: 1 1 0%; he
 <div class="ra-product-window">
 <div class="ra-window-bar"><span></span><span></span><span></span><b>Long-Run Pace</b></div>
 <div class="ra-window-body"><section class="snapshot-section" data-tab="Long-Run Pace"><header class="snapshot-section-head"><span class="snapshot-section-eyebrow">Race Analyzer · Long-Run Pace</span></header><div class="snapshot-section-body"><div style="flex: 1 1 0%; overflow: auto; min-height: 0px;"><div style="padding: 20px 24px; max-width: 1400px;"><div style="font-size: 16px; font-weight: 700; color: var(--text-color); margin-bottom: 4px;">Long-Run Pace — Race Craftsman — Charlotte Motor Speedway</div><div style="font-size: 13px; color: var(--text-color); margin-bottom: 16px;">How your green-flag pace compares to every other driver in the race. Your avg pace ranked 10 of 22 on green-flag laps.</div><div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Lap-by-Lap Pace Overlay</div><div style="font-size: 12px; color: var(--text-color); margin-bottom: 8px; margin-top: -6px;">Green-flag laps only — Lap 1 (standing start) excluded; see Start Pace below. Your pace in cyan vs the top 5 competitors.</div><svg style="width: 100%; height: auto; display: block;" viewbox="0 0 900 220"><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="192" y2="192"></line><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="147.99999999999997" y2="147.99999999999997"></line><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="104.00000000000004" y2="104.00000000000004"></line><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="59.99999999999992" y2="59.99999999999992"></line><line stroke="var(--border-color, #334155)" stroke-width="0.5" x1="56" x2="880" y1="16" y2="16"></line><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="end" x="52" y="195">30.177</text><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="end" x="52" y="150.99999999999997">31.693</text><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="end" x="52" y="107.00000000000004">33.210</text><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="end" x="52" y="62.99999999999992">34.727</text><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="end" x="52" y="19">36.244</text><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="middle" x="56" y="214">L2</text><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="middle" x="139.79661016949154" y="214">L14</text><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="middle" x="223.59322033898306" y="214">L26</text><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="middle" x="307.3898305084746" y="214">L38</text><text fill="var(--text-muted)" font-family="monospace" font-size="8" text-anchor="middle" x="391.1864406779661" y="214">L50</text><te
---- occurrence 3 at 646629 ---
+--- occurrence 3 at 647794 ---
 nt-size: 12px; text-align: right; font-weight: 700;">-1.379s</td></tr></tbody></table><div style="font-size: 13px; color: var(--text-color); line-height: 1.5; padding-left: 12px; border-left: 2px solid rgba(14, 165, 233, 0.267);">You were faster on 2 of 2 restarts. On average, you gained 1.379s per restart.</div></div></div></div></div></section></div>
 </div>
 </article><article class="ra-slide ra-slide-focus" data-slide="4" data-tab="Pace vs Consistency">
@@ -2590,9 +2568,9 @@ nt-size: 12px; text-align: right; font-weight: 700;">-1.379s</td></tr></tbody></
 <div class="snapshot-section-body">
 <div style="padding: 20px 24px; max-width: 1400px; margin: 0 auto;">
 <div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Pace vs Consistency</div><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; margin-top: -6px;"><span style="font-size: 12px; color: var(--text-color);">Each dot is a driver. Right = faster avg pace, top = more consistent. Click a driver to compare head-to-head.</span><button style="font-size: 12px; padding: 3px 10px; border-radius: 4px; cursor: pointer; background: rgba(148, 163, 184, 0.08); border: 1px solid var(--border-color); color: var(--text-tertiary); font-weight: 600;">All Drivers</button></div><svg style="width: 100%; max-width: 780px; height: auto; display: block;" viewbox="0 0 780 350"><line opacity="0.4" stroke="var(--text-muted)" stroke-dasharray="4,3" stroke-width="0.7" x1="403.1190409140037" x2="403.1190409140037" y1="24" y2="314"></line><line opacity="0.4" stroke="var(--text-muted)" stroke-dasharray="4,3" stroke-width="0.7" x1="56" x2="756" y1="78.36454712534507" y2="78.36454712534507"></line><text fill="#ffffff" font-family="monospace" font-size="14" font-weight="700" opacity="0.7" text-anchor="end" x="572" y="26">Fast &amp; Consistent</text><text fill="#ffffff" font-family="monospace" font-size="14" font-weight="700" opacity="0.7" text-anchor="start" x="60" y="26">Slow &amp; Consistent</text><text fill="#ffffff" font-family="monospace" font-size="14" font-weight="700" opacity="0.7" text-anchor="end" x="572" y="312">Fast &amp; Inconsistent</text><text fill="#ffffff" font-family="monospace" font-size="14" font-weight="700" opacity="0.7" text-anchor="start" x="60" y="312">Slow &amp; Inconsistent</text><text fill="var(--text-color)" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle" x="316" y="348">Avg Pace (faster right →)</text><text fill="var(--text-color)" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle" transform="translate(16, 169) rotate(-90)" x="0" y="0">Consistency (std dev)</text><text fill="var(--text-color)" font-family="monospace" font-size="10" opacity="0.8" text-anchor="middle" x="576" y="330">31.366</text><text fill="var(--text-color)" font-family="monospace" font-size="10" opacity="0.8" text-anchor="middle" x="403.1190409140037" y="330">31.706</text><text fill="var(--text-color)" font-family="monospace" font-size="10" opacity="0.8" text-anchor="middle" x="56" y="330">32.389</text><text fill="var(--text-color)" font-family="monospace" font-size="10" opacity="0.8" text-anchor="end" x="52" y="28">0.070</text><text fill="var(--text-color)" font-family="monospace" font-size="10" opacity="0.8" text-anchor="end" x="52" y="82.36454712534507">1.120</text><text fill="var(--text-color)" font-family="monospace" font-size="10" opacity="0.8" text-anchor="end" x="52" y="318">5.669</text><g cursor="pointer"><circle cx="576" cy="69.00892315121826" fill="#f97316" opacity="0.3" r="6.8" stroke="var(--text-dim)" stroke-dasha
---- occurrence 4 at 797842 ---
+--- occurrence 4 at 799007 ---
 13px; text-align: right; font-weight: 700;">-1</td><td style="padding: 5px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var(--text-color); font-size: 13px; text-align: right;">32.184</td><td style="padding: 5px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var(--text-color); font-size: 13px; text-align: right;">1.01</td><td style="padding: 5px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: rgb(248, 113, 113); font-size: 13px; text-align: right;">+1.99s</td><td style="padding: 5px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var(--text-muted); font-size: 13px; text-align: right;">—</td><td style="padding: 5px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: rgb(74, 222, 128); font-size: 13px; text-align: right;">10</td><td style="padding: 5px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var(--text-color); font-size: 13px; text-align: right;">0</td><td style="padding: 5px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var(--text-color); font-size: 13px; text-align: right;">0</td><td style="padding: 5px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: var(--text-color); font-size: 13px; text-align: right;">67%</td><td style="padding: 5px 8px; border-bottom: 1px solid var(--border-inner, #1e293b); color: rgb(248, 113, 113); font-size: 13px; text-align: right;">5</td></tr></tbody></table><div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px; padding: 6px 10px; background: rgba(255, 255, 255, 0.03); border-radius: 4px; border: 1px solid var(--border-color, #334155);"><span style="color: var(--text-color); font-weight: 600;">Pit Δ</span> shown for 21 of 22 drivers — only green-flag pit stops are compared. Drivers who pitted exclusively under caution show "—" because pace-car speed masks actual pit execution.</div></div></div><div style="background: var(--card-bg, #1e293b); border: 1px solid var(--border-color, #334155); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px;"><div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; color: rgb(14, 165, 233);">Honor Roll</div><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px;"><div style="background: var(--bg-deep, #0f172a); border-width: 1px 1px 1px 3px; border-style: solid; border-color: rgba(251, 191, 36, 0.333) rgba(251, 191, 36, 0.333) rgba(251, 191, 36, 0.333) rgb(251, 191, 36); border-image: initial; border-radius: 5px; padding: 10px 14px;"><div style="font-size: 11px; font-weight: 700; color: rgb(251, 191, 36); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">★ Racecraft MVP</div><div style="font-size: 15px; font-weight: 700; color: var(--text-color);">Gavin Pearce</div><div style="font-size: 12px; color: var(--text-color); margin-top: 2px;">Overall score 97/100</div></div><div style="background: var(--bg-deep, #0f172a); border-width: 1px 1px 1px 3px; border-style: solid; border-color: rgba(74, 222, 128, 0.333) rgba(74, 222, 128, 0.333) rgba(74, 222, 128, 0.333) rgb(74, 222, 128); border-image: initial; border-radius: 5px; padding: 10px 14px;"><div style="font-size: 11px; font-weight: 700; color: rgb(74, 222, 128); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">▲ Biggest Gainer</div><div style="font-size: 15px; font-weight: 700; color: var(--text-color);">Gavin Pearce</div><div style="font-size: 12px; color: var(--text-color); margin-top: 2px;">Gained 19 positions (P20 → P1)</div></div><div style="background: var(--bg-deep, #0f172a); border-width: 1px 1px 1px 3px; border-style: solid; border-color: rgba(167, 139, 250, 0.333) rgba(167, 139, 250, 0.333) rgba(167, 139, 250, 0.333) rgb(167, 139, 250); border-image: initial; border-radius: 5px; padding: 10px 14px;"><div style="font-size: 11px; font-weight: 700; color: rgb(167, 139, 250); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">◖ Front-Row Defender</div><div style="font-size: 13px; color: var(--text-dim); font-style: italic;">No qualifying driver</div></div><div style="background: var(--bg-deep, #0f172a); border-width: 1px 1px 1px 3px; border-style: solid; border-color: rgba(249, 115, 22, 0.333) rgba(249, 115, 22, 0.333) rgba(249, 115, 22, 0.333) rgb(249
---- occurrence 5 at 826202 ---
+--- occurrence 5 at 827367 ---
 TML='<div><h3>'+title+'</h3><p>'+desc+'</p></div><span class="ra-split-label">'+label+'</span>';
     var hint=document.createElement('div'); hint.className='ra-click-hint'; hint.innerHTML='<strong>Click to explore</strong><span>Click any tab to pause the animation and scan that report panel.</span>';
     var tr=document.createElement('div'); tr.className='ra-orbit-tabs'; tr.setAttribute('role','tablist');
@@ -2625,7 +2603,7 @@ TML='<div><h3>'+title+'</h3><p>'+desc+'</p></div><span class="ra-split-label">'+
     var mid=document.createElement('div'); mid.className='ra-split-cta'; mid.innerHTML='<div><strong>Race pace tells part of the story. Execution explains the finish.</strong><p>Once the pace picture is clear, GripIQ shows whether pit stops, traffic, passes, defense, and decision-making changed the result.</p></div>';
     var bot=box('Find the moments that changed the finish','Review pit performance, racecraft, and the final report as a separate execution breakdown.','Execution',['2','5','6'],tabs,slides);
     var final=document.createElement('div'); final.className='ra-split-cta 
---- occurrence 6 at 826512 ---
+--- occurrence 6 at 827677 ---
 tr=document.createElement('div'); tr.className='ra-orbit-tabs'; tr.setAttribute('role','tablist');
     var cr=document.createElement('div'); cr.className='ra-carousel';
     ids.forEach(function(id){
