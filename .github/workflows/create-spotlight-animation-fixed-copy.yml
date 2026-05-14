@@ -1,0 +1,56 @@
+name: Create spotlight animation fixed copy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: create-spotlight-animation-fixed-copy
+  cancel-in-progress: true
+
+jobs:
+  create-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore original and create fixed copy
+        run: |
+          git pull --rebase origin main || true
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          src = Path('gripiq-race-analyzer-spotlight.html')
+          dst = Path('gripiq-race-analyzer-spotlight-animation-fixed.html')
+          text = src.read_text(encoding='utf-8')
+
+          # Remove isolation patch references from the original source file if another workflow added them.
+          clean = re.sub(r'\n?\s*<link[^>]*spotlight-animation-isolation\.css[^>]*>\s*', '\n', text, flags=re.I)
+          clean = re.sub(r'\n?\s*<script[^>]*spotlight-animation-isolation\.js[^>]*>\s*</script>\s*', '\n', clean, flags=re.I)
+          clean = re.sub(r'\n{3,}', '\n\n', clean)
+
+          # Keep original page clean/unmodified.
+          if clean != text:
+              src.write_text(clean, encoding='utf-8')
+
+          # Create the separate fixed preview file only.
+          fixed = clean
+          fixed = fixed.replace('</title>', ' — Animation Fixed</title>', 1)
+          fixed = fixed.replace('</head>', '<link rel="stylesheet" href="spotlight-animation-isolation.css?v=3">\n</head>', 1)
+          fixed = fixed.replace('</body>', '<script defer src="spotlight-animation-isolation.js?v=3"></script>\n</body>', 1)
+          dst.write_text(fixed, encoding='utf-8')
+          PY
+      - name: Commit and push
+        run: |
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add gripiq-race-analyzer-spotlight.html gripiq-race-analyzer-spotlight-animation-fixed.html
+          git commit -m "Create separate spotlight animation fixed preview" || exit 0
+          git pull --rebase origin main || true
+          git push
