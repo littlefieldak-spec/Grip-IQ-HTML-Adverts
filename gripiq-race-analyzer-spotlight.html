@@ -520,14 +520,14 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
    scrollbar and no clipping — much cleaner during slide transitions
    than the scrollbar approach.  Description becomes a thin horizontal
    bar above the panel. */
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"],
 .ra-showcase.ra-split-showcase-ready .ra-slide.active[data-slide="5"],
 .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming[data-slide="5"] {
   grid-template-columns: 1fr !important;
   grid-template-rows: auto 1fr !important;
   gap: 12px !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-slide-copy {
   grid-row: 1 !important;
   grid-column: 1 !important;
   display: flex !important;
@@ -538,37 +538,37 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
   padding: 10px 16px !important;
   border-radius: 12px !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy h3 {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-slide-copy h3 {
   font-size: 18px !important;
   margin: 0 !important;
   flex-shrink: 0 !important;
   line-height: 1.2 !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-copy p {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-slide-copy p {
   font-size: 13px !important;
   line-height: 1.4 !important;
   margin: 0 !important;
   color: rgba(220, 240, 255, .72) !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-slide-kicker {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-slide-kicker {
   display: none !important;
 }
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-product-window {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-product-window {
   grid-row: 2 !important;
   grid-column: 1 !important;
   width: 100% !important;
 }
 /* Strip the inline 1400px inner cap inside the snapshot so it uses
    every pixel the now-wider panel offers. */
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width: 1400px"],
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] [style*="max-width:1400px"] {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] [style*="max-width: 1400px"],
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] [style*="max-width:1400px"] {
   max-width: none !important;
 }
 /* Kill horizontal scroll on the panel body — we don't need it now that
    the panel has the full width. (Removes the ugly scrollbar that was
    appearing during slide transitions.) */
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .ra-window-body,
-.ra-showcase.ra-split-showcase-ready .ra-slide[data-slide="5"] .snapshot-section-body {
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .ra-window-body,
+body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide] .ra-slide[data-slide="5"] .snapshot-section-body {
   overflow-x: visible !important;
 }
 
@@ -614,10 +614,25 @@ body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="6"] .
   transition: opacity .15s ease !important;
 }
 
-/* Carousel auto-sizes to its one visible slide — no min-height, no
-   fixed height.  No dead black space underneath. */
-.ra-showcase.ra-split-showcase-ready .ra-carousel {
+/* Fixed carousel height per box — stops both boxes from shifting
+   up/down when the active slide changes height.  Top box (Race &
+   Pace: slides 0/3/4) gets 720px, bottom box (Execution: slides
+   2/5/6 — Racecraft Leaderboard is the tall one) gets 900px.
+
+   Trade-off accepted: ~50-100px black space under the shortest slide
+   in each box (e.g. Race Summary in 720px) in exchange for ZERO
+   layout shift when either box auto-cycles or you click a tab.
+   The fixed slide-visibility selector above keeps only one slide in
+   document flow per box, so this min-height locks each box's height
+   independently of the other. */
+body .ra-showcase.ra-split-showcase-ready .ra-carousel {
+  min-height: 720px !important;
   overflow: hidden !important;
+}
+/* Bottom box (Execution) carousel — sibling-combinator targets only
+   the second .ra-split-box. */
+body .ra-showcase.ra-split-showcase-ready .ra-split-box ~ .ra-split-cta ~ .ra-split-box .ra-carousel {
+  min-height: 900px !important;
 }
 
 .ra-footer {
