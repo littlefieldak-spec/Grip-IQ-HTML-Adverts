@@ -1,0 +1,44 @@
+name: Diagnose spotlight js
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write focused JS excerpts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path('gripiq-race-analyzer-spotlight.html').read_text(encoding='utf-8')
+          out=[]
+          # Extract script tags after customer advert starts
+          scripts=re.findall(r'<script[^>]*>([\s\S]*?)</script>', text, flags=re.I)
+          out.append('SCRIPT COUNT: '+str(len(scripts)))
+          for idx,s in enumerate(scripts):
+              if any(term in s for term in ['ra-slide','ra-orbit','setInterval','requestAnimationFrame','IntersectionObserver','data-slide','active']):
+                  out.append(f'\n===== SCRIPT {idx} len {len(s)} =====')
+                  out.append(s[:12000])
+          # Extract CSS ra-slide/spotlight bits
+          for pat in ['.ra-slide{','.ra-slide.active','.ra-carousel{','.ra-spotlight{','.ra-mini-card{']:
+              out.append('\n===== CSS '+pat+' =====')
+              i=text.find(pat)
+              out.append(str(i))
+              if i>=0: out.append(text[max(0,i-1000):min(len(text),i+4000)])
+          Path('spotlight-js-diagnostics.txt').write_text('\n'.join(out), encoding='utf-8')
+          PY
+      - name: Commit diagnostics
+        run: |
+          git config user.name "chatgpt-github"
+          git config user.email "chatgpt-github@users.noreply.github.com"
+          git add spotlight-js-diagnostics.txt
+          git commit -m "Add focused spotlight js diagnostics" || exit 0
+          git push
