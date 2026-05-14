@@ -572,48 +572,33 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
   overflow-x: visible !important;
 }
 
-/* Slides positioned absolutely so they overlap during cross-fade
-   (instead of stacking and doubling carousel height during the brief
-   moment both have `.active` — that was the "animations spilling into
-   the bottom box" problem). The `body` prefix beats split-showcase's
-   `position: relative !important` specificity. */
-body .ra-showcase.ra-split-showcase-ready .ra-slide,
-body .ra-showcase.ra-split-showcase-ready .ra-slide.active,
-body .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming {
-  position: absolute !important;
-  inset: 0 !important;
+/* Animation: fade IN only, snap out.  Pure opacity, no transform.
+   The split-showcase default uses transform: translateX(30px) scale(.985)
+   on inactive slides + 0.7s transition — when slides overlap during
+   the cross-fade that combo looks blurry and erratic.  Here:
+     - inactive slides: transition: none → snap to opacity:0 the instant
+       they lose `.active`, no fade-out tail overlapping the new slide
+     - active/incoming: transition: opacity .15s → quick clean fade-in
+   Net: no text overlap during transitions, no blur. */
+body .ra-showcase.ra-split-showcase-ready .ra-slide {
+  transform: none !important;
+  transition: none !important;
 }
-
-/* Clean cross-fade animation: kill the translateX+scale (that combo
-   was what made the transition look blurry and erratic).  Pure opacity
-   at a shorter duration reads cleaner. */
-body .ra-showcase.ra-split-showcase-ready .ra-slide,
 body .ra-showcase.ra-split-showcase-ready .ra-slide.active,
 body .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming {
   transform: none !important;
-  transition: opacity .35s ease !important;
+  transition: opacity .15s ease !important;
 }
 
-/* Carousel sized for the tallest *non*-Racecraft slide.  Racecraft
-   has its own bigger min-height below.  720px gets us close to the
-   actual Pace vs Consistency / Long-Run Pace content height so the
-   black space underneath shrinks from ~200px to ~50px. */
+/* Carousel auto-sizes to its active slide — no min-height, no fixed
+   height.  This kills the "huge black space below short slides"
+   problem.  Bottom box may shift slightly when the top box changes
+   slides between Race Summary / Long-Run Pace / Pace vs Consistency
+   (they have different content heights), but that brief reflow is
+   way less ugly than 200px of dead black space underneath every
+   short slide. */
 .ra-showcase.ra-split-showcase-ready .ra-carousel {
-  min-height: 720px !important;
   overflow: hidden !important;
-}
-/* The Execution box owns slide 5 (Racecraft Leaderboard) which is
-   ~900px tall (description bar + Honor Roll + 13-row leaderboard).
-   The Execution box is the second .ra-split-box in the container.
-   Use a sibling-combinator selector to target only it. */
-.ra-showcase.ra-split-showcase-ready .ra-split-box ~ .ra-split-cta ~ .ra-split-box .ra-carousel {
-  min-height: 900px !important;
-}
-/* Slide content can be taller than its carousel — let it scroll
-   vertically inside the slide so nothing is clipped silently. */
-body .ra-showcase.ra-split-showcase-ready .ra-slide.active,
-body .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming {
-  overflow-y: auto !important;
 }
 
 .ra-footer {
