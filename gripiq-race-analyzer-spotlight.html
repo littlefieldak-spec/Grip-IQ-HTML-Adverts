@@ -572,31 +572,50 @@ body { background: var(--pt-bg, #0a0c14); -webkit-font-smoothing: antialiased; }
   overflow-x: visible !important;
 }
 
-/* Animation: fade IN only, snap out.  Pure opacity, no transform.
-   The split-showcase default uses transform: translateX(30px) scale(.985)
-   on inactive slides + 0.7s transition — when slides overlap during
-   the cross-fade that combo looks blurry and erratic.  Here:
-     - inactive slides: transition: none → snap to opacity:0 the instant
-       they lose `.active`, no fade-out tail overlapping the new slide
-     - active/incoming: transition: opacity .15s → quick clean fade-in
-   Net: no text overlap during transitions, no blur. */
-body .ra-showcase.ra-split-showcase-ready .ra-slide {
+/* ──────────────────────────────────────────────────────────────────────
+   Slide visibility driven by the box's `data-active-slide` attribute,
+   NOT the `.active` class.
+
+   Why: the split-showcase JS sets `data-active-slide` on the box
+   synchronously, but the `.active` class doesn't leave the old slide
+   until the next requestAnimationFrame (~16ms later).  During that
+   window BOTH the old and new slides have `.active` — and the
+   split-showcase CSS makes both `position: relative; opacity: 1` →
+   they stack in the layout for one frame, visibly showing two slides
+   bleeding into each other.
+
+   The data attribute is changed BEFORE the class swap, so binding
+   visibility to it kills the overlap instantly.  Outgoing slide
+   becomes invisible + position:absolute the moment the JS calls
+   `setAttribute('data-active-slide', id)`, no waiting on RAF. */
+body .ra-split-box[data-active-slide] .ra-slide {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
   transform: none !important;
   transition: none !important;
 }
-body .ra-showcase.ra-split-showcase-ready .ra-slide.active,
-body .ra-showcase.ra-split-showcase-ready .ra-slide.ra-slide-incoming {
-  transform: none !important;
+/* The one slide whose data-slide matches the box's data-active-slide:
+   visible, in document flow (so carousel auto-sizes), pure opacity
+   fade-in at .15s. */
+body .ra-split-box[data-active-slide="0"] .ra-slide[data-slide="0"],
+body .ra-split-box[data-active-slide="1"] .ra-slide[data-slide="1"],
+body .ra-split-box[data-active-slide="2"] .ra-slide[data-slide="2"],
+body .ra-split-box[data-active-slide="3"] .ra-slide[data-slide="3"],
+body .ra-split-box[data-active-slide="4"] .ra-slide[data-slide="4"],
+body .ra-split-box[data-active-slide="5"] .ra-slide[data-slide="5"],
+body .ra-split-box[data-active-slide="6"] .ra-slide[data-slide="6"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  pointer-events: auto !important;
   transition: opacity .15s ease !important;
 }
 
-/* Carousel auto-sizes to its active slide — no min-height, no fixed
-   height.  This kills the "huge black space below short slides"
-   problem.  Bottom box may shift slightly when the top box changes
-   slides between Race Summary / Long-Run Pace / Pace vs Consistency
-   (they have different content heights), but that brief reflow is
-   way less ugly than 200px of dead black space underneath every
-   short slide. */
+/* Carousel auto-sizes to its one visible slide — no min-height, no
+   fixed height.  No dead black space underneath. */
 .ra-showcase.ra-split-showcase-ready .ra-carousel {
   overflow: hidden !important;
 }
