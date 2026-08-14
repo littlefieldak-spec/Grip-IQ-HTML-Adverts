@@ -1,4 +1,4 @@
-SCRIPT COUNT: 1
+SCRIPT COUNT: 2
 
 ===== SCRIPT 0 len 12704 =====
 
@@ -161,7 +161,7 @@ SCRIPT COUNT: 1
     var f
 
 ===== CSS .ra-slide{ =====
-55989
+56707
 2px 0 18px;}
 .ra-orbit-tab{appearance:none; border:1px solid rgba(0,212,255,.16)!important; background:rgba(7,20,40,.62)!important; color:#9eb6cc!important; border-radius:999px!important; padding:9px 14px!important; font-family:var(--ra-font)!important; font-size:.82rem!important; font-weight:900!important; cursor:pointer;}
 .ra-orbit-tab span{font-family:var(--font-mono,monospace); color:#526d89; margin-right:7px;}
@@ -200,7 +200,7 @@ SCRIPT COUNT: 1
 @media (max-width:1000px){.ra-hero-grid,.ra-showcase-head,.ra-final-panel{grid-template-columns:1fr}.ra-hero-showcase{min-height:0}.ra-spotlight{transform:none}.ra-slide{grid-te
 
 ===== CSS .ra-slide.active =====
-35257
+35256
 text-mut); }
 .ra-list li::before { color: var(--pt-green); }
 
@@ -305,7 +305,7 @@ body .ra-showcase.ra-split-showcase-ready .ra-split-box[data-active-slide="2"] .
 body 
 
 ===== CSS .ra-carousel{ =====
-55578
+56296
 pace); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; font-weight:800; margin-bottom:10px;}
 .ra-h2{margin:0; color:#fff; font-size:clamp(2.2rem,4.6vw,4.5rem); line-height:.95; letter-spacing:-.055em; font-weight:1000; font-family:var(--ra-font);}
 .ra-showcase-head p{margin:0; color:#b8cde2; font-size:1.06rem; line-height:1.65;}
@@ -344,7 +344,7 @@ pace); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; font-we
 .ra-list{list-style:none; margin:0; padding:0; display
 
 ===== CSS .ra-spotlight{ =====
-54291
+55009
 ; box-shadow:0 18px 52px rgba(0,212,255,.06);}
 .ra-cta-row{display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:center;}
 .ra-micro{margin-top:16px; color:#89b2d3; font-size:.92rem; text-align:center;}
@@ -384,7 +384,7 @@ pace); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; font-we
 
 
 ===== CSS .ra-mini-card{ =====
-53636
+54354
 ing:-.065em; font-weight:1000; font-family:var(--ra-font); text-align:center; text-wrap:balance;}
 .ra-h1 em{font-style:normal;color:var(--ra-cyan);text-shadow:0 0 28px rgba(0,212,255,.2)}
 .ra-sub{margin:0 auto 24px; color:#d4e7f8; font-size:clamp(1.06rem, 1.8vw, 1.25rem); line-height:1.65; max-width:760px; text-align:center;}
